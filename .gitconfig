@@ -1,0 +1,7 @@
+[init]
+	defaultBranch = main
+[user]
+	email = erik.sab@gmail.com
+	name = Erik Šabič
+[credential]
+	helper = store --file ~/.git-credentials
