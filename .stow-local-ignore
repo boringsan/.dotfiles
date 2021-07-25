@@ -1,1 +1,5 @@
 \.git
+^/.*\.org
+
+.+~          # emacs backup files
+\#.*\#       # emacs autosave files
