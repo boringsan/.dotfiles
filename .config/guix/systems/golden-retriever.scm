@@ -8,6 +8,9 @@
  (inherit base-operating-system)
  (host-name "golden-retriever")
 
+ (keyboard-layout (keyboard-layout "us" "colemak"
+                                   #:options '("ctrl:swapcaps")
+                                   #:model "thinkpad"))
 (bootloader
   (bootloader-configuration
     (bootloader grub-bootloader)
@@ -27,4 +30,4 @@
              (uuid "c66206f8-9d45-457c-a3d2-095141bcc109"
                    'ext4))
            (type "ext4"))
-         %base-file-systems))
+         %base-file-systems)))
