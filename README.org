@@ -3,8 +3,5 @@
 This repository has my personal dotfiles; inspired by [[https://github.com/daviwil/dotfiles][daviwil/dotfiles]].
 
 - GuixSD configuration for my machines ([[Systems.org][Systems.org]])
-<<<<<<< HEAD
 - Emacs configuration
-=======
 - Emacs configuration ([[Emacs.org]])
->>>>>>> e2c296a (add link)
