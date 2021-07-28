@@ -1,0 +1,6 @@
+* Dotfiles
+
+This repository has my personal dotfiles; inspired by [[https://github.com/daviwil/dotfiles][daviwil/dotfiles]].
+
+- GuixSD configuration for my machines ([[Systems.org][Systems.org]])
+- Emacs configuration
