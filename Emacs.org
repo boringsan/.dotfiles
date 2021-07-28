@@ -53,20 +53,124 @@
 (setq use-package-always-ensure t)
 #+end_src
 
+* Evil mode and other keyboard related settings
+
 #+begin_src emacs-lisp
-(use-package avy
-  :custom
-  ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?= ?a ?t ?1 ?n ?u))))
+  (use-package avy
+    :custom
+    ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?= ?a ?t ?1 ?n ?u))))
 
-(use-package all-the-icons)
+  (use-package evil
+    :init
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump t)
+    :config
+    (evil-mode 1)
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
 
-(use-package counsel
-  :init
-  (counsel-mode))
+  (use-package evil-surround
+    :after evil
+    :config
+    (global-evil-surround-mode 1))
 
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-translate-key
+      '(motion normal visual)
+      '(evil-motion-state-map
+        magit-mode-map
+        info-mode-map)
+      "n" "j"
+      "j" "h"
+      "h" "n"
+      "k" "p"
+      "p" "k")
+    (evil-collection-init))
 
+  (use-package general
+    :after evil-collection
+    :config
+    (general-def global-map
+      ;; Make ESC quit prompts
+      "C-;"        'save-buffer
+      "C-g"        'evil-normal-state
+      "<escape>"   'keyboard-escape-quit
+      "<f5>"       'eshell-toggle
+      "<f6>"       'org-agenda
+      "<f9>"       'find-file)
+    (general-def
+      :states      '(normal visual)
+      "k"          'evil-paste-after
+      "K"          'evil-paste-before
+      "C-k"        'helm-show-kill-ring
+      "M-k"        'counsel-evil-registers)
+    (general-def
+      :states      '(motion normal)
+                                          ;:keymaps 'magit-mode-map
+      "n"          'evil-next-visual-line
+      "p"          'evil-previous-visual-line
+      "j"          'evil-backward-char
+      "h"          'evil-search-next
+      "H"          'evil-search-previous
+      "/"          'evil-avy-goto-word-1
+      "?"          'evil-avy-goto-line
+      "C-n"        'evil-avy-goto-line-below
+      "C-p"        'evil-avy-goto-line-above)
+    (general-def
+      :states      '(insert visual emacs)
+      "C-,"        'evil-delete-backward-char-and-join
+      "C-."        'evil-delete-char
+      "C-j"        'evil-complete-previous
+      "C-l"        'evil-complete-next
+      "M-n"        'evil-next-visual-line
+      "M-p"        'evil-previous-visual-line
+      "C-<return>" 'open-line)
+    (general-create-definer boring/leader-keys
+      :keymaps '(normal insert visual emacs)
+      :prefix "SPC"
+      :global-prefix "C-SPC")
+    (boring/leader-keys
+      "SPC" '(evil-visual-line :which-key "visual line")
+      "C-s" '(evil-avy-goto-word-1 :which-key "avy goto word")
+      "p"  '(projectile-command-map :which-key "projectile")
+      "g"  '(magit-status :which-key "magit status")
+      "b"  '(projectile-switch-to-buffer :which-key "projectile buffers")
+      "w"  '(writeroom-mode :which-key "toggle writeroom mode")
+      "s"  '(:ignore t :which-key "sorting")
+      "ss" '(sort-lines :which-key "sort lines")
+      "sp" '(sort-paragraphs :which-key "sort paragraphs")
+      "se" '(evil-ex-sort :which-key "evil ex sort")
+      "t"  '(:ignore t :which-key "tabs/toggles")
+      "t1" '(tab-bar-select-tab :which-key "select tab")
+      "t2" '(tab-bar-select-tab :which-key "select tab")
+      "t3" '(tab-bar-select-tab :which-key "select tab")
+      "t4" '(tab-bar-select-tab :which-key "select tab")
+      "tn" '(tab-bar-switch-to-next-tab :which-key "next tab")
+      "tp" '(tab-bar-switch-to-prev-tab :which-key "previous tab")
+      "tt" '(tab-bar-switch-to-recent-tab :which-key "recent tab")
+      "tT" '(tab-bar-new-tab :which-key "new tab")
+      "tx" '(tab-bar-close-tab :which-key "close tab")
+      "tX" '(tab-bar-undo-close-tab :which-key "undo close tab")
+      "tl" '(counsel-load-theme :which-key "choose theme")
+      "ts" '(hydra-text-scale/body :which-key "scale text")))
+
+  (use-package hydra)
+
+  (defhydra hydra-text-scale (:timeout 4)
+    "scale text"
+    ("n" text-scale-increase "in")
+    ("p" text-scale-decrease "out")
+    ("RET" nil "finished" :exit t))
+
+#+end_src
+
+* Programming languages
+
+** Haskell
+#+begin_src emacs-lisp
 (use-package dante
   :after haskell-mode
   :commands 'dante-mode
@@ -76,6 +180,23 @@
   ;; (add-hook 'haskell-mode-hook 'flymake-mode)
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
   (add-hook 'haskell-mode-hook 'dante-mode))
+#+end_src
+
+** Elm
+#+begin_src emacs-lisp
+(use-package elm-mode
+  :config
+  (setq elm-package-json "elm.json")
+  (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el")
+  (setq elm-sort-imports-on-save t)
+  (setq elm-tags-on-save t))
+
+#+end_src
+
+* Graphics
+
+#+begin_src emacs-lisp
+(use-package all-the-icons)
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
@@ -92,113 +213,42 @@
   ;(doom-themes-treemacs-config)
   (doom-themes-org-config))
 
-(use-package elm-mode
-  :config
-  (setq elm-package-json "elm.json")
-  (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el")
-  (setq elm-sort-imports-on-save t)
-  (setq elm-tags-on-save t))
-
 (use-package eshell-git-prompt
   :config
   (eshell-git-prompt-use-theme 'powerline))
 
-(use-package evil
+(use-package solaire-mode
+  ;; Ensure solaire-mode is running in all solaire-mode buffers
+  :hook (change-major-mode . turn-on-solaire-mode)
+  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+  ;; itself off every time Emacs reverts the file
+  :hook (after-revert . turn-on-solaire-mode)
+  ;; To enable solaire-mode unconditionally for certain modes:
+  :hook (ediff-prepare-buffer . solaire-mode)
+  ;; Highlight the minibuffer when it is activated:
+  ;;:hook (minibuffer-setup . solaire-mode-in-minibuffer)
+  :config
+  ;; The bright and dark background colors are automatically swapped the
+  ;; first time solaire-mode is activated. Namely, the backgrounds of the
+  ;; `default` and `solaire-default-face` faces are swapped. This is done
+  ;; because the colors are usually the wrong way around. If you don't
+  ;; want this, you can disable it:
+  (setq solaire-mode-auto-swap-bg nil)
+  (solaire-global-mode +1))
+
+(use-package writeroom-mode
+  :diminish)
+#+end_src
+
+* Completion
+
+#+begin_src emacs-lisp
+(use-package counsel
   :init
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump t)
-  :config
-  (evil-mode 1)
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+  (counsel-mode))
 
-(use-package evil-surround
-  :after evil
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-translate-key
-    '(motion normal visual)
-    '(evil-motion-state-map
-      magit-mode-map
-      info-mode-map)
-    "n" "j"
-    "j" "h"
-    "h" "n"
-    "k" "p"
-    "p" "k")
-  (evil-collection-init))
-
-(use-package general
-  :after evil-collection
-  :config
-  (general-def global-map
-    ;; Make ESC quit prompts
-    "C-;"        'save-buffer
-    "C-g"        'evil-normal-state
-    "<escape>"   'keyboard-escape-quit
-    "<f5>"       'eshell-toggle
-    "<f6>"       'org-agenda
-    "<f9>"       'find-file)
-  (general-def
-    :states      '(normal visual)
-    "k"          'evil-paste-after
-    "K"          'evil-paste-before
-    "C-k"        'helm-show-kill-ring
-    "M-k"        'counsel-evil-registers)
-  (general-def
-    :states      '(motion normal)
-    ;:keymaps 'magit-mode-map
-    "n"          'evil-next-visual-line
-    "p"          'evil-previous-visual-line
-    "j"          'evil-backward-char
-    "h"          'evil-search-next
-    "H"          'evil-search-previous
-    "/"          'evil-avy-goto-word-1
-    "?"          'evil-avy-goto-line
-    "C-n"        'evil-avy-goto-line-below
-    "C-p"        'evil-avy-goto-line-above)
-  (general-def
-    :states      '(insert visual emacs)
-    "C-,"        'evil-delete-backward-char-and-join
-    "C-."        'evil-delete-char
-    "C-j"        'evil-complete-previous
-    "C-l"        'evil-complete-next
-    "M-n"        'evil-next-visual-line
-    "M-p"        'evil-previous-visual-line
-    "C-<return>" 'open-line)
-  (general-create-definer boring/leader-keys
-    :keymaps '(normal insert visual emacs)
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-  (boring/leader-keys
-    "SPC" '(evil-visual-line :which-key "visual line")
-    "C-s" '(evil-avy-goto-word-1 :which-key "avy goto word")
-    "p"  '(projectile-command-map :which-key "projectile")
-    "g"  '(magit-status :which-key "magit status")
-    "b"  '(projectile-switch-to-buffer :which-key "projectile buffers")
-    "w"  '(writeroom-mode :which-key "toggle writeroom mode")
-    "s"  '(:ignore t :which-key "sorting")
-    "ss" '(sort-lines :which-key "sort lines")
-    "sp" '(sort-paragraphs :which-key "sort paragraphs")
-    "se" '(evil-ex-sort :which-key "evil ex sort")
-    "t"  '(:ignore t :which-key "tabs/toggles")
-    "t1" '(tab-bar-select-tab :which-key "select tab")
-    "t2" '(tab-bar-select-tab :which-key "select tab")
-    "t3" '(tab-bar-select-tab :which-key "select tab")
-    "t4" '(tab-bar-select-tab :which-key "select tab")
-    "tn" '(tab-bar-switch-to-next-tab :which-key "next tab")
-    "tp" '(tab-bar-switch-to-prev-tab :which-key "previous tab")
-    "tt" '(tab-bar-switch-to-recent-tab :which-key "recent tab")
-    "tT" '(tab-bar-new-tab :which-key "new tab")
-    "tx" '(tab-bar-close-tab :which-key "close tab")
-    "tX" '(tab-bar-undo-close-tab :which-key "undo close tab")
-    "tl" '(counsel-load-theme :which-key "choose theme")
-    "ts" '(hydra-text-scale/body :which-key "scale text")))
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
 
 (use-package helpful
   :custom
@@ -209,14 +259,6 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
-
-(use-package hydra)
-
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("n" text-scale-increase "in")
-  ("p" text-scale-decrease "out")
-  ("RET" nil "finished" :exit t))
 
 (use-package ivy
   :diminish
@@ -264,7 +306,11 @@
   (general-def magit-popup-mode-map
     "<f6>"       'magit-popup-quit
     "<f7>"       'magit-popup-quit))
+#+end_src
 
+* Org mode
+
+#+begin_src emacs-lisp
 (defun efs/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
@@ -342,25 +388,6 @@
     (setq projectile-project-search-path '("~/projects")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package solaire-mode
-  ;; Ensure solaire-mode is running in all solaire-mode buffers
-  :hook (change-major-mode . turn-on-solaire-mode)
-  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-  ;; itself off every time Emacs reverts the file
-  :hook (after-revert . turn-on-solaire-mode)
-  ;; To enable solaire-mode unconditionally for certain modes:
-  :hook (ediff-prepare-buffer . solaire-mode)
-  ;; Highlight the minibuffer when it is activated:
-  ;;:hook (minibuffer-setup . solaire-mode-in-minibuffer)
-  :config
-  ;; The bright and dark background colors are automatically swapped the
-  ;; first time solaire-mode is activated. Namely, the backgrounds of the
-  ;; `default` and `solaire-default-face` faces are swapped. This is done
-  ;; because the colors are usually the wrong way around. If you don't
-  ;; want this, you can disable it:
-  (setq solaire-mode-auto-swap-bg nil)
-  (solaire-global-mode +1))
-
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
@@ -370,8 +397,5 @@
   ;; triggered.
   (setq which-key-idle-secondary-delay 0)
   (setq which-key-idle-delay 100))
-
-(use-package writeroom-mode
-  :diminish)
 #+end_src
 

@@ -46,51 +46,6 @@
   :custom
   ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?= ?a ?t ?1 ?n ?u))))
 
-(use-package all-the-icons)
-
-(use-package counsel
-  :init
-  (counsel-mode))
-
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
-
-(use-package dante
-  :after haskell-mode
-  :commands 'dante-mode
-  :init
-  (add-hook 'haskell-mode-hook 'flycheck-mode)
-  ;; OR for flymake support:
-  ;; (add-hook 'haskell-mode-hook 'flymake-mode)
-  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-  (add-hook 'haskell-mode-hook 'dante-mode))
-
-(use-package doom-modeline
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 11)))
-
-(use-package doom-themes
-  :config
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-monokai-classic t)
-  (doom-themes-visual-bell-config)
-  ;(doom-themes-neotree-config)
-  ;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-  ;(doom-themes-treemacs-config)
-  (doom-themes-org-config))
-
-(use-package elm-mode
-  :config
-  (setq elm-package-json "elm.json")
-  (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el")
-  (setq elm-sort-imports-on-save t)
-  (setq elm-tags-on-save t))
-
-(use-package eshell-git-prompt
-  :config
-  (eshell-git-prompt-use-theme 'powerline))
-
 (use-package evil
   :init
   (setq evil-want-keybinding nil)
@@ -140,7 +95,7 @@
     "M-k"        'counsel-evil-registers)
   (general-def
     :states      '(motion normal)
-    ;:keymaps 'magit-mode-map
+                                        ;:keymaps 'magit-mode-map
     "n"          'evil-next-visual-line
     "p"          'evil-previous-visual-line
     "j"          'evil-backward-char
@@ -188,6 +143,81 @@
     "tl" '(counsel-load-theme :which-key "choose theme")
     "ts" '(hydra-text-scale/body :which-key "scale text")))
 
+(use-package hydra)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("n" text-scale-increase "in")
+  ("p" text-scale-decrease "out")
+  ("RET" nil "finished" :exit t))
+
+(use-package dante
+  :after haskell-mode
+  :commands 'dante-mode
+  :init
+  (add-hook 'haskell-mode-hook 'flycheck-mode)
+  ;; OR for flymake support:
+  ;; (add-hook 'haskell-mode-hook 'flymake-mode)
+  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
+  (add-hook 'haskell-mode-hook 'dante-mode))
+
+(use-package elm-mode
+  :config
+  (setq elm-package-json "elm.json")
+  (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el")
+  (setq elm-sort-imports-on-save t)
+  (setq elm-tags-on-save t))
+
+(use-package all-the-icons)
+
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 11)))
+
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-monokai-classic t)
+  (doom-themes-visual-bell-config)
+  ;(doom-themes-neotree-config)
+  ;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+  ;(doom-themes-treemacs-config)
+  (doom-themes-org-config))
+
+(use-package eshell-git-prompt
+  :config
+  (eshell-git-prompt-use-theme 'powerline))
+
+(use-package solaire-mode
+  ;; Ensure solaire-mode is running in all solaire-mode buffers
+  :hook (change-major-mode . turn-on-solaire-mode)
+  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+  ;; itself off every time Emacs reverts the file
+  :hook (after-revert . turn-on-solaire-mode)
+  ;; To enable solaire-mode unconditionally for certain modes:
+  :hook (ediff-prepare-buffer . solaire-mode)
+  ;; Highlight the minibuffer when it is activated:
+  ;;:hook (minibuffer-setup . solaire-mode-in-minibuffer)
+  :config
+  ;; The bright and dark background colors are automatically swapped the
+  ;; first time solaire-mode is activated. Namely, the backgrounds of the
+  ;; `default` and `solaire-default-face` faces are swapped. This is done
+  ;; because the colors are usually the wrong way around. If you don't
+  ;; want this, you can disable it:
+  (setq solaire-mode-auto-swap-bg nil)
+  (solaire-global-mode +1))
+
+(use-package writeroom-mode
+  :diminish)
+
+(use-package counsel
+  :init
+  (counsel-mode))
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+
 (use-package helpful
   :custom
   (counsel-describe-function-function #'helpful-callable)
@@ -197,14 +227,6 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
-
-(use-package hydra)
-
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("n" text-scale-increase "in")
-  ("p" text-scale-decrease "out")
-  ("RET" nil "finished" :exit t))
 
 (use-package ivy
   :diminish
@@ -330,25 +352,6 @@
     (setq projectile-project-search-path '("~/projects")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package solaire-mode
-  ;; Ensure solaire-mode is running in all solaire-mode buffers
-  :hook (change-major-mode . turn-on-solaire-mode)
-  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-  ;; itself off every time Emacs reverts the file
-  :hook (after-revert . turn-on-solaire-mode)
-  ;; To enable solaire-mode unconditionally for certain modes:
-  :hook (ediff-prepare-buffer . solaire-mode)
-  ;; Highlight the minibuffer when it is activated:
-  ;;:hook (minibuffer-setup . solaire-mode-in-minibuffer)
-  :config
-  ;; The bright and dark background colors are automatically swapped the
-  ;; first time solaire-mode is activated. Namely, the backgrounds of the
-  ;; `default` and `solaire-default-face` faces are swapped. This is done
-  ;; because the colors are usually the wrong way around. If you don't
-  ;; want this, you can disable it:
-  (setq solaire-mode-auto-swap-bg nil)
-  (solaire-global-mode +1))
-
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
@@ -358,6 +361,3 @@
   ;; triggered.
   (setq which-key-idle-secondary-delay 0)
   (setq which-key-idle-delay 100))
-
-(use-package writeroom-mode
-  :diminish)
