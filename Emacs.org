@@ -1,21 +1,31 @@
-(setq inhibit-startup-message t)
-(setq custom-file "~/.emacs.d/custom-set-variables.el")
+#+TITLE: Emacs Configuration
+#+PROPERTY: header-args:emacs-lisp :tangle .emacs.d/init.el
 
-(scroll-bar-mode -1)        ; Disable visible scrollbar
-(tool-bar-mode -1)          ; Disable the toolbar
-(tooltip-mode -1)           ; Disable tooltips
-(set-fringe-mode 10)        ; Give some breathing room
-(menu-bar-mode -1)          ; Disable the menu bar
-(tab-bar-mode)              ; Enable the tab bar
+* General
 
-(add-to-list 'default-frame-alist
-             '(font . "DejaVu Sans Mono-10"))
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t)
+  (setq custom-file "~/.emacs.d/custom-set-variables.el")
 
-(column-number-mode)
+  (scroll-bar-mode -1)        ; Disable visible scrollbar
+  (tool-bar-mode -1)          ; Disable the toolbar
+  (tooltip-mode -1)           ; Disable tooltips
+  (set-fringe-mode 10)        ; Give some breathing room
+  (menu-bar-mode -1)          ; Disable the menu bar
+  (tab-bar-mode)              ; Enable the tab bar
 
-(dolist (mode '(prog-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode t))))
+  (add-to-list 'default-frame-alist
+               '(font . "DejaVu Sans Mono-10"))
 
+  (column-number-mode)
+
+  (dolist (mode '(prog-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode t))))
+#+end_src
+
+* Package management
+
+#+begin_src emacs-lisp
 ;; Initialize package sources
 (require 'package)
 (package-initialize)
@@ -41,7 +51,9 @@
 	use-package-expand-minimally t))
 
 (setq use-package-always-ensure t)
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package avy
   :custom
   ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?= ?a ?t ?1 ?n ?u))))
@@ -361,3 +373,5 @@
 
 (use-package writeroom-mode
   :diminish)
+#+end_src
+
