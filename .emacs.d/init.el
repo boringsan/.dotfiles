@@ -16,16 +16,15 @@
 (dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode t))))
 
-;; Initialize package sources
 (require 'package)
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
+(package-initialize)        ; Initialize package sources
+(unless package-archive-contents
+  (package-refresh-contents))
 ;; Initialize use-package on non-Linux platforms
 ;(unless (package-installed-p 'use-package)
 ;  (package-install 'use-package))
@@ -178,11 +177,12 @@
   :config
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-monokai-classic t)
+                                        ;(load-theme 'doom-monokai-classic t)
+  (load-theme 'doom-old-hope t)
   (doom-themes-visual-bell-config)
-  ;(doom-themes-neotree-config)
-  ;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-  ;(doom-themes-treemacs-config)
+                                        ;(doom-themes-neotree-config)
+                                        ;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+                                        ;(doom-themes-treemacs-config)
   (doom-themes-org-config))
 
 (use-package eshell-git-prompt
@@ -276,6 +276,7 @@
     "<f7>"       'magit-popup-quit))
 
 (defun efs/org-mode-setup ()
+  (efs/org-font-setup)
   (org-indent-mode)
   (variable-pitch-mode 1)
   (visual-line-mode 1))
@@ -316,7 +317,6 @@
   :config
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
-  (efs/org-font-setup)
   :custom
   (org-ellipsis " ▾")
   (org-agenda-start-with-log-mode t)
@@ -368,15 +368,14 @@
   (org-roam-directory "~/org-roam")
   :config
   (org-roam-setup)
-  :bind (:map org-roam-mode-map
-              ("C-c n f"   . org-roam-node-find)
-              ("C-c n d"   . org-roam-dailies-find-date)
-              ("C-c n c"   . org-roam-dailies-capture-today)
-              ("C-c n C r" . org-roam-dailies-capture-tomorrow)
-              ("C-c n t"   . org-roam-dailies-find-today)
-              ("C-c n y"   . org-roam-dailies-find-yesterday)
-              ("C-c n r"   . org-roam-dailies-find-tomorrow)
-              ("C-c n g"   . org-roam-graph)
-              :map org-mode-map
-              ("C-c n i" . org-roam-insert)
-              ("C-c n I" . org-roam-insert-immediate)))
+  :bind (("C-c n f"   . org-roam-node-find)
+         ("C-c n d"   . org-roam-dailies-find-date)
+         ("C-c n c"   . org-roam-dailies-capture-today)
+         ("C-c n C r" . org-roam-dailies-capture-tomorrow)
+         ("C-c n t"   . org-roam-dailies-find-today)
+         ("C-c n y"   . org-roam-dailies-find-yesterday)
+         ("C-c n r"   . org-roam-dailies-find-tomorrow)
+         ("C-c n g"   . org-roam-graph)
+         :map org-mode-map
+         ("C-c n i"   . org-roam-insert)
+         ("C-c n I"   . org-roam-insert-immediate)))
