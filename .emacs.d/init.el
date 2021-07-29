@@ -34,11 +34,11 @@
 
 (if init-file-debug
     (setq use-package-verbose t
-	  use-package-expand-minimally nil
-	  use-package-compute-statistics t
-	  debug-on-error t)
+          use-package-expand-minimally nil
+          use-package-compute-statistics t
+          debug-on-error t)
   (setq use-package-verbose nil
-	use-package-expand-minimally t))
+        use-package-expand-minimally t))
 
 (setq use-package-always-ensure t)
 
@@ -297,8 +297,10 @@
                   (org-level-6 . 1.1)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
-    
     (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+  ;; Make sure org-indent face is available
+  (require 'org-indent)
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
   (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
@@ -314,17 +316,14 @@
   :config
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
+  (efs/org-font-setup)
   :custom
-  (org-todo-keywords
-   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-     (sequence "BOOK(b)" "TOREAD(n)" "|" "READ(d!)")))
   (org-ellipsis " ▾")
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
   (org-log-into-drawer t)
   (org-agenda-diary-file "~/org/diary.org")
-  (org-agenda-files '("~/org/"))
-  (efs/org-font-setup))
+  (org-agenda-files '("~/org/")))
 
 (use-package org-bullets
   :after org
@@ -361,3 +360,23 @@
   ;; triggered.
   (setq which-key-idle-secondary-delay 0)
   (setq which-key-idle-delay 100))
+
+(use-package org-roam
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/org-roam")
+  :config
+  (org-roam-setup)
+  :bind (:map org-roam-mode-map
+              ("C-c n f"   . org-roam-node-find)
+              ("C-c n d"   . org-roam-dailies-find-date)
+              ("C-c n c"   . org-roam-dailies-capture-today)
+              ("C-c n C r" . org-roam-dailies-capture-tomorrow)
+              ("C-c n t"   . org-roam-dailies-find-today)
+              ("C-c n y"   . org-roam-dailies-find-yesterday)
+              ("C-c n r"   . org-roam-dailies-find-tomorrow)
+              ("C-c n g"   . org-roam-graph)
+              :map org-mode-map
+              ("C-c n i" . org-roam-insert)
+              ("C-c n I" . org-roam-insert-immediate)))

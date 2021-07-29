@@ -398,3 +398,26 @@
     (setq which-key-idle-delay 100))
 #+end_src
 
+** Org Roam
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :init
+    (setq org-roam-v2-ack t)
+    :custom
+    (org-roam-directory "~/org-roam")
+    :config
+    (org-roam-setup)
+    :bind (:map org-roam-mode-map
+                ("C-c n f"   . org-roam-node-find)
+                ("C-c n d"   . org-roam-dailies-find-date)
+                ("C-c n c"   . org-roam-dailies-capture-today)
+                ("C-c n C r" . org-roam-dailies-capture-tomorrow)
+                ("C-c n t"   . org-roam-dailies-find-today)
+                ("C-c n y"   . org-roam-dailies-find-yesterday)
+                ("C-c n r"   . org-roam-dailies-find-tomorrow)
+                ("C-c n g"   . org-roam-graph)
+                :map org-mode-map
+                ("C-c n i" . org-roam-insert)
+                ("C-c n I" . org-roam-insert-immediate)))
+#+end_src
