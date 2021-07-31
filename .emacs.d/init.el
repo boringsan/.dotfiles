@@ -7,6 +7,7 @@
 (set-fringe-mode 10)        ; Give some breathing room
 (menu-bar-mode -1)          ; Disable the menu bar
 (tab-bar-mode)              ; Enable the tab bar
+(show-paren-mode t)         ; Highlight matching parenthesis
 
 (add-to-list 'default-frame-alist
              '(font . "DejaVu Sans Mono-10"))
@@ -66,6 +67,7 @@
   (evil-collection-translate-key
     '(motion normal visual)
     '(evil-motion-state-map
+      org-mode-map
       magit-mode-map
       info-mode-map)
     "n" "j"
@@ -83,35 +85,28 @@
     "C-;"        'save-buffer
     "C-g"        'evil-normal-state
     "<escape>"   'keyboard-escape-quit
-    "<f5>"       'eshell-toggle
-    "<f6>"       'org-agenda
+    "<f5>"       'org-capture
+    "<f6>"       'org-agenda-list
     "<f9>"       'find-file)
   (general-def
     :states      '(normal visual)
     "k"          'evil-paste-after
-    "K"          'evil-paste-before
-    "C-k"        'helm-show-kill-ring
-    "M-k"        'counsel-evil-registers)
+    "K"          'evil-paste-before)
   (general-def
     :states      '(motion normal)
-                                        ;:keymaps 'magit-mode-map
     "n"          'evil-next-visual-line
     "p"          'evil-previous-visual-line
     "j"          'evil-backward-char
     "h"          'evil-search-next
     "H"          'evil-search-previous
     "/"          'evil-avy-goto-word-1
-    "?"          'evil-avy-goto-line
-    "C-n"        'evil-avy-goto-line-below
-    "C-p"        'evil-avy-goto-line-above)
+    "?"          'evil-avy-goto-line)
   (general-def
     :states      '(insert visual emacs)
     "C-,"        'evil-delete-backward-char-and-join
     "C-."        'evil-delete-char
     "C-j"        'evil-complete-previous
     "C-l"        'evil-complete-next
-    "M-n"        'evil-next-visual-line
-    "M-p"        'evil-previous-visual-line
     "C-<return>" 'open-line)
   (general-create-definer boring/leader-keys
     :keymaps '(normal insert visual emacs)
@@ -150,11 +145,19 @@
   ("p" text-scale-decrease "out")
   ("RET" nil "finished" :exit t))
 
+(use-package haskell-mode
+  :custom
+  (haskell-mode-hook '(capitalized-words-mode
+                       haskell-indent-mode
+                       haskell-indentation-mode
+                       dante-mode
+                       flycheck-mode)))
+
 (use-package dante
   :after haskell-mode
   :commands 'dante-mode
   :init
-  (add-hook 'haskell-mode-hook 'flycheck-mode)
+  ;(add-hook 'haskell-mode-hook 'flycheck-mode)
   ;; OR for flymake support:
   ;; (add-hook 'haskell-mode-hook 'flymake-mode)
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
@@ -317,6 +320,9 @@
   :config
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((haskell . t)))
   :custom
   (org-ellipsis " ▾")
   (org-agenda-start-with-log-mode t)
@@ -369,13 +375,13 @@
   :config
   (org-roam-setup)
   :bind (("C-c n f"   . org-roam-node-find)
-         ("C-c n d"   . org-roam-dailies-find-date)
+         ("C-c n n"   . org-roam-capture)
          ("C-c n c"   . org-roam-dailies-capture-today)
          ("C-c n C r" . org-roam-dailies-capture-tomorrow)
-         ("C-c n t"   . org-roam-dailies-find-today)
-         ("C-c n y"   . org-roam-dailies-find-yesterday)
-         ("C-c n r"   . org-roam-dailies-find-tomorrow)
+         ("C-c n d"   . org-roam-dailies-goto-date)
+         ("C-c n t"   . org-roam-dailies-goto-today)
+         ("C-c n y"   . org-roam-dailies-goto-yesterday)
+         ("C-c n r"   . org-roam-dailies-goto-tomorrow)
          ("C-c n g"   . org-roam-graph)
          :map org-mode-map
-         ("C-c n i"   . org-roam-insert)
-         ("C-c n I"   . org-roam-insert-immediate)))
+         ("C-c n i"   . org-roam-node-insert)))
