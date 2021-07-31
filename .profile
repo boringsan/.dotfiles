@@ -26,5 +26,3 @@ export CC="gcc"
 export VISUAL=emacsclient
 export EDITOR="$VISUAL"
 
-# Load .bashrc to get login environment
-[ -f ~/.bashrc ] && . ~/.bashrc

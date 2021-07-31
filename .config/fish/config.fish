@@ -10,7 +10,3 @@ end
 function ip
     command ip --color=auto $argv
 end
-
-if status --is-login
-    set -x PATH $PATH ~/.nix-profile/bin
-end
