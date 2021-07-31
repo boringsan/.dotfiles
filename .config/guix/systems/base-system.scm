@@ -113,7 +113,7 @@ EndSection
              (name "boring")
              (comment "Boring")
              (group "users")
-             (shell (file-append fish "/bin/fish"))
+             ;(shell (file-append fish "/bin/fish"))
              (home-directory "/home/boring")
              (supplementary-groups
               '("wheel" "netdev" "audio" "video" "input")))
