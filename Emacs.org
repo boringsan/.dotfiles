@@ -163,9 +163,23 @@
 
 * Programming languages
 
+** Language servers
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :init
+    (use-package lsp-haskell)
+    (setq lsp-keymap-prefix "C-c l")
+    :config
+    (lsp-enable-which-key-integration t))
+
+#+end_src
+
 ** Haskell
 #+begin_src emacs-lisp
   (use-package haskell-mode
+    :hook (haskell-mode . lsp-deferred)
     :custom
     (haskell-mode-hook '(capitalized-words-mode
                          haskell-indent-mode

@@ -145,7 +145,15 @@
   ("p" text-scale-decrease "out")
   ("RET" nil "finished" :exit t))
 
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (lsp-enable-which-key-integration t))
+
 (use-package haskell-mode
+  :hook (haskell-mode . lsp-deferred)
   :custom
   (haskell-mode-hook '(capitalized-words-mode
                        haskell-indent-mode
