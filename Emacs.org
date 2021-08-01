@@ -89,10 +89,13 @@
         magit-mode-map
         info-mode-map)
       "n" "j"
+      "C-n" "C-j"
       "j" "h"
       "h" "n"
       "k" "p"
-      "p" "k")
+      "C-k" "C-p"
+      "p" "k"
+      "C-p" "C-k")
     (evil-collection-init))
 
   (use-package general
@@ -249,9 +252,26 @@
 
 * Graphics
 
-#+begin_src emacs-lisp
-  (use-package all-the-icons)
+** All the icons
 
+The first time the configuration is loaded on a new machine,  the command =all-the-icons-install-fonts= must be called to install the icons.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    :if (display-graphic-p)
+    :commands (all-the-icons-install-fonts)
+    :init
+    (unless (find-font (font-spec :name "all-the-icons"))
+      (all-the-icons-install-fonts t)))
+
+  (use-package all-the-icons-dired
+    :if (display-graphic-p)
+    :hook (dired-mode . all-the-icons-dired-mode))
+#+end_src
+
+** Doom
+
+#+begin_src emacs-lisp
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
     :custom ((doom-modeline-height 11)))
