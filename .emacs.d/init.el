@@ -1,18 +1,17 @@
 (setq inhibit-startup-message t)
 (setq custom-file "~/.emacs.d/custom-set-variables.el")
 
-(scroll-bar-mode -1)        ; Disable visible scrollbar
+;(scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
 (tooltip-mode -1)           ; Disable tooltips
 (set-fringe-mode 10)        ; Give some breathing room
 (menu-bar-mode -1)          ; Disable the menu bar
-(tab-bar-mode)              ; Enable the tab bar
+;(tab-bar-mode)              ; Enable the tab bar
 (show-paren-mode t)         ; Highlight matching parenthesis
+(column-number-mode)        ; Show column number in the modeline
 
 (add-to-list 'default-frame-alist
              '(font . "DejaVu Sans Mono-10"))
-
-(column-number-mode)
 
 (dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode t))))
@@ -145,9 +144,35 @@
   ("p" text-scale-decrease "out")
   ("RET" nil "finished" :exit t))
 
+(use-package magit
+  :ensure-system-package git
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :config
+  (general-def
+    :states '(normal visual)
+    :keymaps 'magit-mode-map
+    "n" 'evil-next-visual-line
+    "j" 'evil-backward-char
+    "p" 'evil-previous-visual-line
+    "h" 'evil-search-next))
+
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode +1)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (file-directory-p "~/projects")
+    (setq projectile-project-search-path '("~/projects")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :init
+  (use-package lsp-haskell)
   (setq lsp-keymap-prefix "C-c l")
   :config
   (lsp-enable-which-key-integration t))
@@ -267,32 +292,23 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
-(use-package magit
-  :ensure-system-package git
-  :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-  :config
-  (general-def
-    :states '(normal visual)
-    :keymaps 'magit-mode-map
-    "n" 'evil-next-visual-line
-    "j" 'evil-backward-char
-    "p" 'evil-previous-visual-line
-    "h" 'evil-search-next))
+;(use-package magit-popup :config (general-def magit-popup-mode-map "<f6>"       'magit-popup-quit "<f7>"       'magit-popup-quit))
 
-(use-package magit-popup
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
   :config
-  (general-def magit-popup-mode-map
-    "<f6>"       'magit-popup-quit
-    "<f7>"       'magit-popup-quit))
+  (setq which-key-show-early-on-C-h t)
+  ;; make sure which-key doesn't show normally but refreshes quickly after it is
+  ;; triggered.
+  (setq which-key-idle-secondary-delay 0)
+  (setq which-key-idle-delay 100))
 
 (defun efs/org-mode-setup ()
   (efs/org-font-setup)
   (org-indent-mode)
   (variable-pitch-mode 1)
   (visual-line-mode 1))
-
-;; Org Mode Configuration ------------------------------------------------------
 
 (defun efs/org-font-setup ()
   ;; Replace list hyphen with dot
@@ -352,28 +368,6 @@
 
 (use-package visual-fill-column
   :hook (org-mode . efs/org-mode-visual-fill))
-
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode +1)
-  :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/projects")
-    (setq projectile-project-search-path '("~/projects")))
-  (setq projectile-switch-project-action #'projectile-dired))
-
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-show-early-on-C-h t)
-  ;; make sure which-key doesn't show normally but refreshes quickly after it is
-  ;; triggered.
-  (setq which-key-idle-secondary-delay 0)
-  (setq which-key-idle-delay 100))
 
 (use-package org-roam
   :init

@@ -1,30 +1,29 @@
 #+TITLE: Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle .emacs.d/init.el
 
-* General
+* Global
 
 #+begin_src emacs-lisp
   (setq inhibit-startup-message t)
   (setq custom-file "~/.emacs.d/custom-set-variables.el")
 
-  (scroll-bar-mode -1)        ; Disable visible scrollbar
+  ;(scroll-bar-mode -1)        ; Disable visible scrollbar
   (tool-bar-mode -1)          ; Disable the toolbar
   (tooltip-mode -1)           ; Disable tooltips
   (set-fringe-mode 10)        ; Give some breathing room
   (menu-bar-mode -1)          ; Disable the menu bar
-  (tab-bar-mode)              ; Enable the tab bar
+  ;(tab-bar-mode)              ; Enable the tab bar
   (show-paren-mode t)         ; Highlight matching parenthesis
+  (column-number-mode)        ; Show column number in the modeline
 
   (add-to-list 'default-frame-alist
                '(font . "DejaVu Sans Mono-10"))
-
-  (column-number-mode)
 
   (dolist (mode '(prog-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode t))))
 #+end_src
 
-* Package management
+** Package management
 
 #+begin_src emacs-lisp
   (require 'package)
@@ -40,6 +39,11 @@
   ;(unless (package-installed-p 'use-package)
   ;  (package-install 'use-package))
 
+#+end_src
+
+** Use-package macro
+
+#+begin_src emacs-lisp
   (require 'use-package)
 
   (if init-file-debug
@@ -163,6 +167,39 @@
 
 * Programming languages
 
+** Magit git interface
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure-system-package git
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+    :config
+    (general-def
+      :states '(normal visual)
+      :keymaps 'magit-mode-map
+      "n" 'evil-next-visual-line
+      "j" 'evil-backward-char
+      "p" 'evil-previous-visual-line
+      "h" 'evil-search-next))
+#+end_src
+
+** Projectile
+
+#+begin_src emacs-lisp
+  (use-package projectile
+    :diminish projectile-mode
+    :config (projectile-mode +1)
+    :custom ((projectile-completion-system 'ivy))
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :init
+    ;; NOTE: Set this to the folder where you keep your Git repos!
+    (when (file-directory-p "~/projects")
+      (setq projectile-project-search-path '("~/projects")))
+    (setq projectile-switch-project-action #'projectile-dired))
+#+end_src
+
 ** Language servers
 
 #+begin_src emacs-lisp
@@ -177,6 +214,7 @@
 #+end_src
 
 ** Haskell
+
 #+begin_src emacs-lisp
   (use-package haskell-mode
     :hook (haskell-mode . lsp-deferred)
@@ -305,24 +343,17 @@
     (keyfreq-mode 1)
     (keyfreq-autosave-mode 1))
 
-  (use-package magit
-    :ensure-system-package git
-    :custom
-    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-    :config
-    (general-def
-      :states '(normal visual)
-      :keymaps 'magit-mode-map
-      "n" 'evil-next-visual-line
-      "j" 'evil-backward-char
-      "p" 'evil-previous-visual-line
-      "h" 'evil-search-next))
+  ;(use-package magit-popup :config (general-def magit-popup-mode-map "<f6>"       'magit-popup-quit "<f7>"       'magit-popup-quit))
 
-  (use-package magit-popup
+  (use-package which-key
+    :init (which-key-mode)
+    :diminish which-key-mode
     :config
-    (general-def magit-popup-mode-map
-      "<f6>"       'magit-popup-quit
-      "<f7>"       'magit-popup-quit))
+    (setq which-key-show-early-on-C-h t)
+    ;; make sure which-key doesn't show normally but refreshes quickly after it is
+    ;; triggered.
+    (setq which-key-idle-secondary-delay 0)
+    (setq which-key-idle-delay 100))
 #+end_src
 
 * Org mode
@@ -333,8 +364,6 @@
     (org-indent-mode)
     (variable-pitch-mode 1)
     (visual-line-mode 1))
-
-  ;; Org Mode Configuration ------------------------------------------------------
 
   (defun efs/org-font-setup ()
     ;; Replace list hyphen with dot
@@ -394,28 +423,6 @@
 
   (use-package visual-fill-column
     :hook (org-mode . efs/org-mode-visual-fill))
-
-  (use-package projectile
-    :diminish projectile-mode
-    :config (projectile-mode +1)
-    :custom ((projectile-completion-system 'ivy))
-    :bind-keymap
-    ("C-c p" . projectile-command-map)
-    :init
-    ;; NOTE: Set this to the folder where you keep your Git repos!
-    (when (file-directory-p "~/projects")
-      (setq projectile-project-search-path '("~/projects")))
-    (setq projectile-switch-project-action #'projectile-dired))
-
-  (use-package which-key
-    :init (which-key-mode)
-    :diminish which-key-mode
-    :config
-    (setq which-key-show-early-on-C-h t)
-    ;; make sure which-key doesn't show normally but refreshes quickly after it is
-    ;; triggered.
-    (setq which-key-idle-secondary-delay 0)
-    (setq which-key-idle-delay 100))
 #+end_src
 
 ** Org Roam
