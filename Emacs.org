@@ -3,6 +3,8 @@
 
 * Global
 
+This section contains global Emacs configuration; anything that's available at all times.
+
 ** Settings
 
 #+begin_src emacs-lisp
@@ -26,6 +28,8 @@
 
 ** Package management
 
+Emacs' builtin package manager ~package.el~ is used.
+
 #+begin_src emacs-lisp
   (require 'package)
 
@@ -44,6 +48,10 @@
 
 ** Use-package macro
 
+This macro streamlines package configuration.
+
+[[https://github.com/jwiegley/use-package][github.com/jwiegley/use-package]]
+
 #+begin_src emacs-lisp
   (require 'use-package)
 
@@ -58,9 +66,14 @@
   (setq use-package-always-ensure t)
 #+end_src
 
-** Evil mode and other keyboard related packages
+** Keyboard bindings
+
+I'm using ~evil-mode~ for modal editing. Since I type with the colemak keyboard layout and I'm replacing =jkl= with =nei=, this section is quite complicated.
 
 *** Evil packages
+
+[[https://github.com/noctuid/evil-guide][https://github.com/noctuid/evil-guide]]
+[[https://github.com/emacs-evil/evil-collection][https://github.com/emacs-evil/evil-collection]]
 
 #+begin_src emacs-lisp
   (use-package evil
@@ -86,6 +99,8 @@
 #+end_src
 
 *** General
+
+[[https://github.com/noctuid/general.el][https://github.com/noctuid/general.el]]
 
 #+begin_src emacs-lisp
   (use-package general
@@ -145,6 +160,8 @@
 
 *** Avy
 
+The avy package provides some usefull movement commands. 
+
 #+begin_src emacs-lisp
   (use-package avy
     :custom
@@ -157,6 +174,8 @@
 #+end_src
 
 *** Hydra
+
+[[https://github.com/abo-abo/hydra][https://github.com/abo-abo/hydra]]
 
 #+begin_src emacs-lisp
   (use-package hydra)
@@ -347,7 +366,6 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     (setq lsp-keymap-prefix "C-c l")
     :config
     (lsp-enable-which-key-integration t))
-
 #+end_src
 
 ** Haskell
@@ -381,7 +399,6 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el")
     (setq elm-sort-imports-on-save t)
     (setq elm-tags-on-save t))
-
 #+end_src
 
 * Org mode
