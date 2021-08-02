@@ -40,10 +40,6 @@
 
 (setq use-package-always-ensure t)
 
-(use-package avy
-  :custom
-  ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u))))
-
 (use-package evil
   :custom
   (evil-want-keybinding nil)
@@ -64,14 +60,6 @@
   :after evil
   :config
   (evil-collection-init))
-
-(use-package hydra)
-
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("n" text-scale-increase "in")
-  ("p" text-scale-decrease "out")
-  ("RET" nil "finished" :exit t))
 
 (use-package general
   :after evil
@@ -102,9 +90,7 @@
     "p"          'evil-previous-visual-line
     "j"          'evil-backward-char
     "h"          'evil-search-next
-    "H"          'evil-search-previous
-    "/"          'evil-avy-goto-word-1
-    "?"          'evil-avy-goto-line)
+    "H"          'evil-search-previous)
   (general-def
     :states      '(insert visual emacs)
     "C-,"        'evil-delete-backward-char-and-join
@@ -118,18 +104,35 @@
     :global-prefix "C-SPC")
   (boring/leader-keys
     "SPC" '(evil-visual-line :which-key "visual line")
-    "C-s" '(evil-avy-goto-word-1 :which-key "avy goto word")
     "p"  '(projectile-command-map :which-key "projectile")
     "g"  '(magit-status :which-key "magit status")
     "b"  '(projectile-switch-to-buffer :which-key "projectile buffers")
-    "w"  '(writeroom-mode :which-key "toggle writeroom mode")
     "s"  '(:ignore t :which-key "sorting")
     "ss" '(sort-lines :which-key "sort lines")
     "sp" '(sort-paragraphs :which-key "sort paragraphs")
     "se" '(evil-ex-sort :which-key "evil ex sort")
     "t"  '(:ignore t :which-key "tabs/toggles")
-    "tl" '(counsel-load-theme :which-key "choose theme")
-    "ts" '(hydra-text-scale/body :which-key "scale text")))
+    "tl" '(counsel-load-theme :which-key "choose theme")))
+
+(use-package avy
+  :custom
+  ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u)))
+  :config
+  (general-def
+    :states 'motion
+    "/"          'evil-avy-goto-word-1
+    "?"          'evil-avy-goto-line))
+
+(use-package hydra)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("n" text-scale-increase "in")
+  ("p" text-scale-decrease "out")
+  ("RET" nil "finished" :exit t))
+
+(boring/leader-keys
+  "ts" '(hydra-text-scale/body :which-key "scale text"))
 
 (use-package magit
   :ensure-system-package git
@@ -212,14 +215,7 @@
                                         ;(load-theme 'doom-monokai-classic t)
   (load-theme 'doom-old-hope t)
   (doom-themes-visual-bell-config)
-                                        ;(doom-themes-neotree-config)
-                                        ;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-                                        ;(doom-themes-treemacs-config)
   (doom-themes-org-config))
-
-(use-package eshell-git-prompt
-  :config
-  (eshell-git-prompt-use-theme 'powerline))
 
 (use-package solaire-mode
   ;; Ensure solaire-mode is running in all solaire-mode buffers
@@ -240,8 +236,12 @@
   (setq solaire-mode-auto-swap-bg nil)
   (solaire-global-mode +1))
 
+(boring/leader-keys
+  "w"  '(writeroom-mode :which-key "toggle writeroom mode"))
+
 (use-package writeroom-mode
-  :diminish)
+  :diminish
+  :commands (writeroom-mode))
 
 (use-package counsel
   :init

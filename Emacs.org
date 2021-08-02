@@ -63,42 +63,26 @@
 ** Evil packages
 
 #+begin_src emacs-lisp
-    (use-package avy
-      :custom
-      ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u))))
+  (use-package evil
+    :custom
+    (evil-want-keybinding nil)
+    (evil-want-C-w-delete nil)
+    (evil-wnat-fine-undo t)
+    (evil-echo-state nil)
+    :config
+    (evil-mode 1)
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
 
-    (use-package evil
-      :custom
-      (evil-want-keybinding nil)
-      (evil-want-C-w-delete nil)
-      (evil-wnat-fine-undo t)
-      (evil-echo-state nil)
-      :config
-      (evil-mode 1)
-      (evil-set-initial-state 'messages-buffer-mode 'normal)
-      (evil-set-initial-state 'dashboard-mode 'normal))
+  (use-package evil-surround
+    :after evil
+    :config
+    (global-evil-surround-mode 1))
 
-    (use-package evil-surround
-      :after evil
-      :config
-      (global-evil-surround-mode 1))
-
-    (use-package evil-collection
-      :after evil
-      :config
-      (evil-collection-init))
-#+end_src
-
-** Hydra
-
-#+begin_src emacs-lisp
-  (use-package hydra)
-
-  (defhydra hydra-text-scale (:timeout 4)
-    "scale text"
-    ("n" text-scale-increase "in")
-    ("p" text-scale-decrease "out")
-    ("RET" nil "finished" :exit t))
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
 #+end_src
 
 ** General
@@ -133,9 +117,7 @@
       "p"          'evil-previous-visual-line
       "j"          'evil-backward-char
       "h"          'evil-search-next
-      "H"          'evil-search-previous
-      "/"          'evil-avy-goto-word-1
-      "?"          'evil-avy-goto-line)
+      "H"          'evil-search-previous)
     (general-def
       :states      '(insert visual emacs)
       "C-,"        'evil-delete-backward-char-and-join
@@ -149,19 +131,44 @@
       :global-prefix "C-SPC")
     (boring/leader-keys
       "SPC" '(evil-visual-line :which-key "visual line")
-      "C-s" '(evil-avy-goto-word-1 :which-key "avy goto word")
       "p"  '(projectile-command-map :which-key "projectile")
       "g"  '(magit-status :which-key "magit status")
       "b"  '(projectile-switch-to-buffer :which-key "projectile buffers")
-      "w"  '(writeroom-mode :which-key "toggle writeroom mode")
       "s"  '(:ignore t :which-key "sorting")
       "ss" '(sort-lines :which-key "sort lines")
       "sp" '(sort-paragraphs :which-key "sort paragraphs")
       "se" '(evil-ex-sort :which-key "evil ex sort")
       "t"  '(:ignore t :which-key "tabs/toggles")
-      "tl" '(counsel-load-theme :which-key "choose theme")
-      "ts" '(hydra-text-scale/body :which-key "scale text")))
+      "tl" '(counsel-load-theme :which-key "choose theme")))
 
+#+end_src
+
+** Avy
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :custom
+    ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u)))
+    :config
+    (general-def
+      :states 'motion
+      "/"          'evil-avy-goto-word-1
+      "?"          'evil-avy-goto-line))
+#+end_src
+
+** Hydra
+
+#+begin_src emacs-lisp
+  (use-package hydra)
+
+  (defhydra hydra-text-scale (:timeout 4)
+    "scale text"
+    ("n" text-scale-increase "in")
+    ("p" text-scale-decrease "out")
+    ("RET" nil "finished" :exit t))
+
+  (boring/leader-keys
+    "ts" '(hydra-text-scale/body :which-key "scale text"))
 #+end_src
 
 * Programming languages
@@ -279,15 +286,12 @@ The first time the configuration is loaded on a new machine,  the command =all-t
                                           ;(load-theme 'doom-monokai-classic t)
     (load-theme 'doom-old-hope t)
     (doom-themes-visual-bell-config)
-                                          ;(doom-themes-neotree-config)
-                                          ;(setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
-                                          ;(doom-themes-treemacs-config)
     (doom-themes-org-config))
+#+end_src
 
-  (use-package eshell-git-prompt
-    :config
-    (eshell-git-prompt-use-theme 'powerline))
+** Solaire
 
+#+begin_src emacs-lisp
   (use-package solaire-mode
     ;; Ensure solaire-mode is running in all solaire-mode buffers
     :hook (change-major-mode . turn-on-solaire-mode)
@@ -306,9 +310,17 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     ;; want this, you can disable it:
     (setq solaire-mode-auto-swap-bg nil)
     (solaire-global-mode +1))
+#+end_src
+
+** Writeroom
+
+#+begin_src emacs-lisp
+  (boring/leader-keys
+    "w"  '(writeroom-mode :which-key "toggle writeroom mode"))
 
   (use-package writeroom-mode
-    :diminish)
+    :diminish
+    :commands (writeroom-mode))
 #+end_src
 
 * Completion
