@@ -43,13 +43,14 @@
 
 (use-package avy
   :custom
-  ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?= ?a ?t ?1 ?n ?u))))
+  ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u))))
 
 (use-package evil
-  :init
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump t)
+  :custom
+  (evil-want-keybinding nil)
+  (evil-want-C-w-delete nil)
+  (evil-wnat-fine-undo t)
+  (evil-echo-state nil)
   :config
   (evil-mode 1)
   (evil-set-initial-state 'messages-buffer-mode 'normal)
@@ -63,24 +64,29 @@
 (use-package evil-collection
   :after evil
   :config
-  (evil-collection-translate-key
-    '(motion normal visual)
-    '(evil-motion-state-map
-      org-mode-map
-      magit-mode-map
-      info-mode-map)
+  (evil-collection-init))
+
+(use-package hydra)
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("n" text-scale-increase "in")
+  ("p" text-scale-decrease "out")
+  ("RET" nil "finished" :exit t))
+
+(use-package general
+  :after evil
+  :config
+  (general-translate-key nil
+    '(evil-normal-state-map
+      evil-window-map)
     "n" "j"
     "j" "h"
     "h" "n"
-    "k" "p"
-    "p" "k")
-  (evil-collection-init))
-
-(use-package general
-  :after evil-collection
-  :config
+    "H" "N"
+    "p" "k"
+    "k" "p")
   (general-def global-map
-    ;; Make ESC quit prompts
     "C-;"        'save-buffer
     "C-g"        'evil-normal-state
     "<escape>"   'keyboard-escape-quit
@@ -88,11 +94,11 @@
     "<f6>"       'org-agenda-list
     "<f9>"       'find-file)
   (general-def
-    :states      '(normal visual)
+    :states      'normal
     "k"          'evil-paste-after
     "K"          'evil-paste-before)
   (general-def
-    :states      '(motion normal)
+    :states      'motion
     "n"          'evil-next-visual-line
     "p"          'evil-previous-visual-line
     "j"          'evil-backward-char
@@ -135,14 +141,6 @@
     "tX" '(tab-bar-undo-close-tab :which-key "undo close tab")
     "tl" '(counsel-load-theme :which-key "choose theme")
     "ts" '(hydra-text-scale/body :which-key "scale text")))
-
-(use-package hydra)
-
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("n" text-scale-increase "in")
-  ("p" text-scale-decrease "out")
-  ("RET" nil "finished" :exit t))
 
 (use-package magit
   :ensure-system-package git
@@ -353,10 +351,14 @@
   :config
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
+  (general-translate-key 'normal 'outline-mode-map
+    "M-n" "M-j"
+    "M-p" "M-k")
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((haskell . t)))
   :custom
+  (org-hide-emphasis-markers t)
   (org-ellipsis " ▾")
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
