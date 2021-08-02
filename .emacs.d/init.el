@@ -134,6 +134,113 @@
 (boring/leader-keys
   "ts" '(hydra-text-scale/body :which-key "scale text"))
 
+(use-package counsel
+  :init
+  (counsel-mode))
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
+
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (ivy-mode 1))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package keyfreq
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
+
+;(use-package magit-popup :config (general-def magit-popup-mode-map "<f6>"       'magit-popup-quit "<f7>"       'magit-popup-quit))
+
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-show-early-on-C-h t)
+  ;; make sure which-key doesn't show normally but refreshes quickly after it is
+  ;; triggered.
+  (setq which-key-idle-secondary-delay 0)
+  (setq which-key-idle-delay 100))
+
+(use-package all-the-icons
+  :if (display-graphic-p)
+  :commands (all-the-icons-install-fonts)
+  :init
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts t)))
+
+(use-package all-the-icons-dired
+  :if (display-graphic-p)
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 11)))
+
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+                                        ;(load-theme 'doom-monokai-classic t)
+  (load-theme 'doom-old-hope t)
+  (doom-themes-visual-bell-config)
+  (doom-themes-org-config))
+
+(use-package solaire-mode
+  ;; Ensure solaire-mode is running in all solaire-mode buffers
+  :hook (change-major-mode . turn-on-solaire-mode)
+  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+  ;; itself off every time Emacs reverts the file
+  :hook (after-revert . turn-on-solaire-mode)
+  ;; To enable solaire-mode unconditionally for certain modes:
+  :hook (ediff-prepare-buffer . solaire-mode)
+  ;; Highlight the minibuffer when it is activated:
+  ;;:hook (minibuffer-setup . solaire-mode-in-minibuffer)
+  :config
+  ;; The bright and dark background colors are automatically swapped the
+  ;; first time solaire-mode is activated. Namely, the backgrounds of the
+  ;; `default` and `solaire-default-face` faces are swapped. This is done
+  ;; because the colors are usually the wrong way around. If you don't
+  ;; want this, you can disable it:
+  (setq solaire-mode-auto-swap-bg nil)
+  (solaire-global-mode +1))
+
+(boring/leader-keys
+  "w"  '(writeroom-mode :which-key "toggle writeroom mode"))
+
+(use-package writeroom-mode
+  :diminish
+  :commands (writeroom-mode))
+
 (use-package magit
   :ensure-system-package git
   :custom
@@ -192,113 +299,6 @@
   (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el")
   (setq elm-sort-imports-on-save t)
   (setq elm-tags-on-save t))
-
-(use-package all-the-icons
-  :if (display-graphic-p)
-  :commands (all-the-icons-install-fonts)
-  :init
-  (unless (find-font (font-spec :name "all-the-icons"))
-    (all-the-icons-install-fonts t)))
-
-(use-package all-the-icons-dired
-  :if (display-graphic-p)
-  :hook (dired-mode . all-the-icons-dired-mode))
-
-(use-package doom-modeline
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 11)))
-
-(use-package doom-themes
-  :config
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-                                        ;(load-theme 'doom-monokai-classic t)
-  (load-theme 'doom-old-hope t)
-  (doom-themes-visual-bell-config)
-  (doom-themes-org-config))
-
-(use-package solaire-mode
-  ;; Ensure solaire-mode is running in all solaire-mode buffers
-  :hook (change-major-mode . turn-on-solaire-mode)
-  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-  ;; itself off every time Emacs reverts the file
-  :hook (after-revert . turn-on-solaire-mode)
-  ;; To enable solaire-mode unconditionally for certain modes:
-  :hook (ediff-prepare-buffer . solaire-mode)
-  ;; Highlight the minibuffer when it is activated:
-  ;;:hook (minibuffer-setup . solaire-mode-in-minibuffer)
-  :config
-  ;; The bright and dark background colors are automatically swapped the
-  ;; first time solaire-mode is activated. Namely, the backgrounds of the
-  ;; `default` and `solaire-default-face` faces are swapped. This is done
-  ;; because the colors are usually the wrong way around. If you don't
-  ;; want this, you can disable it:
-  (setq solaire-mode-auto-swap-bg nil)
-  (solaire-global-mode +1))
-
-(boring/leader-keys
-  "w"  '(writeroom-mode :which-key "toggle writeroom mode"))
-
-(use-package writeroom-mode
-  :diminish
-  :commands (writeroom-mode))
-
-(use-package counsel
-  :init
-  (counsel-mode))
-
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
-
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
-
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (setq ivy-use-virtual-buffers t)
-  (ivy-mode 1))
-
-(use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
-
-(use-package keyfreq
-  :config
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1))
-
-;(use-package magit-popup :config (general-def magit-popup-mode-map "<f6>"       'magit-popup-quit "<f7>"       'magit-popup-quit))
-
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-show-early-on-C-h t)
-  ;; make sure which-key doesn't show normally but refreshes quickly after it is
-  ;; triggered.
-  (setq which-key-idle-secondary-delay 0)
-  (setq which-key-idle-delay 100))
 
 (defun efs/org-mode-setup ()
   (efs/org-font-setup)
