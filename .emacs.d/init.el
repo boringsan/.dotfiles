@@ -6,7 +6,6 @@
 (tooltip-mode -1)           ; Disable tooltips
 (set-fringe-mode 10)        ; Give some breathing room
 (menu-bar-mode -1)          ; Disable the menu bar
-;(tab-bar-mode)              ; Enable the tab bar
 (show-paren-mode t)         ; Highlight matching parenthesis
 (column-number-mode)        ; Show column number in the modeline
 
@@ -129,16 +128,6 @@
     "sp" '(sort-paragraphs :which-key "sort paragraphs")
     "se" '(evil-ex-sort :which-key "evil ex sort")
     "t"  '(:ignore t :which-key "tabs/toggles")
-    "t1" '(tab-bar-select-tab :which-key "select tab")
-    "t2" '(tab-bar-select-tab :which-key "select tab")
-    "t3" '(tab-bar-select-tab :which-key "select tab")
-    "t4" '(tab-bar-select-tab :which-key "select tab")
-    "tn" '(tab-bar-switch-to-next-tab :which-key "next tab")
-    "tp" '(tab-bar-switch-to-prev-tab :which-key "previous tab")
-    "tt" '(tab-bar-switch-to-recent-tab :which-key "recent tab")
-    "tT" '(tab-bar-new-tab :which-key "new tab")
-    "tx" '(tab-bar-close-tab :which-key "close tab")
-    "tX" '(tab-bar-undo-close-tab :which-key "undo close tab")
     "tl" '(counsel-load-theme :which-key "choose theme")
     "ts" '(hydra-text-scale/body :which-key "scale text")))
 
@@ -352,6 +341,9 @@
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
   (general-translate-key 'normal 'outline-mode-map
+    "C-n" "C-j"
+    "C-p" "C-k"
+    "M-j" "M-h"
     "M-n" "M-j"
     "M-p" "M-k")
   (org-babel-do-load-languages

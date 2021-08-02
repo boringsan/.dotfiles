@@ -416,6 +416,9 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     (require 'org-habit)
     (add-to-list 'org-modules 'org-habit)
     (general-translate-key 'normal 'outline-mode-map
+      "C-n" "C-j"
+      "C-p" "C-k"
+      "M-j" "M-h"
       "M-n" "M-j"
       "M-p" "M-k")
     (org-babel-do-load-languages
