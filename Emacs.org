@@ -5,8 +5,6 @@
 
 This section contains global Emacs configuration; anything that's available at all times.
 
-** Settings
-
 #+begin_src emacs-lisp
   (setq inhibit-startup-message t)
   (setq custom-file "~/.emacs.d/custom-set-variables.el")
@@ -68,12 +66,12 @@ This macro streamlines package configuration.
 
 ** Keyboard bindings
 
-I'm using ~evil-mode~ for modal editing. Since I type with the colemak keyboard layout and I'm replacing =jkl= with =nei=, this section is quite complicated.
+I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboard layout and I'm replacing =jkl= with =nei=, this section got quite complicated.
 
 *** Evil packages
 
-[[https://github.com/noctuid/evil-guide][https://github.com/noctuid/evil-guide]]
-[[https://github.com/emacs-evil/evil-collection][https://github.com/emacs-evil/evil-collection]]
+- [[https://github.com/noctuid/evil-guide][https://github.com/noctuid/evil-guide]]
+- [[https://github.com/emacs-evil/evil-collection][https://github.com/emacs-evil/evil-collection]]
 
 #+begin_src emacs-lisp
   (use-package evil
@@ -108,7 +106,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the colemak keyboard 
     :config
     (general-translate-key nil
       '(evil-normal-state-map
-	evil-window-map)
+        evil-window-map)
       "n" "j"
       "j" "h"
       "h" "n"
@@ -160,7 +158,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the colemak keyboard 
 
 *** Avy
 
-The avy package provides some usefull movement commands. 
+The avy package provides some usefull movement commands.
 
 #+begin_src emacs-lisp
   (use-package avy
@@ -200,16 +198,6 @@ The avy package provides some usefull movement commands.
   (use-package counsel-projectile
     :config (counsel-projectile-mode))
 
-  (use-package helpful
-    :custom
-    (counsel-describe-function-function #'helpful-callable)
-    (counsel-describe-variable-function #'helpful-variable)
-    :bind
-    ([remap describe-function] . counsel-describe-function)
-    ([remap describe-command] . helpful-command)
-    ([remap describe-variable] . counsel-describe-variable)
-    ([remap describe-key] . helpful-key))
-
   (use-package ivy
     :diminish
     :bind (("C-s" . swiper)
@@ -237,8 +225,20 @@ The avy package provides some usefull movement commands.
     :config
     (keyfreq-mode 1)
     (keyfreq-autosave-mode 1))
+#+end_src
 
-  ;(use-package magit-popup :config (general-def magit-popup-mode-map "<f6>"       'magit-popup-quit "<f7>"       'magit-popup-quit))
+** Help
+
+#+begin_src emacs-lisp
+  (use-package helpful
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-variable] . counsel-describe-variable)
+    ([remap describe-key] . helpful-key))
 
   (use-package which-key
     :init (which-key-mode)
@@ -279,9 +279,9 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
   (use-package doom-themes
     :config
-    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-          doom-themes-enable-italic t) ; if nil, italics is universally disabled
-                                          ;(load-theme 'doom-monokai-classic t)
+    (setq doom-themes-enable-bold t
+          doom-themes-enable-italic t)
+    ;;(load-theme 'doom-monokai-classic t)
     (load-theme 'doom-old-hope t)
     (doom-themes-visual-bell-config)
     (doom-themes-org-config))
@@ -321,7 +321,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     :commands (writeroom-mode))
 #+end_src
 
-* Programming languages
+* Programming
 
 ** Magit git interface
 

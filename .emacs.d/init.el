@@ -141,16 +141,6 @@
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
 
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
-
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -179,7 +169,15 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
-;(use-package magit-popup :config (general-def magit-popup-mode-map "<f6>"       'magit-popup-quit "<f7>"       'magit-popup-quit))
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
 
 (use-package which-key
   :init (which-key-mode)
@@ -208,9 +206,9 @@
 
 (use-package doom-themes
   :config
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-                                        ;(load-theme 'doom-monokai-classic t)
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  ;;(load-theme 'doom-monokai-classic t)
   (load-theme 'doom-old-hope t)
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
