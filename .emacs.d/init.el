@@ -181,14 +181,15 @@
   ([remap describe-key] . helpful-key))
 
 (use-package which-key
-  :init (which-key-mode)
   :diminish which-key-mode
   :config
-  (setq which-key-show-early-on-C-h t)
-  ;; make sure which-key doesn't show normally but refreshes quickly after it is
-  ;; triggered.
-  (setq which-key-idle-secondary-delay 0)
-  (setq which-key-idle-delay 100))
+  ;; (setq which-key-show-early-on-C-h t)
+  ;; (setq which-key-idle-delay 100)
+  ;; (setq which-key-idle-secondary-delay 0.8)
+  ;; does not work with evil operators :(
+  ;; (setq which-key-show-operator-state-maps t)
+  (setq which-key-sort-order 'which-key-local-then-key-order)
+  (which-key-mode))
 
 (use-package all-the-icons
   :if (display-graphic-p)
