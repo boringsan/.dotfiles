@@ -92,6 +92,10 @@
     "h"          'evil-search-next
     "H"          'evil-search-previous)
   (general-def
+    :states      '(insert emacs)
+    "C-n"        'evil-next-visual-line
+    "C-p"        'evil-previous-visual-line)
+  (general-def
     :states      '(insert visual emacs)
     "C-,"        'evil-delete-backward-char-and-join
     "C-."        'evil-delete-char
@@ -147,10 +151,7 @@
          :map ivy-minibuffer-map
          ("TAB" . ivy-alt-done)
          ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
          :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
          ("C-l" . ivy-done)
          ("C-d" . ivy-switch-buffer-kill)
          :map ivy-reverse-i-search-map
