@@ -380,16 +380,6 @@ The first time the configuration is loaded on a new machine,  the command =all-t
                          haskell-indentation-mode
                          dante-mode
                          flycheck-mode)))
-
-  (use-package dante
-    :after haskell-mode
-    :commands 'dante-mode
-    :init
-    ;(add-hook 'haskell-mode-hook 'flycheck-mode)
-    ;; OR for flymake support:
-    ;; (add-hook 'haskell-mode-hook 'flymake-mode)
-    (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-    (add-hook 'haskell-mode-hook 'dante-mode))
 #+end_src
 
 ** Elm

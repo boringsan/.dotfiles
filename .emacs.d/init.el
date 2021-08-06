@@ -282,16 +282,6 @@
                        dante-mode
                        flycheck-mode)))
 
-(use-package dante
-  :after haskell-mode
-  :commands 'dante-mode
-  :init
-  ;(add-hook 'haskell-mode-hook 'flycheck-mode)
-  ;; OR for flymake support:
-  ;; (add-hook 'haskell-mode-hook 'flymake-mode)
-  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-  (add-hook 'haskell-mode-hook 'dante-mode))
-
 (use-package elm-mode
   :config
   (setq elm-package-json "elm.json")
