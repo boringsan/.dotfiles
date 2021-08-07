@@ -1,5 +1,6 @@
 (setq inhibit-startup-message t)
 (setq custom-file "~/.emacs.d/custom-set-variables.el")
+(load custom-file)
 
 ;(scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
@@ -176,9 +177,9 @@
   (counsel-describe-variable-function #'helpful-variable)
   :bind
   ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
+  ([remap describe-command]  . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
+  ([remap describe-key]      . helpful-key))
 
 (use-package which-key
   :diminish which-key-mode
@@ -267,20 +268,22 @@
   (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package lsp-mode
-  :commands (lsp lsp-deferred)
   :init
-  (use-package lsp-haskell)
   (setq lsp-keymap-prefix "C-c l")
+  (use-package company)
+  (use-package lsp-ui)
+  (use-package lsp-haskell)
   :config
   (lsp-enable-which-key-integration t))
 
 (use-package haskell-mode
-  :hook (haskell-mode . lsp-deferred)
+  :hook ((haskell-mode . lsp-deferred)
+         (interactive-haskell-mode . lsp-deferred))
   :custom
   (haskell-mode-hook '(capitalized-words-mode
-                       haskell-indent-mode
+                       ;; haskell-indent-mode
                        haskell-indentation-mode
-                       dante-mode
+                       interactive-haskell-mode
                        flycheck-mode)))
 
 (use-package elm-mode
