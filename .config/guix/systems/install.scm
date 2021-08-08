@@ -28,6 +28,7 @@
   #:use-module (gnu packages linux)
   #:use-module (gnu packages mtools)
   #:use-module (gnu packages package-management)
+  #:use-module (gnu packages file-systems)
   #:use-module (nongnu packages linux)
   #:export (installation-os-nonfree))
 
