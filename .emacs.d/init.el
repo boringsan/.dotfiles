@@ -16,6 +16,9 @@
 (dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode t))))
 
+(setq gc-cons-threshold 10000000)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
