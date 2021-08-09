@@ -341,28 +341,21 @@ Define the =base-operating-system= which will be inherited by all machine config
 
   (define-module (elephant)
     #:use-module (base-system)
-    #:use-module (gnu)
-    #:use-module (nongnu packages linux)
-    #:use-module (nongnu system linux-initrd))
+    #:use-module (gnu))
 
+  ;;(use-modules (base-system))
   (operating-system
    (inherit base-operating-system)
    (host-name "elephant")
 
    (keyboard-layout (keyboard-layout "us" "colemak"
                                      #:options '("ctrl:swapcaps")))
- 
+
    (bootloader
     (bootloader-configuration
      (bootloader grub-bootloader)
      (target "/dev/sdd")
      (keyboard-layout keyboard-layout)))
-
-   (mapped-devices
-    (list (mapped-device
-           (source (uuid "1a8cd693-c190-46b9-82a8-cfd1cc357cb0"))
-           (target "crypthome")
-           (type luks-device-mapping))))
 
    (file-systems (append
                   (list (file-system
@@ -370,10 +363,13 @@ Define the =base-operating-system= which will be inherited by all machine config
                          (mount-point "/")
                          (type "ext4"))
                         (file-system
-                         (device (file-system-label "crypthome"))
+                         (device (file-system-label "Home"))
                          (mount-point "/home")
-                         (type "ext4")
-                         (dependencies mapped-devices)))
+                         (type "ext4"))
+                        (file-system
+                         (device (file-system-label "MainStorage"))
+                         (mount-point "/mnt/MainStorage")
+                         (type "ext4")))
                   %base-file-systems)))
 
 #+end_src

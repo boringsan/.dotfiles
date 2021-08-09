@@ -3,10 +3,9 @@
 
 (define-module (elephant)
   #:use-module (base-system)
-  #:use-module (gnu)
-  #:use-module (nongnu packages linux)
-  #:use-module (nongnu system linux-initrd))
+  #:use-module (gnu))
 
+;;(use-modules (base-system))
 (operating-system
  (inherit base-operating-system)
  (host-name "elephant")
@@ -20,20 +19,17 @@
    (target "/dev/sdd")
    (keyboard-layout keyboard-layout)))
 
- (mapped-devices
-  (list (mapped-device
-         (source (uuid "1a8cd693-c190-46b9-82a8-cfd1cc357cb0"))
-         (target "crypthome")
-         (type luks-device-mapping))))
-
  (file-systems (append
                 (list (file-system
                        (device (file-system-label "GuixSD"))
                        (mount-point "/")
                        (type "ext4"))
                       (file-system
-                       (device (file-system-label "crypthome"))
+                       (device (file-system-label "Home"))
                        (mount-point "/home")
-                       (type "ext4")
-                       (dependencies mapped-devices)))
+                       (type "ext4"))
+                      (file-system
+                       (device (file-system-label "MainStorage"))
+                       (mount-point "/mnt/MainStorage")
+                       (type "ext4")))
                 %base-file-systems)))
