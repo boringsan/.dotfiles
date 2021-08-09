@@ -34,13 +34,13 @@ Any configuration that derives from =base-operating-system= must invoke =guix sy
 
 #+begin_src sh
 
-sudo -E guix system -L ~/.config/guix/systems reconfigure ~/.config/guix/systems/sugar-glider.scm
+sudo -E guix system -L ~/.config/guix/include reconfigure ~/.config/guix/systems/sugar-glider.scm
 
 #+end_src
 
-*.config/guix/systems/base-system.scm:*
+*.config/guix/include/base-system.scm:*
 
-#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+#+begin_src scheme :tangle .config/guix/include/base-system.scm
 
   ;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
@@ -80,7 +80,7 @@ sudo -E guix system -L ~/.config/guix/systems reconfigure ~/.config/guix/systems
 
 Add a =udev= rule to enable members of the =video= group to control screen brightness.
 
-#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+#+begin_src scheme :tangle .config/guix/include/base-system.scm
 
   ;; Allow members of the "video" group to change the screen brightness.
   (define %backlight-udev-rule
@@ -96,7 +96,7 @@ Add a =udev= rule to enable members of the =video= group to control screen brigh
 
 Override the default =%desktop-services= to add the =udev= backlight configuration and include OpenVPN in the list of NetworkManager plugins.
 
-#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+#+begin_src scheme :tangle .config/guix/include/base-system.scm
 
   (define %my-desktop-services
     (modify-services %desktop-services
@@ -115,7 +115,7 @@ Override the default =%desktop-services= to add the =udev= backlight configurati
 
 Use the =libinput= driver for all input devices since it's a bit more modern than the default.
 
-#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+#+begin_src scheme :tangle .config/guix/include/base-system.scm
 
   (define %xorg-libinput-config
     "Section \"InputClass\"
@@ -142,7 +142,7 @@ Use the =libinput= driver for all input devices since it's a bit more modern tha
 
 Define the =base-operating-system= which will be inherited by all machine configurations.
 
-#+begin_src scheme :tangle .config/guix/systems/base-system.scm
+#+begin_src scheme :tangle .config/guix/include/base-system.scm
 
   (define-public base-operating-system
     (operating-system

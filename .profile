@@ -1,5 +1,6 @@
-# Augment PATH
+# Set environment variables
 export PATH="$HOME/.bin:$PATH"
+export GUIX_PACKAGE_PATH="$HOME/.config/guix/include"
 
 # Load the default Guix profile
 GUIX_PROFILE="$HOME/.guix-profile"
