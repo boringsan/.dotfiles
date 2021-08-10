@@ -2,7 +2,7 @@
 (setq custom-file "~/.emacs.d/custom-set-variables.el")
 (load custom-file)
 
-;(scroll-bar-mode -1)        ; Disable visible scrollbar
+;;(scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
 (tooltip-mode -1)           ; Disable tooltips
 (set-fringe-mode 10)        ; Give some breathing room
@@ -10,8 +10,13 @@
 (show-paren-mode t)         ; Highlight matching parenthesis
 (column-number-mode)        ; Show column number in the modeline
 
-(add-to-list 'default-frame-alist
-             '(font . "DejaVu Sans Mono-10"))
+(defvar boring/elephant-p (string-equal (system-name) "elephant"))
+
+(if boring/elephant-p
+    (add-to-list 'default-frame-alist
+                 '(font .  "DejaVu Sans Mono-12"))
+  (add-to-list 'default-frame-alist
+               '(font .  "DejaVu Sans Mono-11")))
 
 (dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode t))))
@@ -215,7 +220,9 @@
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
   ;;(load-theme 'doom-monokai-classic t)
-  (load-theme 'doom-old-hope t)
+  (if boring/elephant-p
+      (load-theme 'doom-acario-light)
+    (load-theme 'doom-old-hope t))
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
 
