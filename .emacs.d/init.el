@@ -16,7 +16,7 @@
     (add-to-list 'default-frame-alist
                  '(font .  "DejaVu Sans Mono-12"))
   (add-to-list 'default-frame-alist
-               '(font .  "DejaVu Sans Mono-11")))
+               '(font .  "DejaVu Sans Mono-10")))
 
 (dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode t))))
