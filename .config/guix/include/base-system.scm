@@ -42,7 +42,7 @@
                   "ACTION==\"add\", SUBSYSTEM==\"backlight\", "
                   "RUN+=\"/run/current-system/profile/bin/chmod g+w /sys/class/backlight/%k/brightness\"")))
 
-(define %my-desktop-services
+(define %my-laptop-services
   (modify-services %desktop-services
                    (elogind-service-type config =>
                                          (elogind-configuration (inherit config)
@@ -70,11 +70,31 @@
 EndSection
 Section \"InputClass\"
   Identifier \"Keyboards\"
+
   Driver \"libinput\"
   MatchDevicePath \"/dev/input/event*\"
   MatchIsKeyboard \"on\"
 EndSection
 ")
+
+(define-public %thinkpad-keyboard
+  (keyboard-layout "us" "colemak"
+                   #:options '("ctrl:swapcaps")
+                   #:model "thinkpad"))
+
+(define-public %desktop-keyboard
+  (keyboard-layout "us" "colemak"
+                   #:options '("ctrl:swapcaps")))
+
+(define-public %boring-user
+  (user-account
+   (name "boring")
+   (comment "Device owner")
+   (group "users")
+   (uid 1000)
+   (home-directory "/home/boring")
+   (supplementary-groups
+    '("wheel" "netdev" "audio" "video" "input"))))
 
 (define-public base-operating-system
   (operating-system
@@ -83,9 +103,7 @@ EndSection
    (locale "en_US.utf8")
    ;;(locale-libcs (list glibc-2.29 (canonical-package glibc)))
 
-   (keyboard-layout (keyboard-layout "us" "colemak"
-                                     #:options '("ctrl:swapcaps")
-                                     #:model "thinkpad"))
+   (keyboard-layout %thinkpad-keyboard)
 
    ;; Use the UEFI variant of GRUB with the EFI System
    ;; Partition mounted on /boot/efi.
@@ -107,14 +125,7 @@ EndSection
      %base-file-systems))
 
    (users
-    (cons* (user-account
-            (name "boring")
-            (comment "Device owner")
-            (group "users")
-            (uid 1000)
-            (home-directory "/home/boring")
-            (supplementary-groups
-             '("wheel" "netdev" "audio" "video" "input")))
+    (cons* %boring-user
            %base-user-accounts))
 
    ;; Add the 'realtime' group
@@ -146,18 +157,6 @@ EndSection
            (set-xorg-configuration
             (xorg-configuration
              (keyboard-layout keyboard-layout))))
-     ;; (service nginx-service-type
-     ;;          (nginx-configuration
-     ;;           (server-blocks
-     ;;            (list (nginx-server-configuration
-     ;;                   (listen '("80"))
-     ;;                   (server-name '("laptop.boring.si"))
-     ;;                   (root "/srv/http/laptop.boring.si")
-     ;; 		      (try-files (list "$uri" "/index.html"))
-     ;;                   (locations
-     ;;                    (list (nginx-location-configuration
-     ;;                           (uri "/")
-     ;;                           (body '("try_files $uri /index.html;" "autoindex on;")))))))))))
-     %my-desktop-services))
+     %my-laptop-services))
    ;; Allow resolution of '.local' host names with mDNS
    (name-service-switch %mdns-host-lookup-nss)))
