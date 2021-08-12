@@ -5,6 +5,7 @@
   #:use-module (base-system)
   #:use-module (gnu)
   #:use-module (gnu packages version-control)
+  #:use-module (gnu packages ssh)
   #:use-module (gnu services desktop)
   #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
@@ -60,6 +61,8 @@
          (set-xorg-configuration
           (xorg-configuration
            (keyboard-layout %desktop-keyboard)))
-         (lsh-service #:x11-forwarding? #f
-                      #:tcp/ip-forwarding? #f))
+         (service openssh-service-type
+                  (openssh-configuration
+                   (subsystems
+                    `(("sftp" ,(file-append openssh "/libexec/sftp-server")))))))
    %desktop-services)))
