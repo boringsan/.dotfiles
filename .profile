@@ -3,7 +3,7 @@ export PATH="$HOME/.bin:$PATH"
 export GUIX_PACKAGE_PATH="$HOME/.config/guix/include"
 
 # Load the default Guix profile
-GUIX_PROFILE="$HOME/.guix-profile"
+export GUIX_PROFILE="$HOME/.guix-profile"
 . "$GUIX_PROFILE"/etc/profile
 
 # Load Nix environment
