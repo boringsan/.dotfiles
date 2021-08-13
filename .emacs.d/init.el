@@ -358,8 +358,8 @@
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
   (org-log-into-drawer t)
-  (org-agenda-diary-file "~/org/diary.org")
-  (org-agenda-files '("~/org/")))
+  (org-agenda-diary-file "~/personal/diary.org")
+  (org-agenda-files '("~/personal/")))
 
 (use-package org-bullets
   :after org

@@ -1,0 +1,9 @@
+
+[.dotfiles]
+checkout = git clone 'https://github.com/boringsan/.dotfiles' '.dotfiles'
+
+[personal]
+checkout = git clone 'ssh://git@elephant.local/~/personal' 'personal'
+
+[projects/programming_in_haskell]
+checkout = git clone 'ssh://git@elephant.local/~/programming_in_haskell' 'programming_in_haskell'
