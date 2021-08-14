@@ -136,6 +136,10 @@ EndSection
    (packages
     (append (list
              git
+             stow
+             myrepos
+             fish
+             openssh
              ntfs-3g
              exfat-utils
              fuse-exfat
