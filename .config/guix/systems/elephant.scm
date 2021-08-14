@@ -63,6 +63,7 @@
            (keyboard-layout %desktop-keyboard)))
          (service openssh-service-type
                   (openssh-configuration
+                   (password-authentication? #f)
                    (subsystems
                     `(("sftp" ,(file-append openssh "/libexec/sftp-server")))))))
    %desktop-services)))
