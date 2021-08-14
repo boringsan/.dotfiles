@@ -6,5 +6,6 @@ case "$-" in
     *i*)
 	# Use fish in place of bash
 	uname -a
-	[ -x /home/boring/.guix-profile/bin/fish ] && SHELL=/home/boring/.guix-profile/bin/fish exec fish
+	SHELL=$(which fish)
+	[ -x $SHELL ] && exec fish
 esac
