@@ -35,6 +35,8 @@
          %boring-user
          %base-user-accounts))
 
+ (swap-devices (list "/dev/sda2"))
+
  (file-systems (append
                 (list (file-system
                        (device (file-system-label "GuixSD"))
