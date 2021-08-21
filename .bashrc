@@ -5,6 +5,7 @@
 case "$-" in
     *i*)
 	# Use fish in place of bash
+	fortune | cowsay
 	uname -a
 	SHELL=$(which fish)
 	[ -x $SHELL ] && exec fish
