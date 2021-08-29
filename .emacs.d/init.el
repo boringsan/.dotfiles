@@ -21,6 +21,9 @@
 (dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode t))))
 
+(setq text-scale-amount 2.4)
+(text-scale-set 2.4)
+
 (setq gc-cons-threshold 10000000)
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
 
@@ -221,7 +224,7 @@
         doom-themes-enable-italic t)
   ;;(load-theme 'doom-monokai-classic t)
   (if boring/elephant-p
-      (load-theme 'doom-acario-light)
+      (load-theme 'doom-Iosvkem)
     (load-theme 'doom-old-hope t))
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
