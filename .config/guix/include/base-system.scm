@@ -101,7 +101,7 @@ EndSection
    (host-name "hackstock")
    (timezone "Europe/Ljubljana")
    (locale "en_US.utf8")
-   ;;(locale-libcs (list glibc-2.29 (canonical-package glibc)))
+   (locale-libcs (list glibc-2.29 (canonical-package glibc)))
 
    (keyboard-layout %thinkpad-keyboard)
 
@@ -110,7 +110,7 @@ EndSection
    (bootloader
     (bootloader-configuration
      (bootloader grub-efi-bootloader)
-     (target "/boot/efi")
+     (targets (list "/boot/efi"))
      (keyboard-layout keyboard-layout)))
 
    ;; Guix doesn't like it when there isn't a file-systems
