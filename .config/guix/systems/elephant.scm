@@ -8,10 +8,10 @@
   #:use-module (gnu packages ssh)
   #:use-module (gnu services desktop)
   #:use-module (gnu services ssh)
+  #:use-module (gnu services sddm)
   #:use-module (gnu services xorg)
   #:use-module (gnu services nix))
 
-;;(use-modules (base-system))
 (operating-system
  (inherit base-operating-system)
  (host-name "elephant")
@@ -60,12 +60,16 @@
   (append
    (list (service gnome-desktop-service-type)
          (service nix-service-type)
-         (set-xorg-configuration
-          (xorg-configuration
-           (keyboard-layout %desktop-keyboard)))
+         (service sddm-service-type
+                  (sddm-configuration
+                   (display-server "wayland")))
+         ;; (set-xorg-configuration
+         ;;  (xorg-configuration
+         ;;   (keyboard-layout %desktop-keyboard)))
          (service openssh-service-type
                   (openssh-configuration
                    (password-authentication? #f)
                    (subsystems
                     `(("sftp" ,(file-append openssh "/libexec/sftp-server")))))))
-   %desktop-services)))
+   (modify-services %desktop-services
+                    (delete gdm-service-type)))))
