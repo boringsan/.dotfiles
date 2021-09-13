@@ -22,7 +22,7 @@
   (bootloader-configuration
    (bootloader grub-bootloader)
    (targets (list "/dev/sdd"))
-   (keyboard-layout keyboard-layout)))
+   (keyboard-layout %desktop-keyboard)))
 
  (users
   (cons* (user-account
