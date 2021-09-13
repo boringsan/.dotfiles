@@ -5,8 +5,8 @@
 case "$-" in
     *i*)
 	# Use fish in place of bash
-	fortune | cowsay
+	fortune | cowsay -W 54
 	uname -a
-	SHELL=$(which fish)
-	[ -x $SHELL ] && exec fish
+	SHELL=$(which nu)
+	[ -x $SHELL ] && exec nu
 esac
