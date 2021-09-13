@@ -62,10 +62,11 @@
          (service nix-service-type)
          (service sddm-service-type
                   (sddm-configuration
-                   (display-server "wayland")))
-         ;; (set-xorg-configuration
-         ;;  (xorg-configuration
-         ;;   (keyboard-layout %desktop-keyboard)))
+                   (display-server "wayland")
+                   (theme "guix-simplyblack-sddm")
+                   (xorg-configuration
+                    (xorg-configuration
+                     (keyboard-layout %desktop-keyboard)))))
          (service openssh-service-type
                   (openssh-configuration
                    (password-authentication? #f)

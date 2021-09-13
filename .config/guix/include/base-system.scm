@@ -15,6 +15,7 @@
   #:use-module (gnu packages audio)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages cups)
+  #:use-module (gnu packages display-managers)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages file-systems)
   #:use-module (gnu packages gnome)
@@ -150,6 +151,7 @@ EndSection
              vim
              emacs
              xf86-input-libinput
+             guix-simplyblack-sddm-theme
              nss-certs     ;; for HTTPS access
              gvfs)         ;; for user mounts
             %base-packages))
