@@ -14,7 +14,7 @@
 
 (if boring/elephant-p
     (add-to-list 'default-frame-alist
-                 '(font .  "DejaVu Sans Mono-12"))
+                 '(font .  "CaskaydiaCove NF-12"))
   (add-to-list 'default-frame-alist
                '(font .  "DejaVu Sans Mono-10")))
 
