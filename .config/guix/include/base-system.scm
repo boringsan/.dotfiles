@@ -4,6 +4,7 @@
   #:use-module (srfi srfi-1)
   #:use-module (gnu)
   #:use-module (gnu system nss)
+  #:use-module (gnu system locale)
   #:use-module (gnu services cups)
   #:use-module (gnu services desktop)
   #:use-module (gnu services docker)
@@ -104,8 +105,14 @@ EndSection
   (operating-system
    (host-name "hackstock")
    (timezone "Europe/Ljubljana")
+
    (locale "en_US.utf8")
-   (locale-libcs (list glibc-2.29 (canonical-package glibc)))
+   (locale-libcs (list glibc-2.30 (canonical-package glibc)))
+   (locale-definitions
+    (list (locale-definition
+           (name "sl_SI.utf8") (source "sl_SI"))
+          (locale-definition
+           (name "en_US.utf8") (source "en_US"))))
 
    (keyboard-layout %thinkpad-keyboard)
 
