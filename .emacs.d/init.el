@@ -24,8 +24,12 @@
 (setq text-scale-amount 2.4)
 (text-scale-set 2.4)
 
+;; suggested by lsp-mode manual
 (setq gc-cons-threshold 10000000)
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+;; server-mode
+(server-start)
 
 (require 'package)
 
