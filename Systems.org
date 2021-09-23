@@ -63,6 +63,7 @@ sudo -E guix system -L ~/.config/guix/include reconfigure ~/.config/guix/systems
     #:use-module (gnu packages display-managers)
     #:use-module (gnu packages emacs)
     #:use-module (gnu packages file-systems)
+    #:use-module (gnu packages freedesktop)
     #:use-module (gnu packages gnome)
     #:use-module (gnu packages gtk)
     #:use-module (gnu packages linux)
@@ -222,21 +223,23 @@ Define the =base-operating-system= which will be inherited by all machine config
      ;; Install bare-minimum system packages
      (packages
       (append (list
-               git
-               stow
-               myrepos
-               fish
-               openssh
-               ntfs-3g
+               emacs
                exfat-utils
                fuse-exfat
-               stow
-               vim
-               emacs
-               xf86-input-libinput
+               git
                guix-simplyblack-sddm-theme
+               gvfs          ;; for user mounts
+               myrepos
                nss-certs     ;; for HTTPS access
-               gvfs)         ;; for user mounts
+               ntfs-3g
+               nushell
+               openssh
+               stow
+               sway
+               swaylock
+               vim
+               waybar
+               xf86-input-libinput)
               %base-packages))
 
      ;; Use the "desktop" services, which include the X11 log-in service,
