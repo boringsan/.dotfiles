@@ -5,3 +5,5 @@
 	name = Erik Šabič
 [credential]
 	helper = store --file ~/.git-credentials
+[core]
+	excludesfile = /home/boring/.gitignore-global
