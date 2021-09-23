@@ -34,7 +34,7 @@ Any configuration that derives from =base-operating-system= must invoke =guix sy
 
 #+begin_src sh
 
-sudo -E guix system -L ~/.config/guix/include reconfigure ~/.config/guix/systems/sugar-glider.scm
+  sudo -E guix system -L ~/.config/guix/include reconfigure ~/.config/guix/systems/sugar-glider.scm
 
 #+end_src
 
@@ -150,6 +150,7 @@ Use the =libinput= driver for all input devices since it's a bit more modern tha
 Define keyboards.
 
 #+begin_src scheme :tangle .config/guix/include/base-system.scm
+
   (define-public %thinkpad-keyboard
     (keyboard-layout "us" "colemak"
                      #:options '("ctrl:swapcaps")
@@ -158,11 +159,13 @@ Define keyboards.
   (define-public %desktop-keyboard
     (keyboard-layout "us" "colemak"
                      #:options '("ctrl:swapcaps")))
+
 #+end_src
 
 Define the user account to be used on all machines.
 
 #+begin_src scheme :tangle .config/guix/include/base-system.scm
+
   (define-public %boring-user
     (user-account
      (name "boring")
@@ -350,6 +353,7 @@ Define the =base-operating-system= which will be inherited by all machine config
                    'ext4))
             (type "ext4"))
            %base-file-systems)))
+
 #+end_src
 
 *** elephant
@@ -516,7 +520,7 @@ This script accepts a space-separated list of manifest file names (without exten
 
 #+begin_src sh
 
-activate-profiles desktop emacs music
+  activate-profiles desktop emacs music
 
 #+end_src
 
@@ -524,44 +528,44 @@ activate-profiles desktop emacs music
 
 #+begin_src sh :tangle .bin/activate-profiles :shebang #!/bin/sh
 
-# NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
+  # NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
-GREEN='\033[1;32m'
-RED='\033[1;30m'
-NC='\033[0m'
-GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
+  GREEN='\033[1;32m'
+  RED='\033[1;30m'
+  NC='\033[0m'
+  GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
 
-profiles=$*
-if [[ $# -eq 0 ]]; then
-    profiles="$HOME/.config/guix/manifests/*.scm";
-fi
-
-for profile in $profiles; do
-  # Remove the path and file extension, if any
-  profileName=$(basename $profile)
-  profileName="${profileName%.*}"
-  profilePath="$GUIX_EXTRA_PROFILES/$profileName"
-  manifestPath=$HOME/.config/guix/manifests/$profileName.scm
-
-  if [ -f $manifestPath ]; then
-    echo
-    echo -e "${GREEN}Activating profile:" $manifestPath "${NC}"
-    echo
-
-    mkdir -p $profilePath
-    guix package --manifest=$manifestPath --profile="$profilePath/$profileName"
-
-    # Source the new profile
-    GUIX_PROFILE="$profilePath/$profileName"
-    if [ -f $GUIX_PROFILE/etc/profile ]; then
-        . "$GUIX_PROFILE"/etc/profile
-    else
-        echo -e "${RED}Couldn't find profile:" $GUIX_PROFILE/etc/profile "${NC}"
-    fi
-  else
-    echo "No profile found at path" $profilePath
+  profiles=$*
+  if [[ $# -eq 0 ]]; then
+      profiles="$HOME/.config/guix/manifests/*.scm";
   fi
-done
+
+  for profile in $profiles; do
+    # Remove the path and file extension, if any
+    profileName=$(basename $profile)
+    profileName="${profileName%.*}"
+    profilePath="$GUIX_EXTRA_PROFILES/$profileName"
+    manifestPath=$HOME/.config/guix/manifests/$profileName.scm
+
+    if [ -f $manifestPath ]; then
+      echo
+      echo -e "${GREEN}Activating profile:" $manifestPath "${NC}"
+      echo
+
+      mkdir -p $profilePath
+      guix package --manifest=$manifestPath --profile="$profilePath/$profileName"
+
+      # Source the new profile
+      GUIX_PROFILE="$profilePath/$profileName"
+      if [ -f $GUIX_PROFILE/etc/profile ]; then
+          . "$GUIX_PROFILE"/etc/profile
+      else
+          echo -e "${RED}Couldn't find profile:" $GUIX_PROFILE/etc/profile "${NC}"
+      fi
+    else
+      echo "No profile found at path" $profilePath
+    fi
+  done
 
 #+end_src
 
@@ -571,7 +575,7 @@ This script accepts a space-separated list of manifest file names (without exten
 
 #+begin_src sh
 
-update-profiles emacs
+  update-profiles emacs
 
 #+end_src
 
@@ -579,27 +583,27 @@ update-profiles emacs
 
 #+begin_src sh :tangle .bin/update-profiles :shebang #!/bin/sh
 
-# NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
+  # NOTE: This file is generated from ~/.dotfiles/System.org.  Please see commentary there.
 
-GREEN='\033[1;32m'
-NC='\033[0m'
-GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
+  GREEN='\033[1;32m'
+  NC='\033[0m'
+  GUIX_EXTRA_PROFILES=$HOME/.guix-extra-profiles
 
-profiles=$*
-if [[ $# -eq 0 ]]; then
-    profiles="$GUIX_EXTRA_PROFILES/*";
-fi
+  profiles=$*
+  if [[ $# -eq 0 ]]; then
+      profiles="$GUIX_EXTRA_PROFILES/*";
+  fi
 
-for profile in $profiles; do
-  profileName=$(basename $profile)
-  profilePath=$GUIX_EXTRA_PROFILES/$profileName
+  for profile in $profiles; do
+    profileName=$(basename $profile)
+    profilePath=$GUIX_EXTRA_PROFILES/$profileName
 
-  echo
-  echo -e "${GREEN}Updating profile:" $profilePath "${NC}"
-  echo
+    echo
+    echo -e "${GREEN}Updating profile:" $profilePath "${NC}"
+    echo
 
-  guix package --profile="$profilePath/$profileName" --manifest="$HOME/.config/guix/manifests/$profileName.scm"
-done
+    guix package --profile="$profilePath/$profileName" --manifest="$HOME/.config/guix/manifests/$profileName.scm"
+  done
 
 #+end_src
 
@@ -615,47 +619,47 @@ When I want to sync my dotfiles repo into my local clone which likely has uncomm
 
 #+begin_src sh :tangle .bin/sync-dotfiles :shebang #!/bin/sh
 
-# Sync dotfiles repo and ensure that dotfiles are tangled correctly afterward
+  # Sync dotfiles repo and ensure that dotfiles are tangled correctly afterward
 
-GREEN='\033[1;32m'
-BLUE='\033[1;34m'
-RED='\033[1;30m'
-NC='\033[0m'
+  GREEN='\033[1;32m'
+  BLUE='\033[1;34m'
+  RED='\033[1;30m'
+  NC='\033[0m'
 
-# Navigate to the directory of this script (generally ~/.dotfiles/.bin)
-cd $(dirname $(readlink -f $0))
-cd ..
+  # Navigate to the directory of this script (generally ~/.dotfiles/.bin)
+  cd $(dirname $(readlink -f $0))
+  cd ..
 
-echo
-echo -e "${BLUE}Saving Org buffers if Emacs is running...${NC}"
-emacsclient -u -e "(org-save-all-org-buffers)" -a "echo 'Emacs is not currently running'"
+  echo
+  echo -e "${BLUE}Saving Org buffers if Emacs is running...${NC}"
+  emacsclient -u -e "(org-save-all-org-buffers)" -a "echo 'Emacs is not currently running'"
 
-echo -e "${BLUE}Stashing existing changes...${NC}"
-stash_result=$(git stash push -m "sync-dotfiles: Before syncing dotfiles")
-needs_pop=1
-if [ "$stash_result" = "No local changes to save" ]; then
-    needs_pop=0
-fi
+  echo -e "${BLUE}Stashing existing changes...${NC}"
+  stash_result=$(git stash push -m "sync-dotfiles: Before syncing dotfiles")
+  needs_pop=1
+  if [ "$stash_result" = "No local changes to save" ]; then
+      needs_pop=0
+  fi
 
-echo -e "${BLUE}Pulling updates from dotfiles repo...${NC}"
-echo
-git pull origin master
-echo
+  echo -e "${BLUE}Pulling updates from dotfiles repo...${NC}"
+  echo
+  git pull origin master
+  echo
 
-if [[ $needs_pop -eq 1 ]]; then
-    echo -e "${BLUE}Popping stashed changes...${NC}"
-    echo
-    git stash pop
-fi
+  if [[ $needs_pop -eq 1 ]]; then
+      echo -e "${BLUE}Popping stashed changes...${NC}"
+      echo
+      git stash pop
+  fi
 
-unmerged_files=$(git diff --name-only --diff-filter=U)
-if [[ ! -z $unmerged_files ]]; then
-   echo -e "${RED}The following files have merge conflicts after popping the stash:${NC}"
-   echo
-   printf %"s\n" $unmerged_files  # Ensure newlines are printed
-else
-    update-dotfiles
-fi
+  unmerged_files=$(git diff --name-only --diff-filter=U)
+  if [[ ! -z $unmerged_files ]]; then
+     echo -e "${RED}The following files have merge conflicts after popping the stash:${NC}"
+     echo
+     printf %"s\n" $unmerged_files  # Ensure newlines are printed
+  else
+      update-dotfiles
+  fi
 
 #+end_src
 
@@ -714,7 +718,7 @@ In an ironic twist of fate, I've found that certain tools I need to use are more
 
 #+begin_src conf :tangle .nix-channels
 
-https://nixos.org/channels/nixpkgs-unstable nixpkgs
+  https://nixos.org/channels/nixpkgs-unstable nixpkgs
 
 #+end_src
 
@@ -722,7 +726,7 @@ The channel needs to be updated before any packages can be installed:
 
 #+begin_src sh
 
-nix-channel --update
+  nix-channel --update
 
 #+end_src
 
@@ -730,8 +734,8 @@ Installing packages:
 
 #+begin_src sh
 
-nix-env -i nodejs dotnet-sdk gh hledger
-# nix-env -iA nixpkgs.nodejs-12_x # For a specific version
+  nix-env -i nodejs dotnet-sdk gh hledger
+  # nix-env -iA nixpkgs.nodejs-12_x # For a specific version
 
 #+end_src
 
