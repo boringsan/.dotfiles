@@ -1,7 +1,3 @@
-# Set environment variables
-export PATH="$HOME/.bin:$PATH"
-export GUIX_PACKAGE_PATH="$HOME/.config/guix/include"
-
 # Load the default Guix profile
 export GUIX_PROFILE="$HOME/.guix-profile"
 . "$GUIX_PROFILE"/etc/profile
@@ -10,6 +6,10 @@ export GUIX_PROFILE="$HOME/.guix-profile"
 if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then
   . /run/current-system/profile/etc/profile.d/nix.sh
 fi
+
+# Set paths
+export PATH="$HOME/.cabal/bin:$HOME/.bin:$PATH"
+export GUIX_PACKAGE_PATH="$HOME/.config/guix/include"
 
 # Export the path to IcedTea so that tools pick it up correctly
 # export JAVA_HOME=$(dirname $(dirname $(readlink $(which java))))
