@@ -4,6 +4,7 @@
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
 
+init.sh
 .gitignore
 .dir-locals.el
-
+.config/guix/channels.scm
