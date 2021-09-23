@@ -9,7 +9,7 @@
  '(lsp-haskell-completion-snippets-on nil)
  '(lsp-haskell-formatting-provider "brittany")
  '(package-selected-packages
-   '(lsp-ui flycheck company writeroom-mode which-key vertico solaire-mode org-roam org-bullets monkeytype modus-themes magit-popup magit lsp-haskell keyfreq ivy-rich hydra helpful general evil-surround evil-collection eshell-git-prompt elm-mode doom-themes doom-modeline counsel-projectile avy all-the-icons-dired))
+   '(yaml-mode lsp-ui flycheck company writeroom-mode which-key vertico solaire-mode org-roam org-bullets monkeytype modus-themes magit-popup magit lsp-haskell keyfreq ivy-rich hydra helpful general evil-surround evil-collection eshell-git-prompt elm-mode doom-themes doom-modeline counsel-projectile avy all-the-icons-dired))
  '(safe-local-variable-values '((eval add-hook 'after-save-hook #'org-babel-tangle 0 t))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
