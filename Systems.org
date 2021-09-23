@@ -905,17 +905,20 @@ The first thing you'll want to do when you land at the login prompt is login as 
 
 #+end_src
 
-Now log into your user account and clone your dotfiles repository.
+Now log into your user account, clone your dotfiles repository and run the =.dotfiles/init.sh= script. We're assuming stow and emacs are available.
 
-Since we used the =nonguix= channel to install the non-free Linux kernel, we'll need to make sure that channel is configured in our user account so that we have access to those packages the next time we =guix pull=.  At the moment I just symlink the Guix config folder from my =.dotfiles= to =~/.config/guix=:
+#+begin_src sh :tangle init.sh
 
-#+begin_src sh
+  mkdir ~/.bin
+  mkdir ~/.config
+  mkdir ~/.config/guix
+  mkdir ~/.emacs.d/
+  mkdir ~/.stack
+  mkdir ~/projects
 
-  ln -sf ~/.dotfiles/guix ~/.config/guix
+  stow --dir=~/.dotfiles --target=~/
 
 #+end_src
-
-Verify that your =channels.scm= file is in the target path (=~/.config/guix/channels.scm=) and then run =guix pull= to sync in the new channel.
 
 Now you can install the packages that you want to use for day-to-day activities.  I separate different types of packages into individual manifest files and manage them with my =activate-profiles= script:
 
