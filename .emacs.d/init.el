@@ -31,6 +31,12 @@
 ;; server-mode
 (server-start)
 
+(use-package dashboard
+  :ensure t
+  :config
+  (setq dashboard-center-content t)
+  (dashboard-setup-startup-hook))
+
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")

@@ -40,6 +40,18 @@ This section contains global Emacs configuration; anything that's available at a
   (server-start)
 #+end_src
 
+** Dashboard
+
+#+begin_src emacs-lisp
+
+  (use-package dashboard
+    :ensure t
+    :config
+    (setq dashboard-center-content t)
+    (dashboard-setup-startup-hook))
+
+#+end_src
+
 ** Package management
 
 Emacs' builtin package manager ~package.el~ is used.
