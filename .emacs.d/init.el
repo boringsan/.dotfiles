@@ -303,11 +303,12 @@
   :hook ((haskell-mode . lsp-deferred)
          (interactive-haskell-mode . lsp-deferred))
   :custom
-  (haskell-mode-hook '(capitalized-words-mode
-                       ;; haskell-indent-mode
-                       haskell-indentation-mode
-                       interactive-haskell-mode
-                       flycheck-mode)))
+  ((haskell-mode-hook '(capitalized-words-mode
+                        ;; haskell-indent-mode
+                        haskell-indentation-mode
+                        interactive-haskell-mode
+                        flycheck-mode))
+   (haskell-process-type 'stack-ghci)))
 
 (use-package elm-mode
   :config
