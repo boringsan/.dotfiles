@@ -6,6 +6,7 @@
 This section contains global Emacs configuration; anything that's available at all times.
 
 #+begin_src emacs-lisp
+
   (setq inhibit-startup-message t)
   (setq custom-file "~/.emacs.d/custom-set-variables.el")
   (load custom-file)
@@ -38,6 +39,7 @@ This section contains global Emacs configuration; anything that's available at a
 
   ;; server-mode
   (server-start)
+
 #+end_src
 
 ** Dashboard
@@ -57,6 +59,7 @@ This section contains global Emacs configuration; anything that's available at a
 Emacs' builtin package manager ~package.el~ is used.
 
 #+begin_src emacs-lisp
+
   (require 'package)
 
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -79,6 +82,7 @@ This macro streamlines package configuration.
 [[https://github.com/jwiegley/use-package][github.com/jwiegley/use-package]]
 
 #+begin_src emacs-lisp
+
   (require 'use-package)
 
   (if init-file-debug
@@ -90,6 +94,7 @@ This macro streamlines package configuration.
 
   (setq use-package-always-ensure t
         use-package-compute-statistics t)
+
 #+end_src
 
 ** Keyboard bindings
@@ -102,6 +107,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
 - [[https://github.com/emacs-evil/evil-collection][https://github.com/emacs-evil/evil-collection]]
 
 #+begin_src emacs-lisp
+
   (use-package evil
     :custom
     (evil-want-keybinding nil)
@@ -122,6 +128,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
     :after evil
     :config
     (evil-collection-init))
+
 #+end_src
 
 *** General
@@ -129,6 +136,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
 [[https://github.com/noctuid/general.el][https://github.com/noctuid/general.el]]
 
 #+begin_src emacs-lisp
+
   (use-package general
     :after evil
     :config
@@ -193,6 +201,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
 The avy package provides some usefull movement commands.
 
 #+begin_src emacs-lisp
+
   (use-package avy
     :custom
     ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u)))
@@ -201,6 +210,7 @@ The avy package provides some usefull movement commands.
       :states 'motion
       "/"          'evil-avy-goto-word-1
       "?"          'evil-avy-goto-line))
+
 #+end_src
 
 *** Hydra
@@ -208,6 +218,7 @@ The avy package provides some usefull movement commands.
 [[https://github.com/abo-abo/hydra][https://github.com/abo-abo/hydra]]
 
 #+begin_src emacs-lisp
+
   (use-package hydra)
 
   (defhydra hydra-text-scale (:timeout 4)
@@ -218,11 +229,13 @@ The avy package provides some usefull movement commands.
 
   (boring/leader-keys
     "ts" '(hydra-text-scale/body :which-key "scale text"))
+
 #+end_src
 
 ** Completion
 
 #+begin_src emacs-lisp
+
   (use-package counsel
     :init
     (counsel-mode))
@@ -254,11 +267,13 @@ The avy package provides some usefull movement commands.
     :config
     (keyfreq-mode 1)
     (keyfreq-autosave-mode 1))
+
 #+end_src
 
 ** Help
 
 #+begin_src emacs-lisp
+
   (use-package helpful
     :custom
     (counsel-describe-function-function #'helpful-callable)
@@ -279,6 +294,7 @@ The avy package provides some usefull movement commands.
     ;; (setq which-key-show-operator-state-maps t)
     (setq which-key-sort-order 'which-key-local-then-key-order)
     (which-key-mode))
+
 #+end_src
 
 * Graphics
@@ -288,6 +304,7 @@ The avy package provides some usefull movement commands.
 The first time the configuration is loaded on a new machine,  the command =all-the-icons-install-fonts= must be called to install the icons.
 
 #+begin_src emacs-lisp
+
   (use-package all-the-icons
     :if (display-graphic-p)
     :commands (all-the-icons-install-fonts)
@@ -298,11 +315,13 @@ The first time the configuration is loaded on a new machine,  the command =all-t
   (use-package all-the-icons-dired
     :if (display-graphic-p)
     :hook (dired-mode . all-the-icons-dired-mode))
+
 #+end_src
 
 ** Doom
 
 #+begin_src emacs-lisp
+
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
     :custom ((doom-modeline-height 11)))
@@ -317,11 +336,13 @@ The first time the configuration is loaded on a new machine,  the command =all-t
       (load-theme 'doom-old-hope t))
     (doom-themes-visual-bell-config)
     (doom-themes-org-config))
+
 #+end_src
 
 ** Solaire
 
 #+begin_src emacs-lisp
+
   (use-package solaire-mode
     ;; Ensure solaire-mode is running in all solaire-mode buffers
     :hook (change-major-mode . turn-on-solaire-mode)
@@ -340,17 +361,20 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     ;; want this, you can disable it:
     (setq solaire-mode-auto-swap-bg nil)
     (solaire-global-mode +1))
+
 #+end_src
 
 ** Writeroom
 
 #+begin_src emacs-lisp
+
   (boring/leader-keys
     "w"  '(writeroom-mode :which-key "toggle writeroom mode"))
 
   (use-package writeroom-mode
     :diminish
     :commands (writeroom-mode))
+
 #+end_src
 
 * Programming
@@ -358,6 +382,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 ** Magit git interface
 
 #+begin_src emacs-lisp
+
   (use-package magit
     :ensure-system-package git
     :custom
@@ -370,11 +395,13 @@ The first time the configuration is loaded on a new machine,  the command =all-t
       "j" 'evil-backward-char
       "p" 'evil-previous-visual-line
       "h" 'evil-search-next))
+
 #+end_src
 
 ** Projectile
 
 #+begin_src emacs-lisp
+
   (use-package projectile
     :diminish projectile-mode
     :config (projectile-mode +1)
@@ -386,11 +413,13 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     (when (file-directory-p "~/projects")
       (setq projectile-project-search-path '("~/projects")))
     (setq projectile-switch-project-action #'projectile-dired))
+
 #+end_src
 
 ** Language servers
 
 #+begin_src emacs-lisp
+
   (use-package lsp-mode
     :init
     (setq lsp-keymap-prefix "C-c l")
@@ -399,11 +428,13 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     (use-package lsp-haskell)
     :config
     (lsp-enable-which-key-integration t))
+
 #+end_src
 
 ** Haskell
 
 #+begin_src emacs-lisp
+
   (use-package haskell-mode
     :hook ((haskell-mode . lsp-deferred)
            (interactive-haskell-mode . lsp-deferred))
@@ -414,21 +445,25 @@ The first time the configuration is loaded on a new machine,  the command =all-t
                           interactive-haskell-mode
                           flycheck-mode))
      (haskell-process-type 'stack-ghci)))
+
 #+end_src
 
 ** Elm
 #+begin_src emacs-lisp
+
   (use-package elm-mode
     :config
     (setq elm-package-json "elm.json")
     (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el")
     (setq elm-sort-imports-on-save t)
     (setq elm-tags-on-save t))
+
 #+end_src
 
 * Org mode
 
 #+begin_src emacs-lisp
+
   (defun efs/org-mode-setup ()
     (efs/org-font-setup)
     (org-indent-mode)
@@ -438,44 +473,44 @@ The first time the configuration is loaded on a new machine,  the command =all-t
   (defun efs/org-font-setup ()
     ;; Replace list hyphen with dot
     (font-lock-add-keywords 'org-mode
-			    '(("^ *\\([-]\\) "
-			       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
     ;; Set faces for heading levels
     (dolist (face '((org-level-1 . 1.2)
-		    (org-level-2 . 1.1)
-		    (org-level-3 . 1.05)
-		    (org-level-4 . 1.0)
-		    (org-level-5 . 1.1)
-		    (org-level-6 . 1.1)
-		    (org-level-7 . 1.1)
-		    (org-level-8 . 1.1)))
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.1)
+                    (org-level-6 . 1.1)
+                    (org-level-7 . 1.1)
+                    (org-level-8 . 1.1)))
       (set-face-attribute (car face) nil
-			  :font "Cantarell"
-			  :weight 'regular
-			  :height (cdr face)))
+                          :font "Cantarell"
+                          :weight 'regular
+                          :height (cdr face)))
 
     ;; Make sure org-indent face is available
     (require 'org-indent)
 
     ;; Ensure that anything that should be fixed-pitch in Org files appears that way
     (set-face-attribute 'fixed-pitch nil
-			:font "CaskaydiaCove NF-12")
+                        :font "CaskaydiaCove NF-12")
     (set-face-attribute 'org-block nil
-			:foreground nil
-			:inherit 'fixed-pitch)
+                        :foreground nil
+                        :inherit 'fixed-pitch)
     (set-face-attribute 'org-code nil
-			:inherit '(shadow fixed-pitch))
+                        :inherit '(shadow fixed-pitch))
     (set-face-attribute 'org-table nil
-			:inherit '(shadow fixed-pitch))
+                        :inherit '(shadow fixed-pitch))
     (set-face-attribute 'org-verbatim nil
-			:inherit '(shadow fixed-pitch))
+                        :inherit '(shadow fixed-pitch))
     (set-face-attribute 'org-special-keyword nil
-			:inherit '(font-lock-comment-face fixed-pitch))
+                        :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-meta-line nil
-			:inherit '(font-lock-comment-face fixed-pitch))
+                        :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-checkbox nil
-			:inherit 'fixed-pitch))
+                        :inherit 'fixed-pitch))
 
   (use-package org
     :hook (org-mode . efs/org-mode-setup)
@@ -508,11 +543,12 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
   (defun efs/org-mode-visual-fill ()
     (setq visual-fill-column-width 100
-	  visual-fill-column-center-text t)
+          visual-fill-column-center-text t)
     (visual-fill-column-mode 1))
 
   (use-package visual-fill-column
     :hook (org-mode . efs/org-mode-visual-fill))
+
 #+end_src
 
 ** Org Roam
@@ -520,6 +556,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 More information can be found in the org roam [[https://www.orgroam.com/manual.html][manual]].
 
 #+begin_src emacs-lisp
+
   (use-package org-roam
     :init
     (setq org-roam-v2-ack t)
@@ -538,4 +575,5 @@ More information can be found in the org roam [[https://www.orgroam.com/manual.h
            ("C-c n g"   . org-roam-graph)
            :map org-mode-map
            ("C-c n i"   . org-roam-node-insert)))
+
 #+end_src
