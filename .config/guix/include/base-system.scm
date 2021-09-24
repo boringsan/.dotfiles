@@ -127,14 +127,7 @@ EndSection
 
    ;; Guix doesn't like it when there isn't a file-systems
    ;; entry, so add one that is meant to be overridden
-   (file-systems
-    (cons*
-     (file-system
-      (mount-point "/tmp")
-      (device "none")
-      (type "tmpfs")
-      (check? #f))
-     %base-file-systems))
+   (file-systems %base-file-systems)
 
    (users
     (cons* %boring-user

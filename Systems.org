@@ -177,6 +177,7 @@ Define the user account to be used on all machines.
       '("wheel" "netdev" "audio" "video" "input"))))
 
 #+end_src
+
 Define the =base-operating-system= which will be inherited by all machine configurations.
 
 #+begin_src scheme :tangle .config/guix/include/base-system.scm
@@ -206,14 +207,7 @@ Define the =base-operating-system= which will be inherited by all machine config
 
      ;; Guix doesn't like it when there isn't a file-systems
      ;; entry, so add one that is meant to be overridden
-     (file-systems
-      (cons*
-       (file-system
-        (mount-point "/tmp")
-        (device "none")
-        (type "tmpfs")
-        (check? #f))
-       %base-file-systems))
+     (file-systems %base-file-systems)
 
      (users
       (cons* %boring-user
