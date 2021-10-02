@@ -5,7 +5,7 @@
 ;;(scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
 (tooltip-mode -1)           ; Disable tooltips
-(set-fringe-mode 10)        ; Give some breathing room
+(set-fringe-mode 16)        ; Give some breathing room
 (menu-bar-mode -1)          ; Disable the menu bar
 (show-paren-mode t)         ; Highlight matching parenthesis
 (column-number-mode)        ; Show column number in the modeline
@@ -294,14 +294,21 @@
   :init
   (setq lsp-keymap-prefix "C-c l")
   (use-package company)
-  (use-package lsp-ui)
-  (use-package lsp-haskell)
-  :config
-  (lsp-enable-which-key-integration t))
+  :hook ((haskell-mode . lsp-deffered)
+         (interactive-haskell-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration)))
+  ;; :config
+  ;; (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+(use-package lsp-haskell)
 
 (use-package haskell-mode
-  :hook ((haskell-mode . lsp-deferred)
-         (interactive-haskell-mode . lsp-deferred))
+  ;; :hook ((haskell-mode . lsp-deferred)
+  ;;        (interactive-haskell-mode . lsp-deferred))
   :custom
   ((haskell-mode-hook '(capitalized-words-mode
                         ;; haskell-indent-mode
