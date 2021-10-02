@@ -4,7 +4,7 @@
 # Is this shell interactive?
 case "$-" in
     *i*)
-	# Use fish in place of bash
+	# Use nushell in place of bash
 	fortune | cowsay -W 54
 	uname -a
 	SHELL=$(which nu)

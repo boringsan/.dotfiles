@@ -7,3 +7,6 @@ checkout = git clone 'ssh://git@elephant.local/~/personal' 'personal'
 
 [projects/programming_in_haskell]
 checkout = git clone 'ssh://git@elephant.local/~/programming_in_haskell' 'programming_in_haskell'
+
+[projects/hackerrank]
+checkout = git clone 'ssh://git@elephant.local/~/hackerrank' 'hackerrank'

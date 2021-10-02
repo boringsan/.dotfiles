@@ -36,5 +36,5 @@ nix:
   add-gc-roots: false
 
 color: auto
-local-bin-path: .bin
+local-bin-path: /home/boring/.bin
 allow-newer: true
