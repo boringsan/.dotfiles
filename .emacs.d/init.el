@@ -200,6 +200,12 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
+;; Revert Dired and other buffers
+(setq global-auto-revert-non-file-buffers t)
+
+;; Revert buffers when the underlying file has changed
+(global-auto-revert-mode 1)
+
 (use-package helpful
   :custom
   (counsel-describe-function-function #'helpful-callable)
