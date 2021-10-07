@@ -40,6 +40,8 @@ This section contains global Emacs configuration; anything that's available at a
   ;; server-mode
   (server-start)
 
+  (add-hook 'before-save-hook #'delete-trailing-whitespace)
+
 #+end_src
 
 ** Dashboard

@@ -31,6 +31,8 @@
 ;; server-mode
 (server-start)
 
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+
 (use-package dashboard
   :ensure t
   :config
