@@ -88,9 +88,11 @@
 (use-package general
   :after evil
   :config
+  (require 'which-key)
   (general-translate-key nil
     '(evil-normal-state-map
-      evil-window-map)
+      evil-window-map
+      which-key-C-h-map)
     "n" "j"
     "j" "h"
     "h" "n"
@@ -100,6 +102,7 @@
   (general-def global-map
     "C-;"        'save-buffer
     "C-g"        'evil-normal-state
+    "C-<tab>"    'other-frame
     "<escape>"   'keyboard-escape-quit
     "<f5>"       'org-capture
     "<f6>"       'org-agenda-list
@@ -107,14 +110,17 @@
   (general-def
     :states      'normal
     "k"          'evil-paste-after
-    "K"          'evil-paste-before)
+    "K"          'evil-paste-before
+    "C-k"        'evil-paste-pop
+    "C-S-k"      'evil-paste-pop-next)
   (general-def
     :states      'motion
     "n"          'evil-next-visual-line
     "p"          'evil-previous-visual-line
     "j"          'evil-backward-char
-    "h"          'evil-search-next
-    "H"          'evil-search-previous)
+    "N"          'evil-search-next
+    "g b"        'bookmark-jump
+    "P"          'evil-search-previous)
   (general-def
     :states      '(insert emacs)
     "C-n"        'evil-next-visual-line
