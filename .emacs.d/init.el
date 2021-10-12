@@ -33,6 +33,9 @@
 
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
+(setq tab-width 4)
+(setq-default c-basic-offset 4)
+
 (use-package dashboard
   :ensure t
   :config

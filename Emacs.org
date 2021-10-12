@@ -42,6 +42,9 @@ This section contains global Emacs configuration; anything that's available at a
 
   (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
+  (setq tab-width 4)
+  (setq-default c-basic-offset 4)
+
 #+end_src
 
 ** Dashboard
