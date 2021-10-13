@@ -102,6 +102,7 @@
     "h" "n"
     "H" "N"
     "p" "k"
+    "P" "K"
     "k" "p")
   (general-def global-map
     "C-;"        'save-buffer
@@ -203,6 +204,10 @@
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
+
+(use-package yasnippet
+  :config
+  (yas-global-mode))
 
 ;; Revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)

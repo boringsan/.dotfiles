@@ -156,6 +156,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
       "h" "n"
       "H" "N"
       "p" "k"
+      "P" "K"
       "k" "p")
     (general-def global-map
       "C-;"        'save-buffer
@@ -205,6 +206,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
       "se" '(evil-ex-sort :which-key "evil ex sort")
       "t"  '(:ignore t :which-key "tabs/toggles")
       "tl" '(counsel-load-theme :which-key "choose theme")))
+
 #+end_src
 
 *** Avy
@@ -278,6 +280,16 @@ The avy package provides some usefull movement commands.
     :config
     (keyfreq-mode 1)
     (keyfreq-autosave-mode 1))
+
+#+end_src
+
+** Yasnippet
+
+#+begin_src emacs-lisp
+
+  (use-package yasnippet
+    :config
+    (yas-global-mode))
 
 #+end_src
 
