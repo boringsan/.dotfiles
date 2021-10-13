@@ -75,6 +75,7 @@
   (evil-echo-state nil)
   :config
   (evil-mode 1)
+  (evil-set-initial-state 'bufler-list-mode 'emacs)
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
 

@@ -121,6 +121,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
     (evil-echo-state nil)
     :config
     (evil-mode 1)
+    (evil-set-initial-state 'bufler-list-mode 'emacs)
     (evil-set-initial-state 'messages-buffer-mode 'normal)
     (evil-set-initial-state 'dashboard-mode 'normal))
 
@@ -204,7 +205,6 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
       "se" '(evil-ex-sort :which-key "evil ex sort")
       "t"  '(:ignore t :which-key "tabs/toggles")
       "tl" '(counsel-load-theme :which-key "choose theme")))
-
 #+end_src
 
 *** Avy
