@@ -13,10 +13,10 @@ table_mode = "other"
 
 [color_config]
 header_align = "l"
-header_bold = true
-header_color = "c"
-index_color = "wd"
-leading_trailing_space_bg = "white"
+header_bold = false
+header_color = "g"
+index_color = "g"
+# leading_trailing_space_bg = "white"
 primitive_binary = "ub"
 primitive_boolean = "green"
 primitive_columnpath = "cyan"
