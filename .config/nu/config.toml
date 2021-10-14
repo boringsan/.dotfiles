@@ -8,8 +8,13 @@ pivot_mode = "always"
 prompt = "starship prompt"
 rm_always_trash = "false"
 skip_welcome_message = true
-startup = ["alias ll = ls --long", "alias la = ls -a", "def df [] {sys | get disks | select mount total free}"]
-table_mode = "other"
+startup = [
+    "alias ll = ls --long",
+    "alias la = ls -a",
+    "def df [] {sys | get disks | select mount total free}",
+    "def \"guix package -I\" [] {^guix package -I | from tsv -n | rename name version output path}"
+    ]
+table_mode = "none"
 
 [color_config]
 header_align = "l"
