@@ -473,17 +473,20 @@
   (org-roam-directory "~/org-roam")
   :config
   (org-roam-setup)
-  :bind (("C-c n f"   . org-roam-node-find)
-         ("C-c n n"   . org-roam-capture)
-         ("C-c n c"   . org-roam-dailies-capture-today)
-         ("C-c n C r" . org-roam-dailies-capture-tomorrow)
-         ("C-c n d"   . org-roam-dailies-goto-date)
-         ("C-c n t"   . org-roam-dailies-goto-today)
-         ("C-c n y"   . org-roam-dailies-goto-yesterday)
-         ("C-c n r"   . org-roam-dailies-goto-tomorrow)
-         ("C-c n g"   . org-roam-graph)
-         :map org-mode-map
+  :bind (:map org-mode-map
          ("C-c n i"   . org-roam-node-insert)))
+
+(boring/leader-keys
+  "n"     '(:ignore t :which-key "org-roam")
+  "n f"   '(org-roam-node-find :which-key "find node")
+  "n n"   '(org-roam-capture :which-key "capture node")
+  "n c"   '(org-roam-dailies-capture-today :which-key "daily: capture today")
+  "n C r" '(org-roam-dailies-capture-tomorrow :which-key "daily: capture tomorrow")
+  "n d"   '(org-roam-dailies-goto-date :which-key "daily: goto data")
+  "n t"   '(org-roam-dailies-goto-today :which-key "daily: goto today")
+  "n y"   '(org-roam-dailies-goto-yesterday :which-key "daily: goto yesterday")
+  "n r"   '(org-roam-dailies-goto-tomorrow :which-key "daily: goto tomorrow")
+  "n g"   '(org-roam-graph :which-key "graph"))
 
 (use-package dired
   :ensure nil
