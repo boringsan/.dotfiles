@@ -128,6 +128,7 @@
   (require 'which-key)
   (general-translate-key nil
     '(evil-normal-state-map
+      evil-motion-state-map
       evil-window-map
       which-key-C-h-map)
     "n" "j"
