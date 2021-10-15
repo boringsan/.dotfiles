@@ -36,12 +36,6 @@
 (setq tab-width 4)
 (setq-default c-basic-offset 4)
 
-(use-package dashboard
-  :ensure t
-  :config
-  (setq dashboard-center-content t)
-  (dashboard-setup-startup-hook))
-
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -66,6 +60,45 @@
 
 (setq use-package-always-ensure t
       use-package-compute-statistics t)
+
+;; previous value:
+;; "/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'"
+(use-package recentf
+  :custom
+  (recentf-max-saved-items 256)
+  (recentf-exclude '("/tmp/"
+                     "/ssh:"
+                     "/sudo:"
+                     "recentf$"
+                     "company-statistics-cache\\.el$"
+                     ;; ctags
+                     "/TAGS$"
+                     ;; global
+                     "/GTAGS$"
+                     "/GRAGS$"
+                     "/GPATH$"
+                     ;; binary
+                     "\\.mkv$"
+                     "\\.mp[34]$"
+                     "\\.avi$"
+                     "\\.pdf$"
+                     "\\.docx?$"
+                     "\\.xlsx?$"
+                     ;; sub-titles
+                     "\\.sub$"
+                     "\\.srt$"
+                     "\\.ass$"
+                     ;; ~/.emacs.d/**/*.el included
+                     ;; "/home/[a-z]\+/\\.[a-df-z]" ; configuration file should not be excluded
+                     (expand-file-name "~/personal/*")
+                     (expand-file-name "~/.emacs.d/elpa/*.el")
+                     )))
+
+(use-package dashboard
+  :ensure t
+  :config
+  (setq dashboard-center-content t)
+  (dashboard-setup-startup-hook))
 
 (use-package evil
   :custom
