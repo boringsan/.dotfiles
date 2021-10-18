@@ -1,6 +1,6 @@
 (use-modules (gnu home)
-             (gnu home-services)
-             (gnu home-services shells)
+             (gnu home services)
+             (gnu home services shells)
              (gnu services)
 	     (gnu packages)
              (gnu packages admin)
@@ -48,24 +48,30 @@
     home-bash-service-type
     (home-bash-configuration
      (bash-profile
-      '("# Load Nix environment"
-	"if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then"
-	"    . /run/current-system/profile/etc/profile.d/nix.sh"
-	"fi"))
+      (list (plain-file "bash-profile"
+		  (string-concatenate
+		   '("\n# Load Nix environment\n"
+		     "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then\n"
+		     "    . /run/current-system/profile/etc/profile.d/nix.sh\n"
+		     "fi\n")))))
      (bashrc
-      '("case \"$-\" in"
-	"    *i*)"
-	"	# Use nushell in place of bash"
-	"	fortune | cowsay -W 54"
-	"	uname -a"
-	"	SHELL=$(which nu)"
-	"	[ -x $SHELL ] && exec nu"
-	"esac"))))
+      (list (plain-file "he"
+		  (string-concatenate
+		   '("case \"$-\" in\n"
+		     "    *i*)\n"
+		     "	# Use nushell in place of bash\n"
+		     "	fortune | cowsay -W 54\n"
+		     "	uname -a\n"
+		     "	SHELL=$(which nu)\n"
+		     "	[ -x $SHELL ] && exec nu\n"
+		     "esac\n")))))))
    (simple-service 'additional-env-vars-service
 		   home-environment-variables-service-type
-		   `(("PATH" . "$HOME/.cabal/bin:$HOME/.bin:$PATH")
+		   `(("CC" . "gcc")
 		     ("GUIX_PACKAGE_PATH" . "$HOME/.config/guix/include")
-		     ("LC_COLLATE" . "C")
-		     ("CC" . "gcc")
-		     ("VISUAL" . ,(file-append emacs "/bin/emacsclient"))
-		     ("EDITOR" . "$VISUAL"))))))
+		     ("LESS" . "\"--window=-3 --use-color --hilite-unread --status-column\"")
+		     ("PATH" . "$HOME/.cabal/bin:$HOME/.bin:$PATH")
+
+		     ;; This is not always respected :(
+		     ("EDITOR" . "emacsclient")
+		     ("VISUAL" . "emacsclient"))))))
