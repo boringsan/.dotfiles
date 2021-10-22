@@ -12,11 +12,17 @@
 
 (defvar boring/elephant-p (string-equal (system-name) "elephant"))
 
-(if boring/elephant-p
-    (add-to-list 'default-frame-alist
-                 '(font .  "CaskaydiaCove NF-12"))
-  (add-to-list 'default-frame-alist
-               '(font .  "DejaVu Sans Mono-10")))
+;; (if boring/elephant-p
+;;     (add-to-list 'default-frame-alist
+;;                  '(font .  "CaskaydiaCove NF-12"))
+;;   (add-to-list 'default-frame-alist
+;;                '(font .  "DejaVu Sans Mono-10")))
+(setq-default line-spacing 0.2)
+(add-hook 'text-mode-hook 'mixed-pitch-mode)
+(set-face-attribute 'default nil
+                    :font "Iosevka Curly-12")
+(set-face-attribute 'variable-pitch nil
+                    :font "DejaVu Serif-10")
 
 (dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode t))))
@@ -87,7 +93,7 @@
                      "\\.ass$"
                      ;; ~/.emacs.d/**/*.el included
                      ;; "/home/[a-z]\+/\\.[a-df-z]" ; configuration file should not be excluded
-                     (expand-file-name "~/personal/*")
+                     (expand-file-name "~/personal/*\\.org")
                      (expand-file-name "~/.emacs.d/elpa/*.el")
                      )))
 
@@ -392,25 +398,25 @@
       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
   ;; Set faces for heading levels
-  (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
+  (dolist (face '((outline-1 . 1.3)
+                  (outline-2 . 1.2)
+                  (outline-3 . 1.13)
+                  (outline-4 . 1.1)
+                  (outline-5 . 1.1)
+                  (outline-6 . 1.1)
+                  (outline-7 . 1.1)
+                  (outline-8 . 1.1)))
     (set-face-attribute (car face) nil
-                        :font "Cantarell"
-                        :weight 'regular
+                        :weight 'bold
                         :height (cdr face)))
 
   ;; Make sure org-indent face is available
   (require 'org-indent)
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'fixed-pitch nil
-                      :font "CaskaydiaCove NF-12")
+  (set-face-attribute 'org-default nil
+                      :foreground nil
+                      :inherit 'variable-pitch)
   (set-face-attribute 'org-block nil
                       :foreground nil
                       :inherit 'fixed-pitch)
@@ -463,6 +469,10 @@
 
 (use-package visual-fill-column
   :hook (org-mode . efs/org-mode-visual-fill))
+
+;; Show hidden emphasis markers
+(use-package org-appear
+  :hook (org-mode . org-appear-mode))
 
 (use-package org-roam
   :init
