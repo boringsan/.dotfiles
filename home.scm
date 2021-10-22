@@ -12,59 +12,116 @@
 	     (ice-9 match)
 	     (guix gexp))
 
-(home-environment
- (packages
+(define %packages-fonts
+  (map specification->package
+       (list "font-abattis-cantarell"
+	     "font-adobe-source-code-pro"
+	     "font-adobe-source-sans-pro"
+	     "font-adobe-source-serif-pro"
+	     "font-iosevka"
+	     "font-iosevka-curly"
+	     "font-iosevka-curly-slab")))
+
+(define %packages-emacs
+  (map specification->package
+       (list "emacs"
+	     "emacs-ediprolog"
+	     "emacs-guix"
+	     "emacs-map"
+	     "emacs-pdf-tools"
+	     "emacs-use-package"
+	     "emacs-avy"
+	     "emacs-ess"
+	     "emacs-elm-mode"
+	     "emacs-magit"
+	     "emacs-vterm")))
+
+(define %packages-shell
   (map specification->package
        (list "cowsay"
 	     "curl"
-	     "dconf-editor"
-	     "emacs"
-	     "emacs-guix"
-	     "emacs-pdf-tools"
-	     "emacs-use-package"
 	     "fortune-mod"
-	     "gcc-toolchain"
-	     "ghostscript"
-	     "gimp"
-	     "gnome-tweaks"
-	     "graphviz"
-	     "guile"
-	     "htop"
 	     "lm-sensors"
-	     "mpv"
 	     "myrepos"
 	     "nushell"
 	     "openssh"
 	     "smartmontools"
-	     "swi-prolog"
-	     "ungoogled-chromium"
+	     "stow"
 	     "unzip"
-	     "vlc"
-	     "xdg-utils")))
+	     "xdg-utils"
+	     "zstd")))
+
+(define %packages-desktop
+  (map specification->package
+       (list "dconf-editor"
+	     "deluge"
+	     "gimp"
+	     "gnome-tweaks"
+	     "mpv"
+	     "ungoogled-chromium"
+	     "vlc")))
+
+(define %packages-programming
+  (map specification->package
+       (list "gcc-toolchain"
+	     "ghostscript"
+	     "graphviz"
+	     "guile"
+	     "make"
+	     "python"
+	     "r"
+	     "r-igraph"
+	     "r-rgl"
+	     "swi-prolog"
+	     "texlive"
+	     "texlive-fonts-latex"
+	     "texlive-fourier"
+	     "texlive-latex-base"
+	     "texlive-mathdesign"
+	     "texlive-utopia")))
+
+(define %init-nix-environment
+  (string-join
+   '(""
+     "# Load Nix environment"
+     "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then"
+     "    . /run/current-system/profile/etc/profile.d/nix.sh"
+     "fi")
+   "\n"
+   'suffix))
+
+(define %init-bashrc
+  (string-join
+   '("case \"$-\" in"
+     "    *i*)"
+     "	# Use nushell in place of bash"
+     "	fortune | cowsay -W 54"
+     "	uname -a"
+     "	SHELL=$(which nu)"
+     "	[ -x $SHELL ] && exec nu"
+     "esac")
+   "\n" 'suffix))
+
+(home-environment
+
+ (packages
+  (append %packages-programming
+	  %packages-shell
+	  %packages-desktop
+	  %packages-fonts
+	  %packages-emacs))
 
  (services
   (list
+
    (service
     home-bash-service-type
     (home-bash-configuration
      (bash-profile
-      (list (plain-file "bash-profile"
-		  (string-concatenate
-		   '("\n# Load Nix environment\n"
-		     "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then\n"
-		     "    . /run/current-system/profile/etc/profile.d/nix.sh\n"
-		     "fi\n")))))
+      (list (plain-file "init-nix-environment" %init-nix-environment)))
      (bashrc
-      (list (plain-file "he"
-		  (string-concatenate
-		   '("case \"$-\" in\n"
-		     "    *i*)\n"
-		     "	# Use nushell in place of bash\n"
-		     "	fortune | cowsay -W 54\n"
-		     "	uname -a\n"
-		     "	SHELL=$(which nu)\n"
-		     "	[ -x $SHELL ] && exec nu\n"
-		     "esac\n")))))))
+      (list (plain-file "init-bashrc" %init-bashrc)))))
+
    (simple-service 'additional-env-vars-service
 		   home-environment-variables-service-type
 		   `(("CC" . "gcc")
