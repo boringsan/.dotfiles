@@ -9,7 +9,7 @@
  '(lsp-haskell-completion-snippets-on nil)
  '(lsp-haskell-formatting-provider "brittany")
  '(package-selected-packages
-   '(yasnippet-snippets bufler popper dired-rainbow dired-single dired-ranger dired-collapse dired-hacks-utils dired-hacks dired-launch lsp-treemacs lsp-ivy dashboard yasnippet yaml-mode lsp-ui flycheck company writeroom-mode which-key vertico solaire-mode org-roam org-bullets monkeytype modus-themes magit-popup magit lsp-haskell keyfreq ivy-rich hydra helpful general evil-surround evil-collection eshell-git-prompt elm-mode doom-themes doom-modeline counsel-projectile avy all-the-icons-dired))
+   '(mixed-pitch org-appear ess bufler popper dired-rainbow dired-single dired-ranger dired-collapse dired-hacks-utils dired-hacks dired-launch lsp-treemacs lsp-ivy dashboard yasnippet yaml-mode lsp-ui flycheck company writeroom-mode which-key vertico solaire-mode org-roam org-bullets monkeytype modus-themes magit-popup magit lsp-haskell keyfreq ivy-rich hydra helpful general evil-surround evil-collection eshell-git-prompt elm-mode doom-themes doom-modeline counsel-projectile avy all-the-icons-dired))
  '(safe-local-variable-values
    '((eval modify-syntax-entry 43 "'")
      (eval modify-syntax-entry 36 "'")
