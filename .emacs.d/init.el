@@ -21,9 +21,6 @@
 (dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode t))))
 
-(setq text-scale-amount 2.4)
-(text-scale-set 2.4)
-
 ;; suggested by lsp-mode manual
 (setq gc-cons-threshold 10000000)
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
@@ -384,14 +381,15 @@
 (defun efs/org-mode-setup ()
   (efs/org-font-setup)
   (org-indent-mode)
-  (variable-pitch-mode 1)
+  ;; (variable-pitch-mode 1)
   (visual-line-mode 1))
 
 (defun efs/org-font-setup ()
   ;; Replace list hyphen with dot
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (font-lock-add-keywords
+   'org-mode
+   '(("^ *\\([-]\\) "
+      (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
   ;; Set faces for heading levels
   (dolist (face '((org-level-1 . 1.2)
