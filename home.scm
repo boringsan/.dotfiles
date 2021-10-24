@@ -87,8 +87,7 @@
      "if [ -f /run/current-system/profile/etc/profile.d/nix.sh ]; then"
      "    . /run/current-system/profile/etc/profile.d/nix.sh"
      "fi")
-   "\n"
-   'suffix))
+   "\n" 'suffix))
 
 (define %init-bashrc
   (string-join
@@ -114,13 +113,12 @@
  (services
   (list
 
-   (service
-    home-bash-service-type
-    (home-bash-configuration
-     (bash-profile
-      (list (plain-file "init-nix-environment" %init-nix-environment)))
-     (bashrc
-      (list (plain-file "init-bashrc" %init-bashrc)))))
+   (service home-bash-service-type
+	    (home-bash-configuration
+	     (bash-profile
+	      (list (plain-file "init-nix-environment" %init-nix-environment)))
+	     (bashrc
+	      (list (plain-file "init-bashrc" %init-bashrc)))))
 
    (simple-service 'additional-env-vars-service
 		   home-environment-variables-service-type
