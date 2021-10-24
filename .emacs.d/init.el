@@ -17,7 +17,7 @@
 ;;                  '(font .  "CaskaydiaCove NF-12"))
 ;;   (add-to-list 'default-frame-alist
 ;;                '(font .  "DejaVu Sans Mono-10")))
-(setq-default line-spacing 0.2)
+(setq-default line-spacing 0.1)
 (add-hook 'text-mode-hook 'mixed-pitch-mode)
 (set-face-attribute 'default nil
                     :font "Iosevka Curly-12")
@@ -276,6 +276,9 @@
 (use-package all-the-icons
   :if (display-graphic-p)
   :commands (all-the-icons-install-fonts)
+  :custom
+  (all-the-icons-default-adjust 0.5)
+  (all-the-icons-scale-factor 0.9)
   :init
   (unless (find-font (font-spec :name "all-the-icons"))
     (all-the-icons-install-fonts t)))
@@ -286,7 +289,9 @@
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 11)))
+  :custom
+  (doom-modeline-height 24)
+  (doom-modeline-hud t))
 
 (use-package doom-themes
   :config
@@ -414,22 +419,19 @@
   (require 'org-indent)
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'org-default nil
-                      :foreground nil
-                      :inherit 'variable-pitch)
-  (set-face-attribute 'org-block nil
-                      :foreground nil
-                      :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil
-                      :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-table nil
-                      :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil
-                      :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil
-                      :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil
-                      :inherit '(font-lock-comment-face fixed-pitch))
+  ;; (set-face-attribute 'org-block nil
+  ;;                     :foreground nil
+  ;;                     :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'org-code nil
+  ;;                     :inherit '(shadow fixed-pitch))
+  ;; (set-face-attribute 'org-table nil
+  ;;                     :inherit '(shadow fixed-pitch))
+  ;; (set-face-attribute 'org-verbatim nil
+  ;;                     :inherit '(shadow fixed-pitch))
+  ;; (set-face-attribute 'org-special-keyword nil
+  ;;                     :inherit '(font-lock-comment-face fixed-pitch))
+  ;; (set-face-attribute 'org-meta-line nil
+                      ;; :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil
                       :inherit 'fixed-pitch))
 
