@@ -3,6 +3,7 @@
 (load custom-file)
 
 ;;(scroll-bar-mode -1)        ; Disable visible scrollbar
+(setq scroll-bar-adjust-thumb-portion nil)
 (tool-bar-mode -1)          ; Disable the toolbar
 (tooltip-mode -1)           ; Disable tooltips
 (set-fringe-mode 16)        ; Give some breathing room
