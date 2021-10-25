@@ -398,17 +398,17 @@
   (setq elm-tags-on-save t))
 
 (defun efs/org-mode-setup ()
-  (efs/org-font-setup)
   (org-indent-mode)
-  ;; (variable-pitch-mode 1)
   (visual-line-mode 1))
 
-(defun efs/org-font-setup ()
-  ;; Replace list hyphen with dot
+(defun boring/org-font-setup ()
+  ;; Fontify the list hyphen and replace it with bullet
   (font-lock-add-keywords
    'org-mode
    '(("^ *\\([-]\\) "
-      (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+      (0 (prog1 nil (compose-region (match-beginning 1)
+                                    (match-end 1)
+                                    "•"))))))
 
   ;; Set faces for heading levels
   (dolist (face '((outline-1 . 1.3)
@@ -424,28 +424,12 @@
                         :height (cdr face)))
 
   ;; Make sure org-indent face is available
-  (require 'org-indent)
-
-  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  ;; (set-face-attribute 'org-block nil
-  ;;                     :foreground nil
-  ;;                     :inherit 'fixed-pitch)
-  ;; (set-face-attribute 'org-code nil
-  ;;                     :inherit '(shadow fixed-pitch))
-  ;; (set-face-attribute 'org-table nil
-  ;;                     :inherit '(shadow fixed-pitch))
-  ;; (set-face-attribute 'org-verbatim nil
-  ;;                     :inherit '(shadow fixed-pitch))
-  ;; (set-face-attribute 'org-special-keyword nil
-  ;;                     :inherit '(font-lock-comment-face fixed-pitch))
-  ;; (set-face-attribute 'org-meta-line nil
-                      ;; :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil
-                      :inherit 'fixed-pitch))
+  (require 'org-indent))
 
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
   :config
+  (boring/org-font-setup)
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
   (general-translate-key 'normal 'outline-mode-map
