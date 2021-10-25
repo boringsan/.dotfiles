@@ -19,14 +19,21 @@
 ;;   (add-to-list 'default-frame-alist
 ;;                '(font .  "DejaVu Sans Mono-10")))
 (setq-default line-spacing 0.1)
-(add-hook 'text-mode-hook 'mixed-pitch-mode)
 (set-face-attribute 'default nil
                     :font "Iosevka Curly-12")
 (set-face-attribute 'variable-pitch nil
                     :font "DejaVu Serif-10")
 
-(dolist (mode '(prog-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode t))))
+(add-hook 'text-mode-hook
+          (lambda ()
+            (mixed-pitch-mode)
+            (flyspell-mode) ; requires ispell installed
+            (setq-local line-spacing 0.2)))
+
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (display-line-numbers-mode t)
+            (setq-local line-spacing 0.1)))
 
 ;; suggested by lsp-mode manual
 (setq gc-cons-threshold 10000000)
