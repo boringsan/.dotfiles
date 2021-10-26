@@ -25,16 +25,25 @@
 (define %packages-emacs
   (map specification->package
        (list "emacs"
+	     "emacs-avy"
 	     "emacs-ediprolog"
+	     "emacs-elm-mode"
+	     "emacs-ess"
+	     "emacs-evil"
+	     "emacs-evil-collection"
+	     "emacs-flycheck"
 	     "emacs-guix"
+	     "emacs-helpful"
+	     "emacs-hydra"
+	     "emacs-magit"
 	     "emacs-map"
+	     "emacs-mixed-pitch"
 	     "emacs-pdf-tools"
 	     "emacs-use-package"
-	     "emacs-avy"
-	     "emacs-ess"
-	     "emacs-elm-mode"
-	     "emacs-magit"
-	     "emacs-vterm")))
+	     "emacs-vterm"
+	     "emacs-which-key"
+	     "emacs-writeroom"
+	     "emacs-yasnippet")))
 
 (define %packages-shell
   (map specification->package
