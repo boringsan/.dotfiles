@@ -18,11 +18,11 @@
 ;;                  '(font .  "CaskaydiaCove NF-12"))
 ;;   (add-to-list 'default-frame-alist
 ;;                '(font .  "DejaVu Sans Mono-10")))
-(setq-default line-spacing 0.1)
+;; (setq-default line-spacing 0.1)
 (set-face-attribute 'default nil
                     :font "Iosevka Curly-12")
 (set-face-attribute 'variable-pitch nil
-                    :font "DejaVu Serif-10")
+                    :font "Source Serif Pro-12")
 
 (add-hook 'text-mode-hook
           (lambda ()
