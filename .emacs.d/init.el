@@ -281,6 +281,16 @@
   (setq which-key-sort-order 'which-key-local-then-key-order)
   (which-key-mode))
 
+(setq x-gtk-resize-child-frames 'resize-mode)
+
+(use-package mini-frame
+  :config (mini-frame-mode)
+  :custom
+  (mini-frame-show-parameters
+   '((top . 100)
+     (width . 0.7)
+     (left . 0.5))))
+
 (use-package all-the-icons
   :if (display-graphic-p)
   :commands (all-the-icons-install-fonts)
