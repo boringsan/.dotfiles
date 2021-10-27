@@ -133,7 +133,7 @@
 		   home-environment-variables-service-type
 		   `(("CC" . "gcc")
 		     ("GUIX_PACKAGE_PATH" . "$HOME/.config/guix/include")
-		     ("LESS" . "\"--window=-3 --use-color --hilite-unread --status-column\"")
+		     ("LESS" . "\"--window=-3 --use-color --hilite-unread --status-column --raw-control-chars\"")
 		     ("PATH" . "$HOME/.cabal/bin:$HOME/.bin:$PATH")
 
 		     ;; This is not always respected :(
