@@ -1,76 +1,87 @@
-(setq inhibit-startup-message t)
-(setq custom-file "~/.emacs.d/custom-set-variables.el")
-(load custom-file)
-
-;;(scroll-bar-mode -1)        ; Disable visible scrollbar
-(setq scroll-bar-adjust-thumb-portion nil)
-(tool-bar-mode -1)          ; Disable the toolbar
-(tooltip-mode -1)           ; Disable tooltips
-(set-fringe-mode 16)        ; Give some breathing room
-(menu-bar-mode -1)          ; Disable the menu bar
-(show-paren-mode t)         ; Highlight matching parenthesis
-(column-number-mode)        ; Show column number in the modeline
-
-(defvar boring/elephant-p (string-equal (system-name) "elephant"))
-
-;; (if boring/elephant-p
-;;     (add-to-list 'default-frame-alist
-;;                  '(font .  "CaskaydiaCove NF-12"))
-;;   (add-to-list 'default-frame-alist
-;;                '(font .  "DejaVu Sans Mono-10")))
-;; (setq-default line-spacing 0.1)
-(set-face-attribute 'default nil
-                    :font "Iosevka Curly-12")
-(set-face-attribute 'variable-pitch nil
-                    :font "Source Serif Pro-12")
-
-(add-hook 'text-mode-hook
-          (lambda ()
-            (mixed-pitch-mode)
-            (flyspell-mode) ; requires ispell installed
-            (setq-local line-spacing 0.2)))
-
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (display-line-numbers-mode t)
-            (setq-local line-spacing 0.1)))
-
-;; suggested by lsp-mode manual
-(setq gc-cons-threshold 10000000)
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
-
-;; server-mode
-(server-start)
-
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
-
-(setq tab-width 4)
-(setq-default c-basic-offset 4)
-
-(require 'package)
-
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
-
-(package-initialize)        ; Initialize package sources
-(unless package-archive-contents
-  (package-refresh-contents))
-;; Initialize use-package on non-Linux platforms
-;(unless (package-installed-p 'use-package)
-;  (package-install 'use-package))
-
-(require 'use-package)
+;; -*- lexical-binding: t -*-
 
 (if init-file-debug
-    (setq use-package-verbose t
-          use-package-expand-minimally nil
-          debug-on-error t)
+	(setq use-package-verbose t
+		  use-package-expand-minimally nil
+		  debug-on-error t)
   (setq use-package-verbose nil
-        use-package-expand-minimally t))
+		use-package-expand-minimally t))
 
-(setq use-package-always-ensure t
-      use-package-compute-statistics t)
+(setq use-package-always-ensure nil
+	  use-package-minimum-reported-time 0
+	  use-package-enable-imenu-support t
+	  use-package-compute-statistics t)
+
+(use-package emacs
+  :defer t
+  :hook
+  ((text-mode . (lambda ()
+                  (mixed-pitch-mode)
+                  (flyspell-mode) ; requires ispell installed
+                  (setq-local line-spacing 0.2)))
+   (prog-mode . (lambda ()
+                  (display-line-numbers-mode t)
+                  (setq-local line-spacing 0.1)))
+   (before-save . delete-trailing-whitespace))
+  :custom
+  (auto-window-vscroll nil)
+  (column-number-mode t)                ; Show column number in the modeline
+  (global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
+  (global-auto-revert-mode t) ; Revert buffers when the underlying file has changed
+  (confirm-nonexistent-file-or-buffer nil)
+  (inhibit-startup-screen t)
+  (initial-scratch-message nil)
+  (menu-bar-mode nil)          ; Disable the menu bar
+  (indent-tabs-mode nil)
+  (require-final-newline t)
+  (scroll-bar-adjust-thumb-portion nil)
+  (show-paren-mode t)          ; Highlight matching parenthesis
+  (tool-bar-mode nil)          ; Disable the toolbar
+  (tooltip-mode nil)           ; Disable tooltips
+  (use-short-answers t)
+
+  (custom-file "~/.emacs.d/custom-set-variables.el")
+  (scroll-conservatively 10000)
+  (scroll-step 1)
+  (set-fringe-mode 16)         ; Give some breathing room
+  (tab-width 4)
+  (user-full-name "Erik Šabič")
+  (user-mail-address "erik.sab@gmail.com")
+  :config
+  (load custom-file)
+  (defvar boring/elephant-p (string-equal (system-name) "elephant"))
+
+  (set-face-attribute 'default nil
+              :font "Iosevka Curly-12")
+  (set-face-attribute 'variable-pitch nil
+              :font "Source Serif Pro-13")
+
+  ;; suggested by lsp-mode manual
+  ;; (setq gc-cons-threshold 10000000)
+  (setq read-process-output-max (* 1024 1024)) ; 1mb
+
+  ;; server-mode
+  (server-start)
+
+  ;; TODO put this in the c mode use-package
+  (setq-default c-basic-offset 4))
+
+(use-package gcmh
+  :demand t
+  :custom
+  (gcmh-mode t))
+
+(use-package package
+  :config
+  (setq package-archives
+		'(("gnu" . "https://elpa.gnu.org/packages/")
+		  ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+		  ("melpa" . "https://melpa.org/packages/")
+		  ("orgmode" . "https://orgmode.org/elpa/")))
+
+  (package-initialize)        ; Initialize package sources
+  (unless package-archive-contents
+	(package-refresh-contents)))
 
 ;; previous value:
 ;; "/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'"
@@ -111,6 +122,42 @@
   (setq dashboard-center-content t)
   (dashboard-setup-startup-hook))
 
+(use-package counsel
+  :init
+  (counsel-mode))
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         :map ivy-switch-buffer-map
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (ivy-mode 1))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package keyfreq
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
+
+(use-package yasnippet
+  :config
+  (yas-global-mode))
+
 (use-package evil
   :custom
   (evil-want-keybinding nil)
@@ -137,10 +184,12 @@
   :after evil
   :config
   (require 'which-key)
+  (require 'outline)
   (general-translate-key nil
     '(evil-normal-state-map
       evil-motion-state-map
       evil-window-map
+      outline-mode-map
       which-key-C-h-map)
     "n" "j"
     "j" "h"
@@ -148,9 +197,10 @@
     "H" "N"
     "p" "k"
     "P" "K"
-    "k" "p")
+    "k" "p"
+    "C-k" "C-p"
+    "C-p" "C-k")
   (general-def global-map
-    "C-;"        'save-buffer
     "C-g"        'evil-normal-state
     "C-<tab>"    'other-frame
     "<escape>"   'keyboard-escape-quit
@@ -159,6 +209,7 @@
     "<f9>"       'find-file)
   (general-def
     :states      'normal
+    "C-;"        'save-buffer
     "k"          'evil-paste-after
     "K"          'evil-paste-before
     "C-k"        'evil-paste-pop
@@ -218,48 +269,6 @@
 (boring/leader-keys
   "ts" '(hydra-text-scale/body :which-key "scale text"))
 
-(use-package counsel
-  :init
-  (counsel-mode))
-
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
-
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
-         ("C-l" . ivy-alt-done)
-         :map ivy-switch-buffer-map
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (setq ivy-use-virtual-buffers t)
-  (ivy-mode 1))
-
-(use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
-
-(use-package keyfreq
-  :config
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1))
-
-(use-package yasnippet
-  :config
-  (yas-global-mode))
-
-;; Revert Dired and other buffers
-(setq global-auto-revert-non-file-buffers t)
-
-;; Revert buffers when the underlying file has changed
-(global-auto-revert-mode 1)
-
 (use-package helpful
   :custom
   (counsel-describe-function-function #'helpful-callable)
@@ -280,16 +289,6 @@
   ;; (setq which-key-show-operator-state-maps t)
   (setq which-key-sort-order 'which-key-local-then-key-order)
   (which-key-mode))
-
-(setq x-gtk-resize-child-frames 'resize-mode)
-
-(use-package mini-frame
-  :config (mini-frame-mode)
-  :custom
-  (mini-frame-show-parameters
-   '((top . 100)
-     (width . 0.7)
-     (left . 0.5))))
 
 (use-package all-the-icons
   :if (display-graphic-p)
@@ -376,7 +375,8 @@
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
-  (use-package company)
+  (use-package company
+    :defer t)
   :hook ((haskell-mode . lsp-deffered)
          (interactive-haskell-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration)))
@@ -438,6 +438,9 @@
 
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
+  :bind (:map org-mode-map
+         ([tab] . org-cycle))
+  ;; (define-key org-mode-map (kbd "<tab>") #'org-cycle)
   :config
   (boring/org-font-setup)
   (require 'org-habit)
