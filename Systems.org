@@ -7,7 +7,7 @@
 This file contains system configuration code for [[https://guix.gnu.org][GNU Guix]]. Inspired by work of David Wilson.
 - [[https://www.youtube.com/channel/UCAiiOTio8Yu69c3XnR7nQBQ][System Crafters]] on Youtube
 - [[https://github.com/daviwil/dotfiles][daviwil/dotfiles]] on Github
-  
+
 * Channels
 
 Guix supports the concept of [[https://guix.gnu.org/manual/en/html_node/Channels.html#Channels][channels]] which basically amount to Git repositories which contain Guix package definitions that can be installed on your machine.  Aside from the =%default-channels= list, I also use the [[https://gitlab.com/nonguix/nonguix][Nonguix]] channel to install packages that aren't included with Guix by default like the non-free Linux kernel.

@@ -113,9 +113,9 @@
 (home-environment
 
  (packages
-  (append %packages-programming
-	  %packages-shell
-	  %packages-desktop
+  (append %packages-shell
+	  ;; %packages-desktop
+	  ;; %packages-programming
 	  %packages-fonts
 	  %packages-emacs))
 
