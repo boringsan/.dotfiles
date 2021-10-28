@@ -440,6 +440,7 @@
   :hook (org-mode . efs/org-mode-setup)
   :bind (:map org-mode-map
          ([tab] . org-cycle))
+  ;; http://ergoemacs.org/emacs/emacs_tabs_space_indentation_setup.html
   ;; (define-key org-mode-map (kbd "<tab>") #'org-cycle)
   :config
   (boring/org-font-setup)
@@ -488,6 +489,7 @@
   (org-roam-directory "~/org-roam")
   :config
   (org-roam-setup)
+  ;; (org-roam-db-autosync-mode)
   :bind (:map org-mode-map
          ("C-c n i"   . org-roam-node-insert)))
 
