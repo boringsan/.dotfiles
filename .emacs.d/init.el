@@ -26,19 +26,20 @@
   :custom
   (auto-window-vscroll nil)
   (column-number-mode t)                ; Show column number in the modeline
-  (global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
-  (global-auto-revert-mode t) ; Revert buffers when the underlying file has changed
   (confirm-nonexistent-file-or-buffer nil)
+  (global-auto-revert-mode t)           ; Revert buffers when the underlying file has changed
+  (global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
+  (indent-tabs-mode nil)
   (inhibit-startup-screen t)
   (initial-scratch-message nil)
-  (menu-bar-mode nil)          ; Disable the menu bar
-  (indent-tabs-mode nil)
+  (menu-bar-mode nil)                   ; Disable the menu bar
   (require-final-newline t)
+  (savehist-mode t)                     ; Persist history over Emacs restarts
   (scroll-bar-adjust-thumb-portion nil)
-  (show-paren-mode t)          ; Highlight matching parenthesis
-  (tool-bar-mode nil)          ; Disable the toolbar
-  (tooltip-mode nil)           ; Disable tooltips
-  (use-short-answers t)
+  (show-paren-mode t)                   ; Highlight matching parenthesis
+  (tool-bar-mode nil)                   ; Disable the toolbar
+  (tooltip-mode nil)                    ; Disable tooltips
+  (read-answer-short t)
 
   (custom-file "~/.emacs.d/custom-set-variables.el")
   (scroll-conservatively 10000)
