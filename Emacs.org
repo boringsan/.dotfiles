@@ -161,6 +161,17 @@ Emacs' builtin package manager ~package.el~ is used.
 
 #+end_src
 
+** Keyfreq
+
+#+begin_src emacs-lisp
+
+  (use-package keyfreq
+    :config
+    (keyfreq-mode 1)
+    (keyfreq-autosave-mode 1))
+
+#+end_src
+
 ** Dashboard
 
 #+begin_src emacs-lisp
@@ -212,10 +223,6 @@ A new completion system has emerged in the Emacs community, consisting of severa
     :init
     (ivy-rich-mode 1))
 
-  (use-package keyfreq
-    :config
-    (keyfreq-mode 1)
-    (keyfreq-autosave-mode 1))
 
 #+end_src
 

@@ -116,6 +116,11 @@
                      (expand-file-name "~/.emacs.d/elpa/*.el")
                      )))
 
+(use-package keyfreq
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
+
 (use-package dashboard
   :ensure t
   :config
@@ -149,10 +154,6 @@
   :init
   (ivy-rich-mode 1))
 
-(use-package keyfreq
-  :config
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1))
 
 (use-package yasnippet
   :config
