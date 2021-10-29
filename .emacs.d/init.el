@@ -34,7 +34,6 @@
   (initial-scratch-message nil)
   (menu-bar-mode nil)                   ; Disable the menu bar
   (require-final-newline t)
-  (savehist-mode t)                     ; Persist history over Emacs restarts
   (scroll-bar-adjust-thumb-portion nil)
   (show-paren-mode t)                   ; Highlight matching parenthesis
   (tool-bar-mode nil)                   ; Disable the toolbar
@@ -44,7 +43,7 @@
   (custom-file "~/.emacs.d/custom-set-variables.el")
   (scroll-conservatively 10000)
   (scroll-step 1)
-  (set-fringe-mode 16)         ; Give some breathing room
+  (set-fringe-mode 16)                  ; Give some breathing room
   (tab-width 4)
   (user-full-name "Erik Šabič")
   (user-mail-address "erik.sab@gmail.com")
@@ -71,6 +70,17 @@
   :demand t
   :custom
   (gcmh-mode t))
+
+(use-package saveplace
+  :defer t
+  :custom
+  (save-place-mode t))
+
+(use-package savehist
+  :defer t
+  :custom
+  (history-delete-duplicates t)
+  (savehist-mode t))
 
 (use-package package
   :config
