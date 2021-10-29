@@ -326,9 +326,9 @@
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  ;;(load-theme 'doom-monokai-classic t)
+  ;; doom-Iosvkem doom-monokai-classic
   (if boring/elephant-p
-      (load-theme 'doom-Iosvkem)
+      (load-theme 'doom-peacock)
     (load-theme 'doom-old-hope t))
   (doom-themes-visual-bell-config)
   (doom-themes-org-config))
