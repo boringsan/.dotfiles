@@ -138,6 +138,31 @@
   (setq dashboard-center-content t)
   (dashboard-setup-startup-hook))
 
+(use-package yasnippet
+  :config
+  (yas-global-mode))
+
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command]  . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key]      . helpful-key))
+
+(use-package which-key
+  :diminish which-key-mode
+  :config
+  ;; (setq which-key-show-early-on-C-h t)
+  ;; (setq which-key-idle-delay 100)
+  ;; (setq which-key-idle-secondary-delay 0.8)
+  ;; does not work with evil operators :(
+  ;; (setq which-key-show-operator-state-maps t)
+  (setq which-key-sort-order 'which-key-local-then-key-order)
+  (which-key-mode))
+
 (use-package selectrum
   :custom
   (selectrum-highlight-candidates-function #'orderless-highlight-matches)
@@ -263,10 +288,6 @@
   ;; (setq consult-project-root-function #'projectile-project-root)
 )
 
-(use-package yasnippet
-  :config
-  (yas-global-mode))
-
 (use-package evil
   :custom
   (evil-want-keybinding nil)
@@ -377,27 +398,6 @@
 
 (boring/leader-keys
   "ts" '(hydra-text-scale/body :which-key "scale text"))
-
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command]  . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key]      . helpful-key))
-
-(use-package which-key
-  :diminish which-key-mode
-  :config
-  ;; (setq which-key-show-early-on-C-h t)
-  ;; (setq which-key-idle-delay 100)
-  ;; (setq which-key-idle-secondary-delay 0.8)
-  ;; does not work with evil operators :(
-  ;; (setq which-key-show-operator-state-maps t)
-  (setq which-key-sort-order 'which-key-local-then-key-order)
-  (which-key-mode))
 
 (use-package all-the-icons
   :if (display-graphic-p)

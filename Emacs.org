@@ -201,7 +201,44 @@ Emacs' builtin package manager ~package.el~ is used.
 
 #+end_src
 
-** Completion
+** Yasnippet
+
+#+begin_src emacs-lisp
+
+  (use-package yasnippet
+    :config
+    (yas-global-mode))
+
+#+end_src
+
+** Help
+
+#+begin_src emacs-lisp
+
+  (use-package helpful
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-command]  . helpful-command)
+    ([remap describe-variable] . counsel-describe-variable)
+    ([remap describe-key]      . helpful-key))
+
+  (use-package which-key
+    :diminish which-key-mode
+    :config
+    ;; (setq which-key-show-early-on-C-h t)
+    ;; (setq which-key-idle-delay 100)
+    ;; (setq which-key-idle-secondary-delay 0.8)
+    ;; does not work with evil operators :(
+    ;; (setq which-key-show-operator-state-maps t)
+    (setq which-key-sort-order 'which-key-local-then-key-order)
+    (which-key-mode))
+
+#+end_src
+
+* Completion
 
 A new completion system has emerged in the Emacs community, consisting of several packages:
 
@@ -211,7 +248,7 @@ A new completion system has emerged in the Emacs community, consisting of severa
 - Marginalia
 - filtering and sorting: Prescient, Orderless
 
-*** Selectrum
+** Selectrum
 
 #+begin_src emacs-lisp
 
@@ -234,7 +271,7 @@ A new completion system has emerged in the Emacs community, consisting of severa
 
 #+end_src
 
-*** Marginalia
+** Marginalia
 
 Enable richer annotations using the Marginalia package.
 
@@ -247,7 +284,7 @@ Enable richer annotations using the Marginalia package.
 
 #+end_src
 
-*** Consult
+** Consult
 
 #+begin_src emacs-lisp
 
@@ -356,21 +393,11 @@ Enable richer annotations using the Marginalia package.
 
 #+end_src
 
-** Yasnippet
-
-#+begin_src emacs-lisp
-
-  (use-package yasnippet
-    :config
-    (yas-global-mode))
-
-#+end_src
-
-** Keyboard bindings
+* Keyboard bindings
 
 I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboard layout and I'm replacing =jkl= with =nei=, this section got quite complicated.
 
-*** Evil packages
+** Evil packages
 
 - [[https://github.com/noctuid/evil-guide][https://github.com/noctuid/evil-guide]]
 - [[https://github.com/emacs-evil/evil-collection][https://github.com/emacs-evil/evil-collection]]
@@ -401,7 +428,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
 
 #+end_src
 
-*** General
+** General
 
 [[https://github.com/noctuid/general.el][https://github.com/noctuid/general.el]]
 
@@ -478,7 +505,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
 
 #+end_src
 
-*** Avy
+** Avy
 
 The avy package provides some usefull movement commands.
 
@@ -495,7 +522,7 @@ The avy package provides some usefull movement commands.
 
 #+end_src
 
-*** Hydra
+** Hydra
 
 [[https://github.com/abo-abo/hydra][https://github.com/abo-abo/hydra]]
 
@@ -511,33 +538,6 @@ The avy package provides some usefull movement commands.
 
   (boring/leader-keys
     "ts" '(hydra-text-scale/body :which-key "scale text"))
-
-#+end_src
-
-** Help
-
-#+begin_src emacs-lisp
-
-  (use-package helpful
-    :custom
-    (counsel-describe-function-function #'helpful-callable)
-    (counsel-describe-variable-function #'helpful-variable)
-    :bind
-    ([remap describe-function] . counsel-describe-function)
-    ([remap describe-command]  . helpful-command)
-    ([remap describe-variable] . counsel-describe-variable)
-    ([remap describe-key]      . helpful-key))
-
-  (use-package which-key
-    :diminish which-key-mode
-    :config
-    ;; (setq which-key-show-early-on-C-h t)
-    ;; (setq which-key-idle-delay 100)
-    ;; (setq which-key-idle-secondary-delay 0.8)
-    ;; does not work with evil operators :(
-    ;; (setq which-key-show-operator-state-maps t)
-    (setq which-key-sort-order 'which-key-local-then-key-order)
-    (which-key-mode))
 
 #+end_src
 
