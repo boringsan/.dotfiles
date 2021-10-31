@@ -29,5 +29,6 @@
           (device
            (uuid "c66206f8-9d45-457c-a3d2-095141bcc109"
                  'ext4))
+          (flags '(no-atime))
           (type "ext4"))
          %base-file-systems)))

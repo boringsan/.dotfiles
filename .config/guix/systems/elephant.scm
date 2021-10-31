@@ -41,6 +41,7 @@
                 (list (file-system
                        (device (file-system-label "GuixSD"))
                        (mount-point "/")
+                       (flags '(no-atime))
                        (type "ext4"))
                       (file-system
                        (device (file-system-label "Home"))

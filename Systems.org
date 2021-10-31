@@ -292,6 +292,7 @@ Define the =base-operating-system= which will be inherited by all machine config
                   (list (file-system
                          (device (file-system-label "GuixSD"))
                          (mount-point "/")
+                         (flags '(no-atime))
                          (type "ext4"))
                         (file-system
                          (device (file-system-label "crypthome"))
@@ -345,6 +346,7 @@ Define the =base-operating-system= which will be inherited by all machine config
             (device
              (uuid "c66206f8-9d45-457c-a3d2-095141bcc109"
                    'ext4))
+            (flags '(no-atime))
             (type "ext4"))
            %base-file-systems)))
 
@@ -401,6 +403,7 @@ Define the =base-operating-system= which will be inherited by all machine config
                   (list (file-system
                          (device (file-system-label "GuixSD"))
                          (mount-point "/")
+                         (flags '(no-atime))
                          (type "ext4"))
                         (file-system
                          (device (file-system-label "Home"))
