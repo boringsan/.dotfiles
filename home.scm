@@ -148,10 +148,10 @@
 
  (packages
   (append %packages-shell
-      ;; %packages-desktop
-      ;; %packages-programming
-      %packages-fonts
-      %packages-emacs))
+          ;; %packages-desktop
+          ;; %packages-programming
+          %packages-fonts
+          %packages-emacs))
 
  (services
   (list
