@@ -17,7 +17,6 @@
   :hook
   ((text-mode . (lambda ()
                   (mixed-pitch-mode)
-                  (flyspell-mode) ; requires ispell installed
                   (setq-local line-spacing 0.2)))
    (prog-mode . (lambda ()
                   (display-line-numbers-mode t)
@@ -65,6 +64,14 @@
 
   ;; TODO put this in the c mode use-package
   (setq-default c-basic-offset 4))
+
+(use-package flyspell
+  :bind
+  (:map flyspell-mode-map
+        ("C-." . nil)
+        ("C-," . nil))
+  :hook
+  (text-mode . flyspell-mode)) ; requires ispell installed
 
 (use-package gcmh
   :demand t
@@ -288,6 +295,36 @@
   ;; (setq consult-project-root-function #'projectile-project-root)
 )
 
+(use-package embark
+  :ensure t
+
+  :bind
+  (("C-," . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :after (embark consult)
+  :demand t ; only necessary if you have the hook below
+  ;; if you want to have consult previews as you move around an
+  ;; auto-updating embark collect buffer
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
 (use-package evil
   :custom
   (evil-want-keybinding nil)
@@ -358,8 +395,6 @@
     "C-p"        'evil-previous-visual-line)
   (general-def
     :states      '(insert visual emacs)
-    "C-,"        'evil-delete-backward-char-and-join
-    "C-."        'evil-delete-char
     "C-j"        'evil-complete-previous
     "C-l"        'evil-complete-next
     "C-<return>" 'open-line)
@@ -548,7 +583,10 @@
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
   :bind (:map org-mode-map
-         ([tab] . org-cycle))
+              ([tab] . org-cycle) ; to distinguish from C-i
+              ("C-'" . nil) ; orig. org-cycle-agenda-files
+              ("C-," . nil) ; orig. org-cycle-agenda-files
+              )
   ;; http://ergoemacs.org/emacs/emacs_tabs_space_indentation_setup.html
   ;; (define-key org-mode-map (kbd "<tab>") #'org-cycle)
   :config
