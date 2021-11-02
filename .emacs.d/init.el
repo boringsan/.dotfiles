@@ -128,10 +128,9 @@
                      "\\.sub$"
                      "\\.srt$"
                      "\\.ass$"
-                     ;; ~/.emacs.d/**/*.el included
-                     ;; "/home/[a-z]\+/\\.[a-df-z]" ; configuration file should not be excluded
-                     (expand-file-name "~/personal/*\\.org")
-                     (expand-file-name "~/.emacs.d/elpa/*.el")
+                     "personal/.*\\.org$"
+                     ".emacs.d/elpa/.*\\.el$"
+                     ".emacs.d/bookmarks$"
                      )))
 
 (use-package keyfreq
