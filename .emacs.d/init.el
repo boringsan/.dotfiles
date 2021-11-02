@@ -1,16 +1,16 @@
 ;; -*- lexical-binding: t -*-
 
 (if init-file-debug
-	(setq use-package-verbose t
-		  use-package-expand-minimally nil
-		  debug-on-error t)
+    (setq use-package-verbose t
+          use-package-expand-minimally nil
+          debug-on-error t)
   (setq use-package-verbose nil
-		use-package-expand-minimally t))
+        use-package-expand-minimally t))
 
 (setq use-package-always-ensure nil
-	  use-package-minimum-reported-time 0
-	  use-package-enable-imenu-support t
-	  use-package-compute-statistics t)
+      use-package-minimum-reported-time 0
+      use-package-enable-imenu-support t
+      use-package-compute-statistics t)
 
 (use-package emacs
   :defer t
