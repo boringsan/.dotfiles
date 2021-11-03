@@ -433,8 +433,7 @@
   :if (display-graphic-p)
   :commands (all-the-icons-install-fonts)
   :custom
-  (all-the-icons-default-adjust 0.5)
-  (all-the-icons-scale-factor 0.9)
+  (all-the-icons-scale-factor 1.0)
   :init
   (unless (find-font (font-spec :name "all-the-icons"))
     (all-the-icons-install-fonts t)))
