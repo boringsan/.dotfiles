@@ -218,7 +218,7 @@ Emacs' builtin package manager ~package.el~ is used.
 #+begin_src emacs-lisp
 
   (use-package yasnippet
-    :config
+    :init
     (yas-global-mode))
 
 #+end_src

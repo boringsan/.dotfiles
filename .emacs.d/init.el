@@ -145,7 +145,7 @@
   (dashboard-setup-startup-hook))
 
 (use-package yasnippet
-  :config
+  :init
   (yas-global-mode))
 
 (use-package helpful
