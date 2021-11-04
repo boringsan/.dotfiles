@@ -65,6 +65,11 @@
   ;; TODO put this in the c mode use-package
   (setq-default c-basic-offset 4))
 
+(use-package gcmh
+  :demand t
+  :custom
+  (gcmh-mode t))
+
 (use-package flyspell
   :bind
   (:map flyspell-mode-map
@@ -72,11 +77,6 @@
         ("C-," . nil))
   :hook
   (text-mode . flyspell-mode)) ; requires ispell installed
-
-(use-package gcmh
-  :demand t
-  :custom
-  (gcmh-mode t))
 
 (use-package saveplace
   :defer t

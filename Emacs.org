@@ -90,6 +90,17 @@ This section contains global Emacs configuration; anything that's available at a
 
 #+end_src
 
+** GC Magic hack
+
+#+begin_src emacs-lisp
+
+  (use-package gcmh
+    :demand t
+    :custom
+    (gcmh-mode t))
+
+#+end_src
+
 ** Flyspell
 
 #+begin_src emacs-lisp
@@ -101,17 +112,6 @@ This section contains global Emacs configuration; anything that's available at a
           ("C-," . nil))
     :hook
     (text-mode . flyspell-mode)) ; requires ispell installed
-
-#+end_src
-
-** GC Magic hack
-
-#+begin_src emacs-lisp
-
-  (use-package gcmh
-    :demand t
-    :custom
-    (gcmh-mode t))
 
 #+end_src
 
