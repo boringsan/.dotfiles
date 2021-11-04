@@ -701,9 +701,6 @@
     (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
     (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
-  (use-package dired-single
-    :defer t)
-
   (use-package dired-ranger
     :defer t)
 
@@ -714,8 +711,6 @@
     :defer t)
 
   (evil-collection-define-key 'normal 'dired-mode-map
-    (kbd "DEL") 'dired-single-up-directory
-    "h" 'dired-single-up-directory
     "H" 'dired-omit-mode
     "l" 'dired-single-buffer
     "y" 'dired-ranger-copy
