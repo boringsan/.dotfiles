@@ -30,6 +30,7 @@
              "emacs-avy"
              "emacs-company"
              "emacs-consult"
+             "emacs-corfu"
              "emacs-counsel"
              "emacs-counsel-projectile"
              "emacs-dash"
@@ -38,11 +39,14 @@
              "emacs-doom-modeline"
              "emacs-doom-themes"
              "emacs-ediprolog"
+             "emacs-eglot"
+             "emacs-eldoc"
              "emacs-elm-mode"
              "emacs-embark"
              "emacs-ess"
              "emacs-evil"
              "emacs-evil-collection"
+             "emacs-expand-region"
              "emacs-flycheck"
              "emacs-gcmh"
              "emacs-general"
@@ -61,6 +65,7 @@
              "emacs-map"
              "emacs-marginalia"
              "emacs-mixed-pitch"
+             "emacs-modus-themes"
              "emacs-orderless"
              "emacs-org"
              "emacs-org-appear"
@@ -68,6 +73,7 @@
              "emacs-org-roam"
              "emacs-pdf-tools"
              "emacs-prescient"
+             "emacs-project"
              "emacs-projectile"
              "emacs-selectrum"
              "emacs-solaire-mode"
@@ -75,8 +81,7 @@
              "emacs-vterm"
              "emacs-which-key"
              "emacs-writeroom"
-             ;;"emacs-lsp-haskell"
-             ;;"emacs-mini-frame"
+             "emacs-xref"
              "emacs-yasnippet")))
 
 (define %packages-shell
@@ -84,25 +89,17 @@
        (list "cowsay"
              "curl"
              "fortune-mod"
+             "ispell"
              "lm-sensors"
              "myrepos"
              "nushell"
              "openssh"
+             "ripgrep"
              "smartmontools"
              "stow"
              "unzip"
              "xdg-utils"
              "zstd")))
-
-(define %packages-desktop
-  (map specification->package
-       (list "dconf-editor"
-             "deluge"
-             "gimp"
-             "gnome-tweaks"
-             "mpv"
-             "ungoogled-chromium"
-             "vlc")))
 
 (define %packages-programming
   (map specification->package
