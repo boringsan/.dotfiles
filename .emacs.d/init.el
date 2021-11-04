@@ -101,6 +101,9 @@
   (unless package-archive-contents
 	(package-refresh-contents)))
 
+(use-package expand-region
+  :bind ("M-," . er/expand-region))
+
 ;; previous value:
 ;; "/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|MERGEREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|\\(BRANCH\\|EDIT\\)_DESCRIPTION\\)\\'"
 (use-package recentf

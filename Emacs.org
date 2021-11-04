@@ -152,6 +152,15 @@ Emacs' builtin package manager ~package.el~ is used.
 
 #+end_src
 
+**  Expand region
+
+#+begin_src emacs-lisp
+
+  (use-package expand-region
+    :bind ("M-," . er/expand-region))
+
+#+end_src
+
 ** Recent files
 
 #+begin_src emacs-lisp
