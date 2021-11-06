@@ -811,6 +811,20 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
 #+end_src
 
+** Prolog
+
+#+begin_src emacs-lisp
+
+  (use-package prolog-mode
+    :defer t
+    :init
+    (setq prolog-system 'swi)  ; optional, the system you are using;
+    (setq auto-mode-alist (append '(("\\.pl\\'" . prolog-mode)
+                                    ("\\.m\\'" . mercury-mode))
+                                  auto-mode-alist)))
+
+#+end_src
+
 * Org mode
 
 #+begin_src emacs-lisp

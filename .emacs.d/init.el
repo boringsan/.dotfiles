@@ -579,6 +579,14 @@
   (setq elm-sort-imports-on-save t)
   (setq elm-tags-on-save t))
 
+(use-package prolog-mode
+  :defer t
+  :init
+  (setq prolog-system 'swi)  ; optional, the system you are using;
+  (setq auto-mode-alist (append '(("\\.pl\\'" . prolog-mode)
+                                  ("\\.m\\'" . mercury-mode))
+                                auto-mode-alist)))
+
 (defun efs/org-mode-setup ()
   (org-indent-mode)
   (visual-line-mode 1))
