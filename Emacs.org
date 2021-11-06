@@ -69,16 +69,15 @@ This section contains global Emacs configuration; anything that's available at a
     (tab-always-indent 'complete)
     (user-full-name "Erik Šabič")
     (user-mail-address "erik.sab@gmail.com")
+    :custom-face
+    (default ((t (:family "Iosevka Curly" :height 120))))
+    (variable-pitch ((t (:family "Source Serif Pro" :height 130))))
+    (fixed-pitch ((t (:inherit default))))
     :config
     (load custom-file)
     (show-paren-mode +1)
     (global-auto-revert-mode +1)          ; Revert buffers when the underlying file has changed
     (defvar boring/elephant-p (string-equal (system-name) "elephant"))
-
-    (set-face-attribute 'default nil
-                :font "Iosevka Curly-12")
-    (set-face-attribute 'variable-pitch nil
-                :font "Source Serif Pro-13")
 
     ;; suggested by lsp-mode manual
     ;; (setq gc-cons-threshold 10000000)
