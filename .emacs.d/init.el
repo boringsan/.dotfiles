@@ -26,7 +26,6 @@
   (auto-window-vscroll nil)
   (column-number-mode t)                ; Show column number in the modeline
   (confirm-nonexistent-file-or-buffer nil)
-  (global-auto-revert-mode t)           ; Revert buffers when the underlying file has changed
   (global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
   (indent-tabs-mode nil)
   (inhibit-startup-screen t)
@@ -34,7 +33,6 @@
   (menu-bar-mode nil)                   ; Disable the menu bar
   (require-final-newline t)
   (scroll-bar-adjust-thumb-portion nil)
-  (show-paren-mode t)                   ; Highlight matching parenthesis
   (tool-bar-mode nil)                   ; Disable the toolbar
   (tooltip-mode nil)                    ; Disable tooltips
   (read-answer-short t)
@@ -50,6 +48,8 @@
   (user-mail-address "erik.sab@gmail.com")
   :config
   (load custom-file)
+  (show-paren-mode +1)
+  (global-auto-revert-mode +1)          ; Revert buffers when the underlying file has changed
   (defvar boring/elephant-p (string-equal (system-name) "elephant"))
 
   (set-face-attribute 'default nil
