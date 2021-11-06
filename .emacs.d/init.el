@@ -44,6 +44,8 @@
   (scroll-step 1)
   (set-fringe-mode 16)                  ; Give some breathing room
   (tab-width 4)
+  (completion-cycle-threshold 3)
+  (tab-always-indent 'complete)
   (user-full-name "Erik Šabič")
   (user-mail-address "erik.sab@gmail.com")
   :config
@@ -171,13 +173,6 @@
 
 (use-package selectrum
   :init
-  (use-package orderless
-    :after selectrum
-    :custom
-    (completion-styles '(orderless))
-    ;; Optional performance optimization
-    ;; by highlighting only the visible candidates.
-    (orderless-skip-highlighting (lambda () selectrum-is-active)))
   (use-package prescient
     :defer t)
   :config
@@ -322,6 +317,42 @@
   ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package orderless
+  :after selectrum
+  :custom
+  (completion-styles '(orderless))
+  (completion-category-defaults nil)
+  ;; Optional performance optimization
+  ;; by highlighting only the visible candidates.
+  (orderless-skip-highlighting (lambda () selectrum-is-active)))
+
+(use-package corfu
+  ;; Optional customizations
+  ;; :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  ;; (corfu-auto t)                 ;; Enable auto completion
+  ;; (corfu-commit-predicate nil)   ;; Do not commit selected candidates on next input
+  ;; (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
+  ;; (corfu-quit-no-match t)        ;; Automatically quit if there is no match
+  ;; (corfu-echo-documentation nil) ;; Do not show documentation in the echo area
+
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  ;; :bind (:map corfu-map
+  ;;        ("TAB" . corfu-next)
+  ;;        ([tab] . corfu-next)
+  ;;        ("S-TAB" . corfu-previous)
+  ;;        ([backtab] . corfu-previous))
+
+  ;; You may want to enable Corfu only for certain modes.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.
+  ;; This is recommended since dabbrev can be used globally (M-/).
+  :init
+  (corfu-global-mode))
 
 (use-package evil
   :custom
@@ -503,15 +534,15 @@
 
 (use-package projectile
   :diminish projectile-mode
-  :config (projectile-mode +1)
-  :custom ((projectile-completion-system 'ivy))
+  :custom
+  (projectile-project-search-path '("~/projects"))
   :bind-keymap
   ("C-c p" . projectile-command-map)
-  :init
-  ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/projects")
-    (setq projectile-project-search-path '("~/projects")))
-  (setq projectile-switch-project-action #'projectile-dired))
+  :general
+  (boring/leader-keys
+    "p" '(projectile-command-map :which-key "Projectile"))
+  :config
+  (projectile-mode +1))
 
 (use-package lsp-mode
   :init
