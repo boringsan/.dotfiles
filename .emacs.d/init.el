@@ -433,15 +433,16 @@
     :global-prefix "C-SPC")
   (boring/leader-keys
     "SPC" '(evil-visual-line :which-key "visual line")
-    "p"  '(projectile-command-map :which-key "projectile")
-    "g"  '(magit-status :which-key "magit status")
-    "b"  '(projectile-switch-to-buffer :which-key "projectile buffers")
+    "t"  '(:ignore t :which-key "tabs/toggles")
     "s"  '(:ignore t :which-key "sorting")
     "ss" '(sort-lines :which-key "sort lines")
     "sp" '(sort-paragraphs :which-key "sort paragraphs")
-    "se" '(evil-ex-sort :which-key "evil ex sort")
-    "t"  '(:ignore t :which-key "tabs/toggles")
-    "tl" '(counsel-load-theme :which-key "choose theme")))
+    "se" '(evil-ex-sort :which-key "evil ex sort")))
+
+(use-package consult
+    :general
+    (boring/leader-keys
+      "tl" '(consult-theme :which-key "choose theme")))
 
 (use-package avy
   :custom
@@ -512,12 +513,13 @@
   (setq solaire-mode-auto-swap-bg nil)
   (solaire-global-mode +1))
 
-(boring/leader-keys
-  "w"  '(writeroom-mode :which-key "toggle writeroom mode"))
-
 (use-package writeroom-mode
   :diminish
-  :commands (writeroom-mode))
+  :defer t
+  :commands (writeroom-mode)
+  :general
+  (boring/leader-keys
+    "w"  '(writeroom-mode :which-key "toggle writeroom mode")))
 
 (use-package magit
   :ensure-system-package git
