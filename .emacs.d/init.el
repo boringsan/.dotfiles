@@ -546,33 +546,21 @@
   :config
   (projectile-mode +1))
 
-(use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  (use-package company
-    :defer t)
-  :hook ((haskell-mode . lsp-deffered)
-         (interactive-haskell-mode . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration)))
-  ;; :config
-  ;; (lsp-enable-which-key-integration t))
+(use-package eglot
+  :defer t)
 
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-
-(use-package lsp-haskell)
+(use-package eldoc
+  :defer t
+  :custom
+  (eldoc-echo-area-use-multiline-p nil))
 
 (use-package haskell-mode
-  ;; :hook ((haskell-mode . lsp-deferred)
-  ;;        (interactive-haskell-mode . lsp-deferred))
   :custom
-  ((haskell-mode-hook '(capitalized-words-mode
-                        ;; haskell-indent-mode
-                        haskell-indentation-mode
-                        interactive-haskell-mode
-                        flycheck-mode))
-   (haskell-process-type 'stack-ghci)))
+  (haskell-mode-hook '(capitalized-words-mode
+                       ;; haskell-indent-mode
+                       haskell-indentation-mode
+                       interactive-haskell-mode))
+  (haskell-process-type 'stack-ghci))
 
 (use-package elm-mode
   :config
