@@ -7,7 +7,7 @@
    '("7d708f0168f54b90fc91692811263c995bebb9f68b8b7525d0e2200da9bc903c" "990e24b406787568c592db2b853aa65ecc2dcd08146c0d22293259d400174e37" "a9a67b318b7417adbedaab02f05fa679973e9718d9d26075c6235b1f0db703c8" default))
  '(lsp-haskell-formatting-provider "brittany")
  '(package-selected-packages
-   '(embark monkeytype embark-consult magit-section lsp-haskell evil-surround emacsql-sqlite dashboard))
+   '(monkeytype))
  '(safe-local-variable-values
    '((eval modify-syntax-entry 43 "'")
      (eval modify-syntax-entry 36 "'")

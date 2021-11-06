@@ -20,7 +20,7 @@ This macro streamlines package configuration.
             use-package-expand-minimally nil
             debug-on-error t)
     (setq use-package-verbose nil
-          use-package-expand-minimally t))
+          use-package-expand-minimally nil))
 
   (setq use-package-always-ensure nil
         use-package-minimum-reported-time 0
@@ -36,7 +36,6 @@ This section contains global Emacs configuration; anything that's available at a
 #+begin_src emacs-lisp
 
   (use-package emacs
-    :defer t
     :hook
     ((text-mode . (lambda ()
                     (mixed-pitch-mode)
@@ -140,16 +139,18 @@ Emacs' builtin package manager ~package.el~ is used.
 #+begin_src emacs-lisp
 
   (use-package package
-	:config
-	(setq package-archives
-		  '(("gnu" . "https://elpa.gnu.org/packages/")
-			("nongnu" . "https://elpa.nongnu.org/nongnu/")
-			("melpa" . "https://melpa.org/packages/")
-			("orgmode" . "https://orgmode.org/elpa/")))
+    :disabled
+    :defer t
+    :config
+    (setq package-archives
+          '(("gnu" . "https://elpa.gnu.org/packages/")
+            ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+            ("melpa" . "https://melpa.org/packages/")
+            ("orgmode" . "https://orgmode.org/elpa/")))
 
-	(package-initialize)        ; Initialize package sources
-	(unless package-archive-contents
-	  (package-refresh-contents)))
+    (package-initialize)        ; Initialize package sources
+    (unless package-archive-contents
+      (package-refresh-contents)))
 
 #+end_src
 
@@ -216,7 +217,6 @@ Emacs' builtin package manager ~package.el~ is used.
 #+begin_src emacs-lisp
 
   (use-package dashboard
-    :ensure t
     :config
     (setq dashboard-center-content t)
     (dashboard-setup-startup-hook))
@@ -409,8 +409,6 @@ Enable richer annotations using the Marginalia package.
 #+begin_src emacs-lisp
 
   (use-package embark
-    :ensure t
-
     :bind
     (("C-," . embark-act)         ;; pick some comfortable binding
      ("C-;" . embark-dwim)        ;; good alternative: M-.
@@ -702,6 +700,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 #+begin_src emacs-lisp
 
   (use-package magit
+    :defer t
     :ensure-system-package git
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
@@ -759,6 +758,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 #+begin_src emacs-lisp
 
   (use-package haskell-mode
+    :defer t
     :custom
     (haskell-mode-hook '(capitalized-words-mode
                          ;; haskell-indent-mode
@@ -773,11 +773,13 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 #+begin_src emacs-lisp
 
   (use-package elm-mode
+    :defer t
+    :custom
+    (elm-package-json "elm.json")
+    (elm-sort-imports-on-save t)
+    (elm-tags-on-save t)
     :config
-    (setq elm-package-json "elm.json")
-    (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el")
-    (setq elm-sort-imports-on-save t)
-    (setq elm-tags-on-save t))
+    (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el"))
 
 #+end_src
 
@@ -917,7 +919,7 @@ More information can be found in the org roam [[https://www.orgroam.com/manual.h
   (use-package dired
     :ensure nil
     ;; :straight nil
-    :defer 1
+    :defer t
     :commands (dired dired-jump)
     :config
     (setq dired-listing-switches "-agho --group-directories-first"

@@ -5,7 +5,7 @@
           use-package-expand-minimally nil
           debug-on-error t)
   (setq use-package-verbose nil
-        use-package-expand-minimally t))
+        use-package-expand-minimally nil))
 
 (setq use-package-always-ensure nil
       use-package-minimum-reported-time 0
@@ -13,7 +13,6 @@
       use-package-compute-statistics t)
 
 (use-package emacs
-  :defer t
   :hook
   ((text-mode . (lambda ()
                   (mixed-pitch-mode)
@@ -91,16 +90,18 @@
   (savehist-mode t))
 
 (use-package package
+  :disabled
+  :defer t
   :config
   (setq package-archives
-		'(("gnu" . "https://elpa.gnu.org/packages/")
-		  ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-		  ("melpa" . "https://melpa.org/packages/")
-		  ("orgmode" . "https://orgmode.org/elpa/")))
+        '(("gnu" . "https://elpa.gnu.org/packages/")
+          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+          ("melpa" . "https://melpa.org/packages/")
+          ("orgmode" . "https://orgmode.org/elpa/")))
 
   (package-initialize)        ; Initialize package sources
   (unless package-archive-contents
-	(package-refresh-contents)))
+    (package-refresh-contents)))
 
 (use-package expand-region
   :bind ("M-," . er/expand-region))
@@ -143,7 +144,6 @@
   (keyfreq-autosave-mode 1))
 
 (use-package dashboard
-  :ensure t
   :config
   (setq dashboard-center-content t)
   (dashboard-setup-startup-hook))
@@ -288,8 +288,6 @@
 )
 
 (use-package embark
-  :ensure t
-
   :bind
   (("C-," . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;; good alternative: M-.
@@ -502,6 +500,7 @@
     "w"  '(writeroom-mode :which-key "toggle writeroom mode")))
 
 (use-package magit
+  :defer t
   :ensure-system-package git
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
@@ -535,6 +534,7 @@
   (eldoc-echo-area-use-multiline-p nil))
 
 (use-package haskell-mode
+  :defer t
   :custom
   (haskell-mode-hook '(capitalized-words-mode
                        ;; haskell-indent-mode
@@ -543,11 +543,13 @@
   (haskell-process-type 'stack-ghci))
 
 (use-package elm-mode
+  :defer t
+  :custom
+  (elm-package-json "elm.json")
+  (elm-sort-imports-on-save t)
+  (elm-tags-on-save t)
   :config
-  (setq elm-package-json "elm.json")
-  (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el")
-  (setq elm-sort-imports-on-save t)
-  (setq elm-tags-on-save t))
+  (setq elm-tags-regexps "/home/boring/.guix-profile/share/emacs/site-lisp/elm-tags.el"))
 
 (use-package prolog-mode
   :defer t
@@ -661,7 +663,7 @@
 (use-package dired
   :ensure nil
   ;; :straight nil
-  :defer 1
+  :defer t
   :commands (dired dired-jump)
   :config
   (setq dired-listing-switches "-agho --group-directories-first"
