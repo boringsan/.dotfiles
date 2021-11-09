@@ -4,6 +4,7 @@
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
 
+home.scm
 init.sh
 .gitignore
 .dir-locals.el
