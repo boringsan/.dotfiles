@@ -50,6 +50,8 @@
              "emacs-expand-region"
              "emacs-flycheck"
              "emacs-gcmh"
+             "emacs-geiser"
+             "emacs-geiser-guile"
              "emacs-general"
              "emacs-guix"
              "emacs-haskell-mode"
