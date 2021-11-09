@@ -65,6 +65,10 @@
   ;; TODO put this in the c mode use-package
   (setq-default c-basic-offset 4))
 
+(use-package elec-pair
+  :config
+  (electric-pair-mode +1))
+
 (use-package gcmh
   :demand t
   :custom
