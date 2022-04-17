@@ -35,7 +35,8 @@
          %boring-user
          %base-user-accounts))
 
- (swap-devices (list "/dev/sda2"))
+ (swap-devices (list (swap-space
+                      (target (file-system-label "SlowSwap")))))
 
  (file-systems (append
                 (list (file-system

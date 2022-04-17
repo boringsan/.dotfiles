@@ -21,6 +21,7 @@
   #:use-module (gnu packages file-systems)
   #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages gnome)
+  #:use-module (gnu packages gnome-xyz)
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages mtools)
@@ -89,8 +90,8 @@ EndSection
                    #:model "thinkpad"))
 
 (define-public %desktop-keyboard
-  (keyboard-layout "us" "colemak"
-                   #:options '("ctrl:swapcaps")))
+  (keyboard-layout "us" "colemak"))
+                   ;;#:options '("ctrl:swapcaps")))
 
 (define-public %boring-user
   (user-account
@@ -146,16 +147,14 @@ EndSection
              git
              guix-simplyblack-sddm-theme
              gvfs          ;; for user mounts
+             numix-gtk-theme
              myrepos
              nss-certs     ;; for HTTPS access
              ntfs-3g
              nushell
              openssh
              stow
-             sway
-             swaylock
              vim
-             waybar
              xf86-input-libinput)
             %base-packages))
 

@@ -65,6 +65,7 @@ Any configuration that derives from =base-operating-system= must invoke =guix sy
     #:use-module (gnu packages file-systems)
     #:use-module (gnu packages freedesktop)
     #:use-module (gnu packages gnome)
+    #:use-module (gnu packages gnome-xyz)
     #:use-module (gnu packages gtk)
     #:use-module (gnu packages linux)
     #:use-module (gnu packages mtools)
@@ -157,8 +158,8 @@ Define keyboards.
                      #:model "thinkpad"))
 
   (define-public %desktop-keyboard
-    (keyboard-layout "us" "colemak"
-                     #:options '("ctrl:swapcaps")))
+    (keyboard-layout "us" "colemak"))
+                     ;;#:options '("ctrl:swapcaps")))
 
 #+end_src
 
@@ -226,16 +227,14 @@ Define the =base-operating-system= which will be inherited by all machine config
                git
                guix-simplyblack-sddm-theme
                gvfs          ;; for user mounts
+               numix-gtk-theme
                myrepos
                nss-certs     ;; for HTTPS access
                ntfs-3g
                nushell
                openssh
                stow
-               sway
-               swaylock
                vim
-               waybar
                xf86-input-libinput)
               %base-packages))
 
@@ -252,7 +251,6 @@ Define the =base-operating-system= which will be inherited by all machine config
        %my-laptop-services))
      ;; Allow resolution of '.local' host names with mDNS
      (name-service-switch %mdns-host-lookup-nss)))
-
 #+end_src
 
 ** Machines
@@ -397,7 +395,8 @@ Define the =base-operating-system= which will be inherited by all machine config
            %boring-user
            %base-user-accounts))
 
-   (swap-devices (list "/dev/sda2"))
+   (swap-devices (list (swap-space
+                        (target (file-system-label "SlowSwap")))))
 
    (file-systems (append
                   (list (file-system
@@ -437,7 +436,6 @@ Define the =base-operating-system= which will be inherited by all machine config
                       `(("sftp" ,(file-append openssh "/libexec/sftp-server")))))))
      (modify-services %desktop-services
                       (delete gdm-service-type)))))
-
 #+end_src
 
 Useful links:
