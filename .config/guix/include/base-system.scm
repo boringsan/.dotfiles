@@ -90,7 +90,8 @@ EndSection
                    #:model "thinkpad"))
 
 (define-public %desktop-keyboard
-  (keyboard-layout "us" "colemak"))
+  ;; description: English (intl., with AltGr dead keys)
+  (keyboard-layout "us" "altgr-intl"))
                    ;;#:options '("ctrl:swapcaps")))
 
 (define-public %boring-user
