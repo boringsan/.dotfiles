@@ -133,9 +133,24 @@
      "fi")
    "\n" 'suffix))
 
+(define %activate-profiles
+  (string-join
+   '(""
+     "GUIX_EXTRA_PROFILES=\"$HOME/.guix-extra-profiles\""
+     "for i in $GUIX_EXTRA_PROFILES/*; do"
+     "     profile=$i/$(basename \"$i\")"
+     "    if [ -f \"$profile\"/etc/profile ]; then"
+     "        GUIX_PROFILE=\"$profile\""
+     "        . \"$GUIX_PROFILE\"/etc/profile"
+     "    fi"
+     "    unset profile"
+     "done")
+   "\n" 'suffix))
+
 (define %init-bashrc
   (string-join
-   '("case \"$-\" in"
+   '(""
+     "case \"$-\" in"
      "    *i*)"
      "	# Use nushell in place of bash"
      "	fortune | cowsay -W 54"
@@ -157,10 +172,13 @@
  (services
   (list
 
+   (simple-service 'home-shell-profile-extension
+                   home-shell-profile-service-type
+                   (list (plain-file "init-nix-environment" %init-nix-environment)
+                         (plain-file "activate-extra-profiles" %activate-profiles)))
+
    (service home-bash-service-type
         (home-bash-configuration
-         (bash-profile
-          (list (plain-file "init-nix-environment" %init-nix-environment)))
          (bashrc
           (list (plain-file "init-bashrc" %init-bashrc)))))
 
