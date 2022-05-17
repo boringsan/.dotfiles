@@ -4,7 +4,6 @@
              (gnu services)
              (gnu packages)
              (gnu packages admin)
-             (gnu packages emacs)
              (gnu packages shells)
              (guix packages)
              (srfi srfi-1)
@@ -13,79 +12,15 @@
              (guix gexp))
 
 (define %packages-fonts
-  (map specification->package
-       (list "font-abattis-cantarell"
-             "font-adobe-source-code-pro"
-             "font-adobe-source-sans-pro"
-             "font-adobe-source-serif-pro"
-             "font-iosevka"
-             "font-iosevka-curly"
-             "font-iosevka-curly-slab")))
-
-(define %packages-emacs
-  (map specification->package
-       (list "emacs"
-             "emacs-all-the-icons"
-             "emacs-all-the-icons-dired"
-             "emacs-avy"
-             "emacs-company"
-             "emacs-consult"
-             "emacs-corfu"
-             "emacs-counsel"
-             "emacs-counsel-projectile"
-             "emacs-dash"
-             "emacs-dashboard"
-             "emacs-dired-hacks"
-             "emacs-doom-modeline"
-             "emacs-doom-themes"
-             "emacs-ediprolog"
-             "emacs-eglot"
-             "emacs-eldoc"
-             "emacs-elm-mode"
-             "emacs-embark"
-             "emacs-ess"
-             "emacs-evil"
-             "emacs-evil-collection"
-             "emacs-evil-surround"
-             "emacs-expand-region"
-             "emacs-flycheck"
-             "emacs-gcmh"
-             "emacs-geiser"
-             "emacs-geiser-guile"
-             "emacs-general"
-             "emacs-guix"
-             "emacs-haskell-mode"
-             "emacs-helpful"
-             "emacs-hydra"
-             "emacs-ivy"
-             "emacs-ivy-rich"
-             "emacs-keyfreq"
-             "emacs-lsp-ivy"
-             "emacs-lsp-mode"
-             "emacs-lsp-treemacs"
-             "emacs-lsp-ui"
-             "emacs-magit"
-             "emacs-map"
-             "emacs-marginalia"
-             "emacs-mixed-pitch"
-             "emacs-modus-themes"
-             "emacs-orderless"
-             "emacs-org"
-             "emacs-org-appear"
-             "emacs-org-bullets"
-             "emacs-org-roam"
-             "emacs-pdf-tools"
-             "emacs-prescient"
-             "emacs-project"
-             "emacs-projectile"
-             "emacs-selectrum"
-             "emacs-solaire-mode"
-             "emacs-use-package"
-             "emacs-vterm"
-             "emacs-which-key"
-             "emacs-writeroom"
-             "emacs-xref"
-             "emacs-yasnippet")))
+  (map (lambda (font-name)
+         (specification->package (string-append "font-" font-name)))
+       (list "abattis-cantarell"
+             "adobe-source-code-pro"
+             "adobe-source-sans-pro"
+             "adobe-source-serif-pro"
+             "iosevka"
+             "iosevka-curly"
+             "iosevka-curly-slab")))
 
 (define %packages-shell
   (map specification->package
@@ -107,15 +42,30 @@
 
 (define %packages-programming
   (map specification->package
-       (list "gcc-toolchain"
+       (list "alsa-lib"                 ; amethyst
+             "cmake"
+             "clang"
+             "freetype"                 ; amethyst
+             "gcc-toolchain"
              "ghostscript"
              "graphviz"
              "guile"
+             "libx11"                   ; amethyst
+             "libxcb"                   ; amethyst
+             "libxcursor"               ; amethyst
+             "libxi"                    ; amethyst
+             "libxrandr"                ; amethyst
              "make"
+             "mercury"
+             "mesa"                     ; glium
+             "openssl"                  ; amethyst
+             "pkg-config"
              "python"
              "r"
              "r-igraph"
              "r-rgl"
+             "rust"
+             "rust-cargo"
              "swi-prolog"
              "texlive"
              "texlive-fonts-latex"
@@ -165,9 +115,9 @@
  (packages
   (append %packages-shell
           ;; %packages-desktop
-          ;; %packages-programming
-          %packages-fonts
-          %packages-emacs))
+          %packages-programming
+          %packages-fonts))
+          ;; %packages-emacs))
 
  (services
   (list
@@ -186,9 +136,9 @@
            home-environment-variables-service-type
            `(("CC" . "gcc")
              ("GUIX_PACKAGE_PATH" . "$HOME/.config/guix/include")
+             ("GUIX_EXTRA_PROFILES" . "$HOME/.guix-extra-profiles")
              ("LESS" . "\"--window=-3 --use-color --hilite-unread --status-column --raw-control-chars\"")
              ("PATH" . "$HOME/.cabal/bin:$HOME/.bin:$PATH")
-
-             ;; This is not always respected :(
+             ("GUILE_EXTENSIONS_PATH" . "$HOME/.guix-profile/lib")
              ("EDITOR" . "emacsclient")
              ("VISUAL" . "emacsclient"))))))
