@@ -11,7 +11,7 @@
              (ice-9 match)
              (guix gexp))
 
-(define %packages-fonts
+(define %font-packages
   (map (lambda (font-name)
          (specification->package (string-append "font-" font-name)))
        (list "abattis-cantarell"
@@ -22,57 +22,9 @@
              "iosevka-curly"
              "iosevka-curly-slab")))
 
-(define %packages-shell
+(define %shell-packages
   (map specification->package
-       (list "cowsay"
-             "curl"
-             "fortune-mod"
-             "ispell"
-             "lm-sensors"
-             "myrepos"
-             "nushell"
-             "openssh"
-             "pandoc"
-             "ripgrep"
-             "smartmontools"
-             "stow"
-             "unzip"
-             "xdg-utils"
-             "zstd")))
-
-(define %packages-programming
-  (map specification->package
-       (list "alsa-lib"                 ; amethyst
-             "cmake"
-             "clang"
-             "freetype"                 ; amethyst
-             "gcc-toolchain"
-             "ghostscript"
-             "graphviz"
-             "guile"
-             "libx11"                   ; amethyst
-             "libxcb"                   ; amethyst
-             "libxcursor"               ; amethyst
-             "libxi"                    ; amethyst
-             "libxrandr"                ; amethyst
-             "make"
-             "mercury"
-             "mesa"                     ; glium
-             "openssl"                  ; amethyst
-             "pkg-config"
-             "python"
-             "r"
-             "r-igraph"
-             "r-rgl"
-             "rust"
-             "rust-cargo"
-             "swi-prolog"
-             "texlive"
-             "texlive-fonts-latex"
-             "texlive-fourier"
-             "texlive-latex-base"
-             "texlive-mathdesign"
-             "texlive-utopia")))
+       (list "nushell")))
 
 (define %init-nix-environment
   (string-join
@@ -112,33 +64,31 @@
 
 (home-environment
 
- (packages
-  (append %packages-shell
-          ;; %packages-desktop
-          %packages-programming
-          %packages-fonts))
-          ;; %packages-emacs))
+ (packages (append %shell-packages
+                   %font-packages))
 
  (services
   (list
 
-   (simple-service 'home-shell-profile-extension
-                   home-shell-profile-service-type
-                   (list (plain-file "init-nix-environment" %init-nix-environment)
-                         (plain-file "activate-extra-profiles" %activate-profiles)))
-
    (service home-bash-service-type
-        (home-bash-configuration
-         (bashrc
-          (list (plain-file "init-bashrc" %init-bashrc)))))
+            (home-bash-configuration
+             (bashrc
+              (list (plain-file "init-bashrc" %init-bashrc)))))
 
-   (simple-service 'additional-env-vars-service
-           home-environment-variables-service-type
-           `(("CC" . "gcc")
-             ("GUIX_PACKAGE_PATH" . "$HOME/.config/guix/include")
-             ("GUIX_EXTRA_PROFILES" . "$HOME/.guix-extra-profiles")
-             ("LESS" . "\"--window=-3 --use-color --hilite-unread --status-column --raw-control-chars\"")
-             ("PATH" . "$HOME/.cabal/bin:$HOME/.bin:$PATH")
-             ("GUILE_EXTENSIONS_PATH" . "$HOME/.guix-profile/lib")
-             ("EDITOR" . "emacsclient")
-             ("VISUAL" . "emacsclient"))))))
+   (simple-service
+    'additional-profiles
+    home-shell-profile-service-type
+    (list (plain-file "activate-extra-profiles" %activate-profiles)
+          (plain-file "init-nix-environment" %init-nix-environment)))
+
+   (simple-service
+    'additional-env-vars-service
+    home-environment-variables-service-type
+    `(("CC" . "gcc")
+      ("GUIX_PACKAGE_PATH" . "$HOME/.config/guix/include")
+      ("GUIX_EXTRA_PROFILES" . "$HOME/.guix-extra-profiles")
+      ("LESS" . "\"--window=-3 --use-color --hilite-unread --status-column --raw-control-chars\"")
+      ("PATH" . "$HOME/.cabal/bin:$HOME/.bin:$PATH")
+      ("GUILE_EXTENSIONS_PATH" . "$HOME/.guix-profile/lib")
+      ("EDITOR" . "emacsclient")
+      ("VISUAL" . "emacsclient"))))))

@@ -1,17 +1,3 @@
-(use-modules (gnu packages emacs-xyz)
-             (guix transformations))
-
-(define transform
-  ;; The package transformation procedure.
-  (options->transformation
-   '((with-latest . "emacs-evil")
-     (with-latest . "emacs-annalist")
-     (with-latest . "emacs-list-utils")
-     (with-latest . "emacs-lispy"))))
-
-
-(concatenate-manifests
- (list
 
 (specifications->manifest
  '("emacs"
@@ -27,45 +13,49 @@
    "emacs-dashboard"
    "emacs-dired-hacks"
    "emacs-doom-modeline"
+   "emacs-doom-themes"
    "emacs-dumb-jump"
    "emacs-ediprolog"
    "emacs-eglot"
    "emacs-eldoc"
+   "emacs-elm-mode"
    "emacs-embark"
+   "emacs-ess"
+   "emacs-evil"
+   "emacs-evil-collection"
+   "emacs-evil-surround"
    "emacs-expand-region"
    "emacs-flycheck"
+   "emacs-flycheck-haskell"
    "emacs-gcmh"
    "emacs-gdscript-mode"
    "emacs-geiser"
    "emacs-geiser-guile"
+   "emacs-general"
    "emacs-god-mode"
+   "emacs-guix"
+   "emacs-haskell-mode"
+   "emacs-helpful"
    "emacs-hydra"
    "emacs-ivy"
    "emacs-ivy-rich"
    "emacs-keyfreq"
    "emacs-lsp-ivy"
-   "emacs-guix"
-   "emacs-doom-themes"
-
-   ;; "emacs-elm-mode"
-   ;; "emacs-ess"
-   ;; "emacs-flycheck-haskell"
-   ;; "emacs-haskell-mode"
-   ;; "emacs-lsp-mode"
-   ;; "emacs-lsp-treemacs"
-   ;; "emacs-lsp-ui"
-   ;; "emacs-magit"
-   ;; "emacs-org-roam"
-
+   "emacs-lsp-mode"
+   "emacs-lsp-treemacs"
+   "emacs-lsp-ui"
+   "emacs-magit"
    "emacs-map"
    "emacs-marginalia"
    "emacs-metal-mercury-mode"
    "emacs-mixed-pitch"
    "emacs-modus-themes"
+   "emacs-nix-mode"
    "emacs-orderless"
    "emacs-org"
    "emacs-org-appear"
    "emacs-org-bullets"
+   "emacs-org-roam"
    "emacs-pdf-tools"
    "emacs-prescient"
    "emacs-project"
@@ -79,10 +69,3 @@
    "emacs-writeroom"
    "emacs-xref"
    "emacs-yasnippet"))
-
-  (packages->manifest
-   (list (transform (specification->package "emacs-evil"))
-         (transform (specification->package "emacs-evil-surround"))
-         ;; (transform (specification->package "emacs-helpful"))
-         ;; (transform (specification->package "emacs-evil-collection"))
-         (transform (specification->package "emacs-general"))))))
