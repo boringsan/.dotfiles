@@ -8,4 +8,3 @@ home.scm
 init.sh
 .gitignore
 .dir-locals.el
-.config/guix/channels.scm
