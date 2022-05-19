@@ -1,8 +1,13 @@
-mkdir ~/.bin
-mkdir ~/.config
-mkdir ~/.config/guix
-mkdir ~/.emacs.d/
-mkdir ~/.stack
-mkdir ~/projects
+function mkopt() {
+    mkdir --parents --verbose $@
+}
+mkopt ~/.bin
+mkopt ~/.config/guix
+mkopt ~/.config/nushell
+mkopt ~/.emacs.d/
+mkopt ~/.stack
+mkopt ~/projects
 
-stow --dir=~/.dotfiles --target=~/
+cd $HOME/.dotfiles
+# stow --verbose=2 --dir=$HOME/.dotfiles --target=$HOME
+stow --verbose .
