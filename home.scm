@@ -88,7 +88,7 @@
       ("GUIX_PACKAGE_PATH" . "$HOME/.config/guix/include")
       ("GUIX_EXTRA_PROFILES" . "$HOME/.guix-extra-profiles")
       ("LESS" . "\"--window=-3 --use-color --hilite-unread --status-column --raw-control-chars\"")
-      ("PATH" . "$HOME/.cabal/bin:$HOME/.bin:$PATH")
+      ("PATH" . "$HOME/.cabal/bin:$HOME/.local/bin:$PATH")
       ("GUILE_EXTENSIONS_PATH" . "$HOME/.guix-profile/lib")
       ("EDITOR" . "emacsclient")
       ("VISUAL" . "emacsclient"))))))

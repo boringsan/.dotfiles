@@ -1,7 +1,8 @@
 function mkopt() {
     mkdir --parents --verbose $@
 }
-mkopt ~/.bin
+mkopt ~/.local/bin
+mkopt ~/.local/share/fonts
 mkopt ~/.config/guix
 mkopt ~/.config/nushell
 mkopt ~/.emacs.d/
