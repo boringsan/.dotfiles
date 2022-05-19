@@ -5,7 +5,7 @@
 (setq org-confirm-babel-evaluate nil)
 
 (let* ((dotfiles-path (expand-file-name "~/.dotfiles"))
-       (org-files (directory-files dotfiles-path nil "\\.org$")))
+   (org-files (directory-files dotfiles-path nil "\\.org$")))
 
   (defun dw/tangle-org-file (org-file)
     (message "\n\033[1;32mUpdating %s\033[0m\n" org-file)

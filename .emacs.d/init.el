@@ -25,7 +25,6 @@
   (auto-window-vscroll nil)
   (column-number-mode t)                ; Show column number in the modeline
   (confirm-nonexistent-file-or-buffer nil)
-  (global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
   (indent-tabs-mode nil)
   (inhibit-startup-screen t)
   (initial-scratch-message nil)
@@ -52,7 +51,6 @@
   :config
   (load custom-file)
   (show-paren-mode +1)
-  (global-auto-revert-mode +1)          ; Revert buffers when the underlying file has changed
   (defvar boring/elephant-p (string-equal (system-name) "elephant"))
 
   ;; suggested by lsp-mode manual
@@ -69,6 +67,23 @@
   :config
   (electric-pair-mode +1))
 
+(use-package autorevert
+  ;; Revert buffers when the underlying file has changed
+  :custom
+  (global-auto-revert-non-file-buffers t) ; Revert Dired and other buffers
+  :config
+  (global-auto-revert-mode +1))
+
+(use-package saveplace
+  :config
+  (save-place-mode +1))
+
+(use-package savehist
+  :custom
+  (history-delete-duplicates t)
+  :config
+  (savehist-mode +1))
+
 (use-package gcmh
   :demand t
   :custom
@@ -82,21 +97,10 @@
   :hook
   (text-mode . flyspell-mode)) ; requires ispell installed
 
-(use-package saveplace
-  :defer t
-  :custom
-  (save-place-mode t))
-
-(use-package savehist
-  :defer t
-  :custom
-  (history-delete-duplicates t)
-  (savehist-mode t))
-
 (use-package package
   :disabled
   :defer t
-  :config
+  :init
   (setq package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
           ("nongnu" . "https://elpa.nongnu.org/nongnu/")
@@ -268,7 +272,7 @@
    :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
-   consult--source-file consult--source-project-file consult--source-bookmark
+   consult--source-buffer consult--source-project-buffer consult--source-bookmark
    :preview-key (kbd "M-."))
 
   ;; Optionally configure the narrowing key.
@@ -530,13 +534,14 @@
   (projectile-mode +1))
 
 (use-package eglot
-  :defer t)
+  :commands eglot)
 
 (use-package eldoc
   :defer t
   :custom
   (eldoc-echo-area-use-multiline-p nil))
 
+(use-package flycheck-haskell)
 (use-package haskell-mode
   :defer t
   :custom
