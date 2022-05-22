@@ -6,11 +6,11 @@ function mkopt() {
     mkdir --parents --verbose $HOME/$1
 }
 
-mkopt .local/bin
-mkopt .local/share/fonts
+mkopt .config/emacs/
 mkopt .config/guix
 mkopt .config/nushell
-mkopt .emacs.d/
+mkopt .local/bin
+mkopt .local/share/fonts
 mkopt .stack
 mkopt projects
 

@@ -36,7 +36,7 @@
   (read-answer-short t)
   (global-hl-line-mode t)
 
-  (custom-file "~/.emacs.d/custom-set-variables.el")
+  (custom-file "~/.config/emacs/custom-set-variables.el")
   (scroll-conservatively 10000)
   (scroll-step 1)
   (set-fringe-mode 16)                  ; Give some breathing room
@@ -63,6 +63,10 @@
 
   ;; TODO put this in the c mode use-package
   (setq-default c-basic-offset 4))
+
+(use-package page-break-lines
+  :custom
+  (page-break-lines-mode t))
 
 (use-package elec-pair
   :config
@@ -189,23 +193,6 @@
   (prescient-persist-mode +1)
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)
   (selectrum-mode +1))
-
-(use-package vertico
-  :init
-  (vertico-mode)
-
-  ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
-
-  ;; Show more candidates
-  ;; (setq vertico-count 20)
-
-  ;; Grow and shrink the Vertico minibuffer
-  ;; (setq vertico-resize t)
-
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
-  )
 
 (use-package marginalia
   :config
@@ -343,14 +330,13 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package orderless
-  ;; :after selectrum
+  :after selectrum
   :custom
-  (completion-styles '(orderless basic))
+  (completion-styles '(orderless))
   (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles partial-completion)))))
   ;; Optional performance optimization
   ;; by highlighting only the visible candidates.
-  ;; (orderless-skip-highlighting (lambda () selectrum-is-active)))
+  (orderless-skip-highlighting (lambda () selectrum-is-active)))
 
 (use-package corfu
   ;; Optional customizations
@@ -526,10 +512,6 @@
   :general
   (boring/leader-keys
     "w"  '(writeroom-mode :which-key "toggle writeroom mode")))
-
-(use-package page-break-lines
-  :custom
-  (page-break-lines-mode t))
 
 (use-package magit
   :defer t

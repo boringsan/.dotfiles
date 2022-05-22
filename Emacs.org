@@ -1,6 +1,6 @@
 #+TITLE: Emacs Configuration
 #+STARTUP: content
-#+PROPERTY: header-args:emacs-lisp :tangle ".emacs.d/init.el"
+#+PROPERTY: header-args:emacs-lisp :tangle ".config/emacs/init.el"
 
 * Basic settings
 
