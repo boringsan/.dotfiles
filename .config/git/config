@@ -6,3 +6,9 @@
 [credential]
 	helper = store --file ~/.git-credentials
 [core]
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = smtp.gmail.com
+	smtpUser = erik.sab@gmail.com
+	smtpServerPort = 587
+	suppresscc = self
