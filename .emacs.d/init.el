@@ -34,6 +34,7 @@
   (tool-bar-mode nil)                   ; Disable the toolbar
   (tooltip-mode nil)                    ; Disable tooltips
   (read-answer-short t)
+  (global-hl-line-mode t)
 
   (custom-file "~/.emacs.d/custom-set-variables.el")
   (scroll-conservatively 10000)
@@ -179,6 +180,7 @@
   (which-key-mode))
 
 (use-package selectrum
+  :disabled
   :init
   (use-package prescient
     :defer t)
@@ -187,6 +189,23 @@
   (prescient-persist-mode +1)
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)
   (selectrum-mode +1))
+
+(use-package vertico
+  :init
+  (vertico-mode)
+
+  ;; Different scroll margin
+  ;; (setq vertico-scroll-margin 0)
+
+  ;; Show more candidates
+  ;; (setq vertico-count 20)
+
+  ;; Grow and shrink the Vertico minibuffer
+  ;; (setq vertico-resize t)
+
+  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+  ;; (setq vertico-cycle t)
+  )
 
 (use-package marginalia
   :config
@@ -324,13 +343,14 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package orderless
-  :after selectrum
+  ;; :after selectrum
   :custom
-  (completion-styles '(orderless))
+  (completion-styles '(orderless basic))
   (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
   ;; Optional performance optimization
   ;; by highlighting only the visible candidates.
-  (orderless-skip-highlighting (lambda () selectrum-is-active)))
+  ;; (orderless-skip-highlighting (lambda () selectrum-is-active)))
 
 (use-package corfu
   ;; Optional customizations
