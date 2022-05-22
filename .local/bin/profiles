@@ -1,0 +1,82 @@
+
+set -euo pipefail
+IFS=$'\n\t'
+
+GREEN='\033[1;32m'
+RED='\033[1;31m'
+WHITE='\033[1;37m'
+NC='\033[0m'
+
+if [[ ! -d "$GUIX_EXTRA_PROFILES" ]]; then
+    echo -e "\n${RED}Error:${NC}"
+    echo "   GUIX_EXTRA_PROFILES must point to a directory."
+    echo "   See $0 --help"
+    echo ""
+    exit 1
+fi
+
+DIR="$HOME/.config/guix/manifests"
+if [[ -d "$XDG_CONFIG_HOME" ]]; then
+    DIR="$XDG_CONFIG_HOME/guix/manifests"
+fi
+
+for profile in $DIR/*.scm; do
+    basename=${profile##*/}
+    available_profiles+=( ${basename%.scm} )
+done
+
+action=${1:-list}
+[[ $# -gt 0 ]] && shift 1
+
+if [[ $# -eq 0 ]]; then
+    profiles=(${available_profiles[@]})
+else
+    profiles=($*)
+    for profile in ${profiles[@]}; do
+        # is $profile available
+        err=1
+        for available in ${available_profiles[@]}; do
+            if [[ $profile == $available ]]; then
+                err=0
+            fi
+        done
+        if [[ $err -eq 1 ]]; then
+            echo -e "\n${RED}Error:${NC}"
+            echo -e "   ${WHITE}$profile.scm${NC} does not exist in ${WHITE}$DIR${NC}.\n"
+            echo -e "Available manifests:${GREEN}" ${available_profiles[@]} "${NC}\n"
+            exit 1
+        fi
+    done
+fi
+
+function echo_action() {
+    echo $1 "profiles:" ${profiles[@]}
+}
+if [[ $action == list ]]; then
+    echo -e "\nAvailable manifests in ${WHITE}$DIR${NC}:"
+    echo -e "   ${GREEN}" ${available_profiles[@]} "${NC}"
+elif [[ $action == upgrade ]]; then
+    for profile in ${profiles[@]}; do
+        echo -e "\nUpgrading ${WHITE}$profile${NC}...\n"
+        guix package -p "$GUIX_EXTRA_PROFILES/$profile/$profile" -m "$DIR/$profile.scm"
+    done
+elif [[ $action == activate ]]; then
+    echo_action "Activating"
+elif [[ $action == deactivate ]]; then
+    echo_action "Deactivating"
+elif [[ $action == "--help" ]]; then
+    echo -e "Upgrade or activate GUIX profiles."
+    echo -e "Looks for manifest files in\n"
+    echo "   \$XDG_CONFIG_HOME/guix/manifests or"
+    echo "   \$HOME/.config/guix/manifests"
+    echo -e "\nand instructs GUIX to install them in the \$GUIX_EXTRA_PROFILES directory."
+    echo -e "\n${WHITE}Usage${NC}:"
+    echo -e "   $0 action [profiles]"
+    echo -e "\n${WHITE}Actions${NC}:"
+    echo -e "   upgrade, activate, weather, paths"
+    echo
+else
+    echo "Urecognized action."
+    echo "See $0 --help"
+    exit 1
+fi
