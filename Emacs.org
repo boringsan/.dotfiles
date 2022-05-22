@@ -59,7 +59,9 @@ This section contains global Emacs configuration; anything that's available at a
     (read-answer-short t)
     (global-hl-line-mode t)
 
-    (custom-file "~/.emacs.d/custom-set-variables.el")
+    (custom-file
+     (string-join (list (getenv "XDG_CONFIG_HOME")
+                        "/emacs/custom-set-variables.el")))
     (scroll-conservatively 10000)
     (scroll-step 1)
     (set-fringe-mode 16)                  ; Give some breathing room
@@ -114,7 +116,7 @@ This section contains global Emacs configuration; anything that's available at a
 #+begin_src emacs-lisp
 
   (use-package gcmh
-    :demand t
+    :diminish
     :custom
     (gcmh-mode t))
 
@@ -293,6 +295,7 @@ A new completion system has emerged in the Emacs community, consisting of severa
   (use-package vertico
     :init
     (vertico-mode)
+    (vertico-reverse-mode)
 
     ;; Different scroll margin
     ;; (setq vertico-scroll-margin 0)
@@ -302,11 +305,7 @@ A new completion system has emerged in the Emacs community, consisting of severa
 
     ;; Grow and shrink the Vertico minibuffer
     ;; (setq vertico-resize t)
-
-    ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-    ;; (setq vertico-cycle t)
     )
-
 #+end_src
 
 ** Marginalia
@@ -525,27 +524,29 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
 #+begin_src emacs-lisp
 
   (use-package evil
+    :disabled
     :custom
     (evil-want-keybinding nil)
     (evil-want-C-w-delete nil)
     (evil-wnat-fine-undo t)
     (evil-echo-state nil)
-    :config
+    :init
     (evil-mode 1)
     (evil-set-initial-state 'bufler-list-mode 'emacs)
     (evil-set-initial-state 'messages-buffer-mode 'normal)
     (evil-set-initial-state 'dashboard-mode 'normal))
 
   (use-package evil-surround
+    :disabled
     :after evil
     :config
     (global-evil-surround-mode 1))
 
   (use-package evil-collection
+    :disabled
     :after evil
     :config
     (evil-collection-init))
-
 #+end_src
 
 ** General
@@ -555,6 +556,7 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
 #+begin_src emacs-lisp
 
   (use-package general
+    :disabled
     :after evil
     :config
     (require 'which-key)
@@ -617,10 +619,10 @@ I'm using ~evil-mode~ for modal editing. Since I type with the *colemak* keyboar
       "sp" '(sort-paragraphs :which-key "sort paragraphs")
       "se" '(evil-ex-sort :which-key "evil ex sort")))
 
-  (use-package consult
-      :general
-      (boring/leader-keys
-        "tl" '(consult-theme :which-key "choose theme")))
+  (use-package consult)
+      ;; :general
+      ;; (boring/leader-keys
+      ;;   "tl" '(consult-theme :which-key "choose theme")))
 
 #+end_src
 
@@ -632,12 +634,12 @@ The avy package provides some usefull movement commands.
 
   (use-package avy
     :custom
-    ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u)))
-    :config
-    (general-def
-      :states 'motion
-      "/"          'evil-avy-goto-word-1
-      "?"          'evil-avy-goto-line))
+    ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u))))
+    ;; :config
+    ;; (general-def
+    ;;   :states 'motion
+    ;;   "/"          'evil-avy-goto-word-1
+    ;;   "?"          'evil-avy-goto-line))
 
 #+end_src
 
@@ -655,8 +657,8 @@ The avy package provides some usefull movement commands.
     ("p" text-scale-decrease "out")
     ("RET" nil "finished" :exit t))
 
-  (boring/leader-keys
-    "ts" '(hydra-text-scale/body :which-key "scale text"))
+  ;; (boring/leader-keys
+  ;;   "ts" '(hydra-text-scale/body :which-key "scale text"))
 
 #+end_src
 
@@ -688,6 +690,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 #+begin_src emacs-lisp
 
   (use-package doom-modeline
+    :disabled
     :init (doom-modeline-mode 1)
     :custom
     (doom-modeline-height 24)
@@ -700,9 +703,9 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     ;; doom-Iosvkem doom-monokai-classic
     (if boring/elephant-p
         (load-theme 'doom-peacock)
-      (load-theme 'doom-old-hope t))
-    (doom-themes-visual-bell-config)
-    (doom-themes-org-config))
+      (load-theme 'doom-old-hope t)))
+    ;; (doom-themes-visual-bell-config)
+    ;; (doom-themes-org-config))
 
 #+end_src
 
@@ -712,11 +715,10 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
   (use-package writeroom-mode
     :diminish
-    :defer t
-    :commands (writeroom-mode)
-    :general
-    (boring/leader-keys
-      "w"  '(writeroom-mode :which-key "toggle writeroom mode")))
+    :commands (writeroom-mode))
+    ;; :general
+    ;; (boring/leader-keys
+    ;;   "w"  '(writeroom-mode :which-key "toggle writeroom mode")))
 
 #+end_src
 
@@ -725,6 +727,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 #+begin_src emacs-lisp
 
   (use-package page-break-lines
+    :diminish
     :custom
     (page-break-lines-mode t))
 
@@ -740,15 +743,15 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     :defer t
     :ensure-system-package git
     :custom
-    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-    :config
-    (general-def
-      :states '(normal visual)
-      :keymaps 'magit-mode-map
-      "n" 'evil-next-visual-line
-      "j" 'evil-backward-char
-      "p" 'evil-previous-visual-line
-      "h" 'evil-search-next))
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+    ;; :config
+    ;; (general-def
+    ;;   :states '(normal visual)
+    ;;   :keymaps 'magit-mode-map
+    ;;   "n" 'evil-next-visual-line
+    ;;   "j" 'evil-backward-char
+    ;;   "p" 'evil-previous-visual-line
+    ;;   "h" 'evil-search-next))
 
 #+end_src
 
@@ -762,9 +765,9 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     (projectile-project-search-path '("~/projects"))
     :bind-keymap
     ("C-c p" . projectile-command-map)
-    :general
-    (boring/leader-keys
-      "p" '(projectile-command-map :which-key "Projectile"))
+    ;; :general
+    ;; (boring/leader-keys
+    ;;   "p" '(projectile-command-map :which-key "Projectile"))
     :config
     (projectile-mode +1))
 
@@ -794,7 +797,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
 #+begin_src emacs-lisp
 
-  (use-package flycheck-haskell)
+  ;; (use-package flycheck-haskell)
   (use-package haskell-mode
     :defer t
     :custom
@@ -881,12 +884,12 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     (boring/org-font-setup)
     (require 'org-habit)
     (add-to-list 'org-modules 'org-habit)
-    (general-translate-key 'normal 'outline-mode-map
-      "C-n" "C-j"
-      "C-p" "C-k"
-      "M-j" "M-h"
-      "M-n" "M-j"
-      "M-p" "M-k")
+    ;; (general-translate-key 'normal 'outline-mode-map
+    ;;   "C-n" "C-j"
+    ;;   "C-p" "C-k"
+    ;;   "M-j" "M-h"
+    ;;   "M-n" "M-j"
+    ;;   "M-p" "M-k")
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((haskell . t)))
@@ -935,18 +938,17 @@ More information can be found in the org roam [[https://www.orgroam.com/manual.h
     ;; (org-roam-db-autosync-mode)
     :bind (:map org-mode-map
            ("C-c n i"   . org-roam-node-insert)))
-
-  (boring/leader-keys
-    "n"     '(:ignore t :which-key "org-roam")
-    "n f"   '(org-roam-node-find :which-key "find node")
-    "n n"   '(org-roam-capture :which-key "capture node")
-    "n c"   '(org-roam-dailies-capture-today :which-key "daily: capture today")
-    "n C r" '(org-roam-dailies-capture-tomorrow :which-key "daily: capture tomorrow")
-    "n d"   '(org-roam-dailies-goto-date :which-key "daily: goto data")
-    "n t"   '(org-roam-dailies-goto-today :which-key "daily: goto today")
-    "n y"   '(org-roam-dailies-goto-yesterday :which-key "daily: goto yesterday")
-    "n r"   '(org-roam-dailies-goto-tomorrow :which-key "daily: goto tomorrow")
-    "n g"   '(org-roam-graph :which-key "graph"))
+  ;; (boring/leader-keys
+  ;;   "n"     '(:ignore t :which-key "org-roam")
+  ;;   "n f"   '(org-roam-node-find :which-key "find node")
+  ;;   "n n"   '(org-roam-capture :which-key "capture node")
+  ;;   "n c"   '(org-roam-dailies-capture-today :which-key "daily: capture today")
+  ;;   "n C r" '(org-roam-dailies-capture-tomorrow :which-key "daily: capture tomorrow")
+  ;;   "n d"   '(org-roam-dailies-goto-date :which-key "daily: goto data")
+  ;;   "n t"   '(org-roam-dailies-goto-today :which-key "daily: goto today")
+  ;;   "n y"   '(org-roam-dailies-goto-yesterday :which-key "daily: goto yesterday")
+  ;;   "n r"   '(org-roam-dailies-goto-tomorrow :which-key "daily: goto tomorrow")
+  ;;   "n g"   '(org-roam-graph :which-key "graph"))
 
 #+end_src
 
@@ -978,8 +980,8 @@ More information can be found in the org roam [[https://www.orgroam.com/manual.h
                 (interactive)
                 (dired-omit-mode 1)
                 (dired-hide-details-mode 1)
-                (s-equals? "/gnu/store/" (expand-file-name default-directory))
-                (all-the-icons-dired-mode 1)
+                ;; (s-equals? "/gnu/store/" (expand-file-name default-directory))
+                ;; (all-the-icons-dired-mode 1)
                 (hl-line-mode 1)))
 
     (use-package dired-rainbow
@@ -1013,13 +1015,13 @@ More information can be found in the org roam [[https://www.orgroam.com/manual.h
       :defer t)
 
     (use-package dired-hacks-utils
-      :defer t)
+      :defer t))
 
-    (evil-collection-define-key 'normal 'dired-mode-map
-      "H" 'dired-omit-mode
-      "l" 'dired-single-buffer
-      "y" 'dired-ranger-copy
-      "X" 'dired-ranger-move
-      "k" 'dired-ranger-paste))
+    ;; (evil-collection-define-key 'normal 'dired-mode-map
+    ;;   "H" 'dired-omit-mode
+    ;;   "l" 'dired-single-buffer
+    ;;   "y" 'dired-ranger-copy
+    ;;   "X" 'dired-ranger-move
+    ;;   "k" 'dired-ranger-paste))
 
 #+end_src

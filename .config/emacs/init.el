@@ -36,7 +36,9 @@
   (read-answer-short t)
   (global-hl-line-mode t)
 
-  (custom-file "~/.config/emacs/custom-set-variables.el")
+  (custom-file
+   (string-join (list (getenv "XDG_CONFIG_HOME")
+                      "/emacs/custom-set-variables.el")))
   (scroll-conservatively 10000)
   (scroll-step 1)
   (set-fringe-mode 16)                  ; Give some breathing room
@@ -64,10 +66,6 @@
   ;; TODO put this in the c mode use-package
   (setq-default c-basic-offset 4))
 
-(use-package page-break-lines
-  :custom
-  (page-break-lines-mode t))
-
 (use-package elec-pair
   :config
   (electric-pair-mode +1))
@@ -90,7 +88,7 @@
   (savehist-mode +1))
 
 (use-package gcmh
-  :demand t
+  :diminish
   :custom
   (gcmh-mode t))
 
@@ -193,6 +191,21 @@
   (prescient-persist-mode +1)
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)
   (selectrum-mode +1))
+
+(use-package vertico
+  :init
+  (vertico-mode)
+  (vertico-reverse-mode)
+
+  ;; Different scroll margin
+  ;; (setq vertico-scroll-margin 0)
+
+  ;; Show more candidates
+  ;; (setq vertico-count 20)
+
+  ;; Grow and shrink the Vertico minibuffer
+  ;; (setq vertico-resize t)
+  )
 
 (use-package marginalia
   :config
@@ -330,13 +343,14 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package orderless
-  :after selectrum
+  ;; :after selectrum
   :custom
-  (completion-styles '(orderless))
+  (completion-styles '(orderless basic))
   (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
   ;; Optional performance optimization
   ;; by highlighting only the visible candidates.
-  (orderless-skip-highlighting (lambda () selectrum-is-active)))
+  ;; (orderless-skip-highlighting (lambda () selectrum-is-active)))
 
 (use-package corfu
   ;; Optional customizations
@@ -366,28 +380,32 @@
   (corfu-global-mode))
 
 (use-package evil
+  :disabled
   :custom
   (evil-want-keybinding nil)
   (evil-want-C-w-delete nil)
   (evil-wnat-fine-undo t)
   (evil-echo-state nil)
-  :config
+  :init
   (evil-mode 1)
   (evil-set-initial-state 'bufler-list-mode 'emacs)
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package evil-surround
+  :disabled
   :after evil
   :config
   (global-evil-surround-mode 1))
 
 (use-package evil-collection
+  :disabled
   :after evil
   :config
   (evil-collection-init))
 
 (use-package general
+  :disabled
   :after evil
   :config
   (require 'which-key)
@@ -450,19 +468,19 @@
     "sp" '(sort-paragraphs :which-key "sort paragraphs")
     "se" '(evil-ex-sort :which-key "evil ex sort")))
 
-(use-package consult
-    :general
-    (boring/leader-keys
-      "tl" '(consult-theme :which-key "choose theme")))
+(use-package consult)
+    ;; :general
+    ;; (boring/leader-keys
+    ;;   "tl" '(consult-theme :which-key "choose theme")))
 
 (use-package avy
   :custom
-  ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u)))
-  :config
-  (general-def
-    :states 'motion
-    "/"          'evil-avy-goto-word-1
-    "?"          'evil-avy-goto-line))
+  ((avy-keys '(?d ?h ?o ?r ?i ?s ?e ?k ?a ?t ?l ?n ?u))))
+  ;; :config
+  ;; (general-def
+  ;;   :states 'motion
+  ;;   "/"          'evil-avy-goto-word-1
+  ;;   "?"          'evil-avy-goto-line))
 
 (use-package hydra)
 
@@ -472,8 +490,8 @@
   ("p" text-scale-decrease "out")
   ("RET" nil "finished" :exit t))
 
-(boring/leader-keys
-  "ts" '(hydra-text-scale/body :which-key "scale text"))
+;; (boring/leader-keys
+;;   "ts" '(hydra-text-scale/body :which-key "scale text"))
 
 (use-package all-the-icons
   :if (display-graphic-p)
@@ -489,6 +507,7 @@
   :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package doom-modeline
+  :disabled
   :init (doom-modeline-mode 1)
   :custom
   (doom-modeline-height 24)
@@ -501,31 +520,35 @@
   ;; doom-Iosvkem doom-monokai-classic
   (if boring/elephant-p
       (load-theme 'doom-peacock)
-    (load-theme 'doom-old-hope t))
-  (doom-themes-visual-bell-config)
-  (doom-themes-org-config))
+    (load-theme 'doom-old-hope t)))
+  ;; (doom-themes-visual-bell-config)
+  ;; (doom-themes-org-config))
 
 (use-package writeroom-mode
   :diminish
-  :defer t
-  :commands (writeroom-mode)
-  :general
-  (boring/leader-keys
-    "w"  '(writeroom-mode :which-key "toggle writeroom mode")))
+  :commands (writeroom-mode))
+  ;; :general
+  ;; (boring/leader-keys
+  ;;   "w"  '(writeroom-mode :which-key "toggle writeroom mode")))
+
+(use-package page-break-lines
+  :diminish
+  :custom
+  (page-break-lines-mode t))
 
 (use-package magit
   :defer t
   :ensure-system-package git
   :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-  :config
-  (general-def
-    :states '(normal visual)
-    :keymaps 'magit-mode-map
-    "n" 'evil-next-visual-line
-    "j" 'evil-backward-char
-    "p" 'evil-previous-visual-line
-    "h" 'evil-search-next))
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+  ;; :config
+  ;; (general-def
+  ;;   :states '(normal visual)
+  ;;   :keymaps 'magit-mode-map
+  ;;   "n" 'evil-next-visual-line
+  ;;   "j" 'evil-backward-char
+  ;;   "p" 'evil-previous-visual-line
+  ;;   "h" 'evil-search-next))
 
 (use-package projectile
   :diminish projectile-mode
@@ -533,9 +556,9 @@
   (projectile-project-search-path '("~/projects"))
   :bind-keymap
   ("C-c p" . projectile-command-map)
-  :general
-  (boring/leader-keys
-    "p" '(projectile-command-map :which-key "Projectile"))
+  ;; :general
+  ;; (boring/leader-keys
+  ;;   "p" '(projectile-command-map :which-key "Projectile"))
   :config
   (projectile-mode +1))
 
@@ -547,7 +570,7 @@
   :custom
   (eldoc-echo-area-use-multiline-p nil))
 
-(use-package flycheck-haskell)
+;; (use-package flycheck-haskell)
 (use-package haskell-mode
   :defer t
   :custom
@@ -616,12 +639,12 @@
   (boring/org-font-setup)
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
-  (general-translate-key 'normal 'outline-mode-map
-    "C-n" "C-j"
-    "C-p" "C-k"
-    "M-j" "M-h"
-    "M-n" "M-j"
-    "M-p" "M-k")
+  ;; (general-translate-key 'normal 'outline-mode-map
+  ;;   "C-n" "C-j"
+  ;;   "C-p" "C-k"
+  ;;   "M-j" "M-h"
+  ;;   "M-n" "M-j"
+  ;;   "M-p" "M-k")
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((haskell . t)))
@@ -662,18 +685,17 @@
   ;; (org-roam-db-autosync-mode)
   :bind (:map org-mode-map
          ("C-c n i"   . org-roam-node-insert)))
-
-(boring/leader-keys
-  "n"     '(:ignore t :which-key "org-roam")
-  "n f"   '(org-roam-node-find :which-key "find node")
-  "n n"   '(org-roam-capture :which-key "capture node")
-  "n c"   '(org-roam-dailies-capture-today :which-key "daily: capture today")
-  "n C r" '(org-roam-dailies-capture-tomorrow :which-key "daily: capture tomorrow")
-  "n d"   '(org-roam-dailies-goto-date :which-key "daily: goto data")
-  "n t"   '(org-roam-dailies-goto-today :which-key "daily: goto today")
-  "n y"   '(org-roam-dailies-goto-yesterday :which-key "daily: goto yesterday")
-  "n r"   '(org-roam-dailies-goto-tomorrow :which-key "daily: goto tomorrow")
-  "n g"   '(org-roam-graph :which-key "graph"))
+;; (boring/leader-keys
+;;   "n"     '(:ignore t :which-key "org-roam")
+;;   "n f"   '(org-roam-node-find :which-key "find node")
+;;   "n n"   '(org-roam-capture :which-key "capture node")
+;;   "n c"   '(org-roam-dailies-capture-today :which-key "daily: capture today")
+;;   "n C r" '(org-roam-dailies-capture-tomorrow :which-key "daily: capture tomorrow")
+;;   "n d"   '(org-roam-dailies-goto-date :which-key "daily: goto data")
+;;   "n t"   '(org-roam-dailies-goto-today :which-key "daily: goto today")
+;;   "n y"   '(org-roam-dailies-goto-yesterday :which-key "daily: goto yesterday")
+;;   "n r"   '(org-roam-dailies-goto-tomorrow :which-key "daily: goto tomorrow")
+;;   "n g"   '(org-roam-graph :which-key "graph"))
 
 (use-package dired
   :ensure nil
@@ -699,8 +721,8 @@
               (interactive)
               (dired-omit-mode 1)
               (dired-hide-details-mode 1)
-              (s-equals? "/gnu/store/" (expand-file-name default-directory))
-              (all-the-icons-dired-mode 1)
+              ;; (s-equals? "/gnu/store/" (expand-file-name default-directory))
+              ;; (all-the-icons-dired-mode 1)
               (hl-line-mode 1)))
 
   (use-package dired-rainbow
@@ -734,11 +756,11 @@
     :defer t)
 
   (use-package dired-hacks-utils
-    :defer t)
+    :defer t))
 
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "H" 'dired-omit-mode
-    "l" 'dired-single-buffer
-    "y" 'dired-ranger-copy
-    "X" 'dired-ranger-move
-    "k" 'dired-ranger-paste))
+  ;; (evil-collection-define-key 'normal 'dired-mode-map
+  ;;   "H" 'dired-omit-mode
+  ;;   "l" 'dired-single-buffer
+  ;;   "y" 'dired-ranger-copy
+  ;;   "X" 'dired-ranger-move
+  ;;   "k" 'dired-ranger-paste))
