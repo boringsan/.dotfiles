@@ -695,6 +695,16 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
 #+end_src
 
+** Page break lines
+
+#+begin_src emacs-lisp
+
+  (use-package page-break-lines
+    :custom
+    (page-break-lines-mode t))
+
+#+end_src
+
 * Programming
 
 ** Magit git interface

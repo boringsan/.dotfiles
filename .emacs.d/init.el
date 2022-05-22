@@ -507,6 +507,10 @@
   (boring/leader-keys
     "w"  '(writeroom-mode :which-key "toggle writeroom mode")))
 
+(use-package page-break-lines
+  :custom
+  (page-break-lines-mode t))
+
 (use-package magit
   :defer t
   :ensure-system-package git
