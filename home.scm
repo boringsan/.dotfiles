@@ -1,15 +1,19 @@
-(use-modules (gnu home)
-             (gnu home services)
-             (gnu home services shells)
-             (gnu services)
-             (gnu packages)
-             (gnu packages admin)
-             (gnu packages shells)
-             (guix packages)
-             (srfi srfi-1)
-             (srfi srfi-26)
-             (ice-9 match)
-             (guix gexp))
+(use-modules
+ (gnu home services shells)
+ (gnu home services shepherd)
+ (gnu home services)
+ (gnu home)
+ (gnu packages)
+ (gnu services)
+ ;; (gnu packages admin)
+ ;; (gnu packages shells)
+ ;; (gnu packages emacs)
+ ;; (gnu home-services emacs)
+ ;; (guix packages)
+ ;; (srfi srfi-1)
+ ;; (srfi srfi-26)
+ ;; (ice-9 match)
+ (guix gexp))
 
 (define %font-packages
   (map (lambda (font-name)
@@ -18,13 +22,23 @@
              "adobe-source-code-pro"
              "adobe-source-sans-pro"
              "adobe-source-serif-pro"
+             "fira-code"
+             "fira-mono"
+             "fira-sans"
+             "google-roboto"
              "iosevka"
              "iosevka-curly"
              "iosevka-curly-slab")))
 
 (define %shell-packages
   (map specification->package
-       (list "nushell")))
+       (list "shepherd"
+             "nushell")))
+
+(define %start-shepherd
+  (string-join
+   '("shepherd")
+   "\n" 'suffix))
 
 (define %init-nix-environment
   (string-join
@@ -52,35 +66,33 @@
 (define %init-bashrc
   (string-join
    '(""
-     "case \"$-\" in"
-     "    *i*)"
-     "	# Use nushell in place of bash"
-     "	fortune | cowsay -W 54"
-     "	uname -a"
-     "	SHELL=$(which nu)"
-     "	[ -x $SHELL ] && exec nu"
-     "esac")
+     "# Use nushell instead of bash, unless $SHELL is already nushell."
+     "if [[ $- == *i* && $SHELL != *nu ]]; then"
+     "  fortune | cowsay -W 54"
+     "  uname -a"
+     "  SHELL=$(which nu)"
+     "  [ -x $SHELL ] && exec nu"
+     "fi")
    "\n" 'suffix))
 
 (home-environment
-
- (packages (append %shell-packages
-                   %font-packages))
-
+ (packages
+  (append %shell-packages
+          %font-packages))
  (services
   (list
-
+   ;; (service home-shepherd-service-type)
    (service home-bash-service-type
             (home-bash-configuration
              (bashrc
-              (list (plain-file "init-bashrc" %init-bashrc)))))
-
+              (list
+               (plain-file "init-bashrc" %init-bashrc)))))
    (simple-service
     'additional-profiles
     home-shell-profile-service-type
-    (list (plain-file "activate-extra-profiles" %activate-profiles)
-          (plain-file "init-nix-environment" %init-nix-environment)))
-
+    (list
+     (plain-file "activate-extra-profiles" %activate-profiles)
+     (plain-file "init-nix-environment" %init-nix-environment)))
    (simple-service
     'additional-env-vars-service
     home-environment-variables-service-type
