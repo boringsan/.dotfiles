@@ -52,4 +52,6 @@ alias ll = ls --long
 alias la = ls -a
 def df [] {sys | get disks | select mount total free}
 def "guix package -I" [] {^guix package -I | from tsv -n | rename name version output path}
-def mkcd [string dir] {mkdir $dir; cd $dir}
+def mkcd [dir: string] {mkdir $dir; cd $dir}
+def ed [file: path] { emacsclient -n $file }
+def lessgz [file: path] { gunzip -c $file | less }
