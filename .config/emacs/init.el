@@ -1,4 +1,11 @@
 ;; -*- lexical-binding: t -*-
+;; TODO: put this into a use-package stanza
+
+(with-eval-after-load 'geiser-guile
+  (add-to-list 'geiser-guile-load-path "~/src/guix"))
+
+(with-eval-after-load 'yasnippet
+  (add-to-list 'yas-snippet-dirs "~/src/guix/etc/snippets"))
 
 (if init-file-debug
     (setq use-package-verbose t
@@ -12,17 +19,29 @@
       use-package-enable-imenu-support t
       use-package-compute-statistics t)
 
+;; add visual pulse when changing focus, like beacon but built-in
+;; from from https://karthinks.com/software/batteries-included-with-emacs/
+(defun pulse-line (&rest _)
+  "Pulse the current line."
+  (pulse-momentary-highlight-one-line (point)))
+
+(dolist (command '(scroll-up-command scroll-down-command
+                                     recenter-top-bottom other-window))
+  (advice-add command :after #'pulse-line))
+
 (use-package emacs
+
   :hook
-  ((text-mode . (lambda ()
-                  (mixed-pitch-mode)
-                  (setq-local line-spacing 0.2)))
-   (prog-mode . (lambda ()
-                  (display-line-numbers-mode t)
-                  (setq-local line-spacing 0.1)))
+  ((prog-mode . (lambda ()
+                  (display-line-numbers-mode t)))
+   (text-mode . (lambda ()
+                  (mixed-pitch-mode t)))
    (before-save . delete-trailing-whitespace))
+
   :custom
-  (auto-window-vscroll nil)
+  (line-spacing 0.05)
+  (mixed-pitch-set-height t)
+
   (column-number-mode t)                ; Show column number in the modeline
   (confirm-nonexistent-file-or-buffer nil)
   (indent-tabs-mode nil)
@@ -35,22 +54,52 @@
   (tooltip-mode nil)                    ; Disable tooltips
   (read-answer-short t)
   (global-hl-line-mode t)
+  (repeat-mode t)
 
-  (custom-file
-   (string-join (list (getenv "XDG_CONFIG_HOME")
-                      "/emacs/custom-set-variables.el")))
+  (use-short-answers t)
+  (confirm-kill-processes nil)
+  (truncate-string-ellipsis "…")
+  (help-window-select t)
+  (completions-detailed t)
+  (kill-do-not-save-duplicates t)
+  (delete-selection-mode t)
+
   (scroll-conservatively 10000)
-  (scroll-step 1)
+  ;; (scroll-step 1)
+  (fast-but-imprecise-scrolling t)
+  (auto-window-vscroll nil)
+  (scroll-preserve-screen-position t)
+  (scroll-margin 5)
+
   (set-fringe-mode 16)                  ; Give some breathing room
   (tab-width 4)
   (completion-cycle-threshold 3)
   (tab-always-indent 'complete)
   (user-full-name "Erik Šabič")
   (user-mail-address "erik.sab@gmail.com")
+  (custom-file
+   (string-join (list (getenv "XDG_CONFIG_HOME")
+          "/emacs/custom-set-variables.el")))
+
+  (large-file-warning-threshold 30000000)
   :custom-face
-  (default ((t (:family "Iosevka Curly" :height 120))))
-  (variable-pitch ((t (:family "Source Serif Pro" :height 130))))
-  (fixed-pitch ((t (:inherit default))))
+  (default
+    ((t (:family "Iosevka Curly Slab"
+                 :height 120))))
+  (variable-pitch
+   ((t (:family "Source Serif Pro"
+                :height 138))))
+
+  :init
+  (unbind-key "C-z")          ; suspend frame
+  (unbind-key "C-x C-z")      ; suspend frame
+  (bind-keys ("C-S-v" . scroll-down))
+
+  ;; TODOs
+  ;; smart-[begining, end]-of-line
+  ;; (set-register ?z '(file . "/gd/gnu/emacs/19.0/src/ChangeLog"))
+  ;; (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+
   :config
   (load custom-file)
   (show-paren-mode +1)
@@ -86,6 +135,8 @@
   (history-delete-duplicates t)
   :config
   (savehist-mode +1))
+
+
 
 (use-package gcmh
   :diminish
@@ -160,6 +211,7 @@
   (dashboard-setup-startup-hook))
 
 (use-package yasnippet
+  :diminish
   :init
   (yas-global-mode))
 
@@ -198,13 +250,13 @@
   (vertico-reverse-mode)
 
   ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
+  (setq vertico-scroll-margin 2)
 
   ;; Show more candidates
-  ;; (setq vertico-count 20)
+  (setq vertico-count 12)
 
   ;; Grow and shrink the Vertico minibuffer
-  ;; (setq vertico-resize t)
+  (setq vertico-resize t)
   )
 
 (use-package marginalia
@@ -517,12 +569,15 @@
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  ;; doom-Iosvkem doom-monokai-classic
+  ;; Good themes:
+  ;; doom-Iosvkem
+  ;; doom-monokai-classic
+  ;; doom-peacock
   (if boring/elephant-p
-      (load-theme 'doom-peacock)
+      (load-theme 'doom-gruvbox t)
     (load-theme 'doom-old-hope t)))
   ;; (doom-themes-visual-bell-config)
-  ;; (doom-themes-org-config))
+  ;; (doom-themes-org-config)
 
 (use-package writeroom-mode
   :diminish
@@ -535,6 +590,10 @@
   :diminish
   :custom
   (page-break-lines-mode t))
+
+(use-package popper
+  :custom
+  (popper-mode t))
 
 (use-package magit
   :defer t
@@ -551,7 +610,7 @@
   ;;   "h" 'evil-search-next))
 
 (use-package projectile
-  :diminish projectile-mode
+  :disabled
   :custom
   (projectile-project-search-path '("~/projects"))
   :bind-keymap
@@ -611,14 +670,14 @@
                                     "•"))))))
 
   ;; Set faces for heading levels
-  (dolist (face '((outline-1 . 1.3)
-                  (outline-2 . 1.2)
-                  (outline-3 . 1.13)
-                  (outline-4 . 1.1)
-                  (outline-5 . 1.1)
-                  (outline-6 . 1.1)
-                  (outline-7 . 1.1)
-                  (outline-8 . 1.1)))
+  (dolist (face '((outline-1 . 1.2)
+                  (outline-2 . 1.15)
+                  (outline-3 . 1.1)
+                  (outline-4 . 1.05)
+                  (outline-5 . 1.05)
+                  (outline-6 . 1.05)
+                  (outline-7 . 1.05)
+                  (outline-8 . 1.05)))
     (set-face-attribute (car face) nil
                         :weight 'bold
                         :height (cdr face)))
@@ -628,11 +687,13 @@
 
 (use-package org
   :hook (org-mode . efs/org-mode-setup)
-  :bind (:map org-mode-map
-              ([tab] . org-cycle) ; to distinguish from C-i
-              ("C-'" . nil) ; orig. org-cycle-agenda-files
-              ("C-," . nil) ; orig. org-cycle-agenda-files
-              )
+  :bind (([f5] . org-capture)
+         ([f6] . org-agenda-list)
+         :map org-mode-map
+         ([tab] . org-cycle) ; to distinguish from C-i
+         ("C-'" . nil) ; orig. org-cycle-agenda-files
+         ("C-," . nil) ; orig. org-cycle-agenda-files
+         )
   ;; http://ergoemacs.org/emacs/emacs_tabs_space_indentation_setup.html
   ;; (define-key org-mode-map (kbd "<tab>") #'org-cycle)
   :config
@@ -656,6 +717,12 @@
   (org-log-into-drawer t)
   (org-agenda-diary-file "~/personal/diary.org")
   (org-agenda-files '("~/personal/")))
+
+;; (use-package mixed-pitch
+;;   :custom
+;;   (mixed-pitch-set-heigth t))
+;;   ;; :config
+;;   ;; (setq mixed-pitch-set-heigth t))
 
 (use-package org-bullets
   :after org
@@ -719,7 +786,7 @@
   (add-hook 'dired-mode-hook
             (lambda ()
               (interactive)
-              (dired-omit-mode 1)
+              ;; (dired-omit-mode 1)
               (dired-hide-details-mode 1)
               ;; (s-equals? "/gnu/store/" (expand-file-name default-directory))
               ;; (all-the-icons-dired-mode 1)
@@ -764,3 +831,4 @@
   ;;   "y" 'dired-ranger-copy
   ;;   "X" 'dired-ranger-move
   ;;   "k" 'dired-ranger-paste))
+(put 'upcase-region 'disabled nil)
