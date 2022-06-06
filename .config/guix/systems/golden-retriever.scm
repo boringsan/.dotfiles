@@ -16,7 +16,9 @@
    (bootloader grub-bootloader)
    (targets (list "/dev/sda"))
    (keyboard-layout keyboard-layout)))
- (swap-devices (list "/dev/sda1"))
+ (swap-devices (list (swap-space
+                      (target (uuid "c3da67eb-4e2c-4b5e-ac61-7f0f2f27f28b")))))
+                      ;; (target (file-system-label "SlowSwap")))))
  (file-systems
   (cons* (file-system
           (mount-point "/home")
