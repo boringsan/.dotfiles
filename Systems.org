@@ -351,31 +351,39 @@ Define the =base-operating-system= which will be inherited by all machine config
 
 #+begin_src scheme :tangle .config/guix/systems/elephant.scm
 
-    ;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please
-    ;; see commentary there.
+  ;; NOTE: This file is generated from ~/.dotfiles/System.org.  Please
+  ;; see commentary there.
 
   (define-module (elephant)
     #:use-module (base-system)
-    #:use-module (guix transformations)
-    #:use-module (gnu)
-    #:use-module (gnu packages linux)
-    #:use-module (gnu packages version-control)
-    #:use-module (gnu packages ssh)
-    #:use-module (gnu packages xorg)
     #:use-module (gnu packages gnome)
+    #:use-module (gnu packages linux)
+    #:use-module (gnu packages ssh)
+    #:use-module (gnu packages version-control)
+    #:use-module (gnu packages xorg)
     #:use-module (gnu services desktop)
+    #:use-module (gnu services certbot)
     #:use-module (gnu services linux)
-    #:use-module (gnu services ssh)
-    #:use-module (gnu services sddm)
-    #:use-module (gnu services xorg)
     #:use-module (gnu services nix)
-    #:use-module (nongnu system linux-initrd)
+    #:use-module (gnu services sddm)
+    #:use-module (gnu services ssh)
+    #:use-module (gnu services web)
+    #:use-module (gnu services xorg)
+    #:use-module (gnu)
+    #:use-module (guix transformations)
     #:use-module (nongnu packages linux)
-    #:use-module (nongnu packages nvidia))
+    #:use-module (nongnu packages nvidia)
+    #:use-module (nongnu system linux-initrd))
 
   (define transform
     (options->transformation
      '((with-graft . "mesa=nvda"))))
+
+  (define %nginx-deploy-hook
+    (program-file
+     "nginx-deploy-hook"
+     #~(let ((pid (call-with-input-file "/var/run/nginx/pid" read)))
+         (kill pid SIGHUP))))
 
   (operating-system
    (inherit base-operating-system)
@@ -455,6 +463,30 @@ Define the =base-operating-system= which will be inherited by all machine config
                        ;; (server (transform xorg-server))
                        ;; (drivers '("nvidia"))
                        (keyboard-layout %desktop-keyboard)))))
+           (service certbot-service-type
+                    (certbot-configuration
+                     (email "erik.sab@gmail.com")
+                     (certificates
+                      (list
+                       (certificate-configuration
+                        (domains '("boring.si"
+                                   "t.boring.si"
+                                   "s.boring.si"
+                                   "cpp.boring.si"))
+                        (deploy-hook %nginx-deploy-hook))))))
+           (service nginx-service-type
+                    (nginx-configuration
+                     (extra-content "ssl_session_cache shared:SSL:10m; ssl_session_timeout 10m;")
+                     (server-blocks
+                      (list (nginx-server-configuration
+                             (server-name '("boring.si"))
+                             (listen '("443 ssl"))
+                             (root "/srv/http/boring.si")
+                             (raw-content '("keepalive_timeout 70;")
+                             (ssl-certificate
+                              "/etc/letsencrypt/live/boring.si/fullchain.pem")
+                             (ssl-certificate-key
+                              "/etc/letsencrypt/live/boring.si/privkey.pem"))))))
            (service openssh-service-type
                     (openssh-configuration
                      (password-authentication? #f)
