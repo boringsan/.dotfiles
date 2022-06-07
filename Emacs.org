@@ -55,6 +55,8 @@ This macro streamlines package configuration.
 
 #+begin_src emacs-lisp
 
+  (require 'subr-x)
+
   (use-package emacs
 
     :hook
@@ -110,11 +112,9 @@ This macro streamlines package configuration.
     (large-file-warning-threshold 30000000)
     :custom-face
     (default
-      ((t (:family "Iosevka Curly Slab"
-                   :height 120))))
+      ((t (:height 120))))
     (variable-pitch
-     ((t (:family "Source Serif Pro"
-                  :height 138))))
+     ((t (:height 138))))
 
     :init
     (unbind-key "C-z")          ; suspend frame
@@ -567,7 +567,7 @@ Enable richer annotations using the Marginalia package.
     ;; Recommended: Enable Corfu globally.
     ;; This is recommended since dabbrev can be used globally (M-/).
     :init
-    (corfu-global-mode))
+    (global-corfu-mode))
 
 #+end_src
 

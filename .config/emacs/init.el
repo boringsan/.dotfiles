@@ -29,6 +29,8 @@
                                      recenter-top-bottom other-window))
   (advice-add command :after #'pulse-line))
 
+(require 'subr-x)
+
 (use-package emacs
 
   :hook
@@ -84,11 +86,9 @@
   (large-file-warning-threshold 30000000)
   :custom-face
   (default
-    ((t (:family "Iosevka Curly Slab"
-                 :height 120))))
+    ((t (:height 120))))
   (variable-pitch
-   ((t (:family "Source Serif Pro"
-                :height 138))))
+   ((t (:height 138))))
 
   :init
   (unbind-key "C-z")          ; suspend frame
@@ -429,7 +429,7 @@
   ;; Recommended: Enable Corfu globally.
   ;; This is recommended since dabbrev can be used globally (M-/).
   :init
-  (corfu-global-mode))
+  (global-corfu-mode))
 
 (use-package evil
   :disabled
@@ -831,4 +831,3 @@
   ;;   "y" 'dired-ranger-copy
   ;;   "X" 'dired-ranger-move
   ;;   "k" 'dired-ranger-paste))
-(put 'upcase-region 'disabled nil)
