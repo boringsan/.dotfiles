@@ -136,6 +136,16 @@
   :config
   (savehist-mode +1))
 
+(use-package tramp
+  :init
+  ;; (add-to-list 'tramp-remote-path "/run/current-system/profile/bin"))
+  (connection-local-set-profile-variables
+   'guix-system
+   '((tramp-remote-path . (tramp-own-remote-path))))
+  (connection-local-set-profiles
+   '(:application tramp :protocol "ssh" :user "boring")
+   'guix-system))
+
 
 
 (use-package gcmh
