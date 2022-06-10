@@ -32,6 +32,7 @@
    "emacs-geiser"
    "emacs-geiser-guile"
    "emacs-general"
+   "emacs-go-mode"
    "emacs-god-mode"
    "emacs-guix"
    ;; "emacs-haskell-mode"

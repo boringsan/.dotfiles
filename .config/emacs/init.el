@@ -639,6 +639,13 @@
   :custom
   (eldoc-echo-area-use-multiline-p nil))
 
+(defun go-compile ()
+  (interactive)
+  (compile "go run ."))
+(use-package go
+  :bind (:map go-mode-map
+              ("C-c C-c" . go-compile)))
+
 ;; (use-package flycheck-haskell)
 (use-package haskell-mode
   :defer t

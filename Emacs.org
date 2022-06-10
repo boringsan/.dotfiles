@@ -876,6 +876,17 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
 #+end_src
 
+** Go
+#+begin_src emacs-lisp
+  (defun go-compile ()
+    (interactive)
+    (compile "go run ."))
+  (use-package go
+    :bind (:map go-mode-map
+                ("C-c C-c" . go-compile)))
+
+#+end_src
+
 ** Haskell
 
 #+begin_src emacs-lisp
