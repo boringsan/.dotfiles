@@ -206,12 +206,9 @@ This macro streamlines package configuration.
 
 ** Package management
 
-Emacs' builtin package manager ~package.el~ is used.
-
 #+begin_src emacs-lisp
 
   (use-package package
-    :disabled
     :defer t
     :init
     (setq package-archives
@@ -284,6 +281,25 @@ Emacs' builtin package manager ~package.el~ is used.
 
 #+end_src
 
+** Crux
+
+#+begin_src emacs-lisp
+
+  (use-package crux
+    :bind
+    ([remap move-beginning-of-line] . crux-move-beginning-of-line)
+    ;; ("C-c o" . crux-open-with)
+    ;; ([(shift return)] . crux-smart-open-line)
+    ;; ("s-r" . crux-recentf-find-file)
+    ;; ("C-<backspace>" . crux-kill-line-backwards)
+    ([remap kill-line] . crux-smart-kill-line)
+    ("M-o" . crux-smart-open-line-above)
+    ("C-o" . crux-smart-open-line)
+    ("C-^" . crux-top-join-line)
+    ([remap kill-whole-line] . crux-kill-whole-line))
+
+#+end_src
+
 ** Dashboard
 
 #+begin_src emacs-lisp
@@ -332,12 +348,6 @@ Emacs' builtin package manager ~package.el~ is used.
 
 * Completion
 
-A new completion system has emerged in the Emacs community, consisting of several packages:
-
-- Selectrum, Vertico
-- Consult
-- Embark
-- Marginalia
 - filtering and sorting: Prescient, Orderless
 
 ** Selectrum
@@ -817,6 +827,13 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 #+end_src
 
 * Programming
+** Restclient
+#+begin_src emacs-lisp
+
+  (use-package restclient
+    :ensure t)
+
+#+end_src
 
 ** Magit git interface
 
@@ -878,6 +895,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
 ** Go
 #+begin_src emacs-lisp
+
   (defun go-compile ()
     (interactive)
     (compile "go run ."))

@@ -9,6 +9,7 @@
    "emacs-corfu"
    "emacs-counsel"
    "emacs-counsel-projectile"
+   "emacs-crux"
    "emacs-dash"
    "emacs-dashboard"
    "emacs-dired-hacks"

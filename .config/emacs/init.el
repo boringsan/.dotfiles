@@ -162,7 +162,6 @@
   (text-mode . flyspell-mode)) ; requires ispell installed
 
 (use-package package
-  :disabled
   :defer t
   :init
   (setq package-archives
@@ -214,6 +213,19 @@
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
+
+(use-package crux
+  :bind
+  ([remap move-beginning-of-line] . crux-move-beginning-of-line)
+  ;; ("C-c o" . crux-open-with)
+  ;; ([(shift return)] . crux-smart-open-line)
+  ;; ("s-r" . crux-recentf-find-file)
+  ;; ("C-<backspace>" . crux-kill-line-backwards)
+  ([remap kill-line] . crux-smart-kill-line)
+  ("M-o" . crux-smart-open-line-above)
+  ("C-o" . crux-smart-open-line)
+  ("C-^" . crux-top-join-line)
+  ([remap kill-whole-line] . crux-kill-whole-line))
 
 (use-package dashboard
   :config
@@ -604,6 +616,9 @@
 (use-package popper
   :custom
   (popper-mode t))
+
+(use-package restclient
+  :ensure t)
 
 (use-package magit
   :defer t
