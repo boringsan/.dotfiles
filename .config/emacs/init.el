@@ -613,6 +613,11 @@
   :custom
   (page-break-lines-mode t))
 
+(use-package goggles
+  :hook ((prog-mode text-mode) . goggles-mode)
+  :config
+  (setq-default goggles-pulse t)) ;; set to nil to disable pulsing
+
 (use-package popper
   :custom
   (popper-mode t))

@@ -35,6 +35,7 @@
    "emacs-general"
    "emacs-go-mode"
    "emacs-god-mode"
+   "emacs-goggles"
    "emacs-guix"
    ;; "emacs-haskell-mode"
    "emacs-helpful"

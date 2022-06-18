@@ -816,6 +816,19 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
 #+end_src
 
+** Goggles
+
+[[https://github.com/minad/goggles]]
+
+#+begin_src emacs-lisp
+
+  (use-package goggles
+    :hook ((prog-mode text-mode) . goggles-mode)
+    :config
+    (setq-default goggles-pulse t)) ;; set to nil to disable pulsing
+
+#+end_src
+
 ** Popper
 
 #+begin_src emacs-lisp
