@@ -67,11 +67,11 @@
   (string-join
    '(""
      "# Use nushell instead of bash, unless $SHELL is already nushell."
-     "if [[ $- == *i* && $SHELL != *nu ]]; then"
-     "  fortune | cowsay -W 54"
-     "  uname -a"
-     "  SHELL=$(which nu)"
-     "  [ -x $SHELL ] && exec nu"
+     ;; "echo $SHELL $SSH_CLIENT"
+     ;; "if [ -n \"$SSH_CLIENT\" ] || [ -n \"$SSH_TTY\" ]; then"
+     "if [[ $INSIDE_EMACS != \"tramp\" && $- == *i* && $SHELL != *nu ]]; then"
+     ;; "  SHELL=$(which nu)"
+     ;; "  [[ -x $SHELL ]] && exec nu || echo 'nu not found.'"
      "fi")
    "\n" 'suffix))
 

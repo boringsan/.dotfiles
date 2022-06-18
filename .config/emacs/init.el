@@ -143,7 +143,10 @@
    'guix-system
    '((tramp-remote-path . (tramp-own-remote-path))))
   (connection-local-set-profiles
-   '(:application tramp :protocol "ssh" :user "boring")
+   '(:application tramp :protocol "ssh" :machine "boring.si")
+   'guix-system)
+  (connection-local-set-profiles
+   '(:application tramp :protocol "ssh" :machine "elephant.local")
    'guix-system))
 
 
