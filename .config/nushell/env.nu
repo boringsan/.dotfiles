@@ -1,17 +1,28 @@
 # Nushell Environment Config File
 let-env STARSHIP_SHELL = "nu"
+let-env PROMPT_MULTILINE_INDICATOR = (^starship prompt --continuation)
 
-def create_left_prompt [] {
-    starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
+def vterm_printf [s: string] { printf "\e]%s\e\\" $s }
+
+def clear [] {
+  vterm_printf "51;Evterm-clear-scrollback"
+}
+def vterm_prompt_end [] {
+  vterm_printf $'51;A(whoami)@(hostname):(pwd)'
 }
 
 # Use nushell functions to define your right and left prompt
-let-env PROMPT_COMMAND = { create_left_prompt }
-let-env PROMPT_COMMAND_RIGHT = ""
+let-env PROMPT_COMMAND = {
+  starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
+  # vterm_prompt_end
+}
+let-env PROMPT_COMMAND_RIGHT = {
+  ^echo -ne $'\033]0;(pwd)\007'
+}
 
 # The prompt indicators are environmental variables that represent
 # the state of the prompt
-let-env PROMPT_INDICATOR = { "" }
+let-env PROMPT_INDICATOR = { vterm_prompt_end | str replace "\n" "" -a }
 let-env PROMPT_INDICATOR_VI_INSERT = { ": " }
 let-env PROMPT_INDICATOR_VI_NORMAL = { "〉" }
 let-env PROMPT_MULTILINE_INDICATOR = { "::: " }
