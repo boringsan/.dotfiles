@@ -152,7 +152,6 @@ EndSection
              myrepos
              nss-certs     ;; for HTTPS access
              ntfs-3g
-             nushell
              openssh
              stow
              vim

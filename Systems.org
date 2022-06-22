@@ -222,7 +222,6 @@ Define the =base-operating-system= which will be inherited by all machine config
                myrepos
                nss-certs     ;; for HTTPS access
                ntfs-3g
-               nushell
                openssh
                stow
                vim

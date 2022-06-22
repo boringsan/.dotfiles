@@ -3,13 +3,19 @@
 
 (define-module (elephant)
   #:use-module (base-system)
+  #:use-module (gnu packages certs)
+  #:use-module (gnu packages display-managers)
+  #:use-module (gnu packages emacs)
+  #:use-module (gnu packages file-systems)
   #:use-module (gnu packages gnome)
+  #:use-module (gnu packages gnome-xyz)
   #:use-module (gnu packages linux)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu packages ssh)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages xorg)
-  #:use-module (gnu services desktop)
   #:use-module (gnu services certbot)
+  #:use-module (gnu services desktop)
   #:use-module (gnu services linux)
   #:use-module (gnu services nix)
   #:use-module (gnu services sddm)
@@ -17,14 +23,14 @@
   #:use-module (gnu services web)
   #:use-module (gnu services xorg)
   #:use-module (gnu)
-  #:use-module (guix transformations)
-  #:use-module (nongnu packages linux)
-  #:use-module (nongnu packages nvidia)
-  #:use-module (nongnu system linux-initrd))
+  #:use-module (guix transformations))
+  ;; #:use-module (nongnu packages linux)
+  ;; #:use-module (nongnu packages nvidia)
+  ;; #:use-module (nongnu system linux-initrd))
 
-(define transform
-  (options->transformation
-   '((with-graft . "mesa=nvda"))))
+;; (define transform
+;;   (options->transformation
+;;    '((with-graft . "mesa=nvda"))))
 
 (define %nginx-deploy-hook
   (program-file
@@ -41,7 +47,7 @@
  ;;                    '("modprobe.blacklist=nouveau nvidia-drm.modeset=1")
  ;;                    %default-kernel-arguments))
  ;; (kernel-loadable-modules (list nvidia-driver))
- (initrd microcode-initrd)
+ ;; (initrd microcode-initrd)
 
  (keyboard-layout %desktop-keyboard)
 
@@ -51,7 +57,7 @@
    (targets (list "/dev/sdd"))
    (theme (grub-theme
            (inherit (grub-theme))
-           (gfxmode '("1920x1080" "1280x720" "auto"))))
+           (gfxmode '("1280x720" "auto"))))
    (keyboard-layout %desktop-keyboard)))
 
  (users
@@ -60,7 +66,7 @@
           (group "users")
           (comment "Account for git acces")
           (home-directory "/mnt/ServerStore/git")
-          (shell (file-append git "/bin/git-shell"))
+          ;; (shell (file-append git "/bin/git-shell"))
           (system? #t))
          %boring-user
          %base-user-accounts))
@@ -87,6 +93,23 @@
                        (mount-point "/mnt/ServerStore")
                        (type "ext4")))
                 %base-file-systems))
+ (packages
+  (append (list
+           emacs
+           exfat-utils
+           fuse-exfat
+           git
+           gitolite
+           guix-simplyblack-sddm-theme
+           gvfs          ;; for user mounts
+           myrepos
+           nss-certs     ;; for HTTPS access
+           ntfs-3g
+           numix-gtk-theme
+           openssh
+           stow
+           xf86-input-libinput)
+          %base-packages))
 
  (services
   (append
@@ -129,7 +152,16 @@
                            (server-name '("boring.si"))
                            (listen '("443 ssl"))
                            (root "/srv/http/boring.si")
-                           (raw-content '("keepalive_timeout 70;")
+                           (raw-content '("keepalive_timeout 70;"))
+                           (ssl-certificate
+                            "/etc/letsencrypt/live/boring.si/fullchain.pem")
+                           (ssl-certificate-key
+                            "/etc/letsencrypt/live/boring.si/privkey.pem"))
+                          (nginx-server-configuration
+                           (server-name '("cpp.boring.si"))
+                           (listen '("443 ssl"))
+                           (root "/srv/http/cpp.boring.si")
+                           (raw-content '("keepalive_timeout 70;"))
                            (ssl-certificate
                             "/etc/letsencrypt/live/boring.si/fullchain.pem")
                            (ssl-certificate-key
