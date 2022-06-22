@@ -1,12 +1,15 @@
 
 [.dotfiles]
-checkout = git clone 'https://github.com/boringsan/.dotfiles' '.dotfiles'
+checkout = git clone 'git@boring.si:home' '.dotfiles'
 
 [personal]
-checkout = git clone 'ssh://git@elephant.local/~/personal' 'personal'
+checkout = git clone git@boring.si:personal 'personal'
+
+[gitjournal]
+checkout = git clone git@boring.si:gitjournal 'gitjournal'
 
 [projects/programming_in_haskell]
-checkout = git clone 'ssh://git@elephant.local/~/programming_in_haskell' 'programming_in_haskell'
+checkout = git clone git@boring.si:programming_in_haskell 'programming_in_haskell'
 
 [projects/hackerrank]
-checkout = git clone 'ssh://git@elephant.local/~/hackerrank' 'hackerrank'
+checkout = git clone git@boring.si:hackerrank 'hackerrank'
