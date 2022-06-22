@@ -369,7 +369,7 @@
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
    consult--source-buffer consult--source-project-buffer consult--source-bookmark
-   :preview-key (kbd "M-."))
+   :preview-key (kbd "C-."))
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
@@ -545,7 +545,6 @@
     "sp" '(sort-paragraphs :which-key "sort paragraphs")
     "se" '(evil-ex-sort :which-key "evil ex sort")))
 
-(use-package consult)
     ;; :general
     ;; (boring/leader-keys
     ;;   "tl" '(consult-theme :which-key "choose theme")))
@@ -665,9 +664,17 @@
 (defun go-compile ()
   (interactive)
   (compile "go run ."))
+
+(defun go-test ()
+  (interactive)
+  (compile "go test -v"))
+
 (use-package go
-  :bind (:map go-mode-map
-              ("C-c C-c" . go-compile)))
+  :defer t
+  :config
+  (bind-keys :map go-mode-map
+             ("C-c C-v" . go-test)
+             ("C-c C-c" . go-compile)))
 
 ;; (use-package flycheck-haskell)
 (use-package haskell-mode
