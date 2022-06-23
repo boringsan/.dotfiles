@@ -616,6 +616,7 @@
   (page-break-lines-mode t))
 
 (use-package goggles
+  :diminish
   :hook ((prog-mode text-mode) . goggles-mode)
   :config
   (setq-default goggles-pulse t)) ;; set to nil to disable pulsing
