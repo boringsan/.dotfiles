@@ -1,5 +1,6 @@
 (use-modules
  (gnu home services shells)
+ (gnu home services xdg)
  (gnu home services)
  (gnu home)
  (gnu packages version-control)
@@ -20,6 +21,10 @@
               (list
                ;; this is for sshd to eval before running gitolite-shell
                (plain-file "init-bashrc" "PATH=$HOME/.guix-home/profile/bin")))))
+   (simple-service
+    'remove-xdg-runtime-dir
+    home-xdg-user-directories-service-type
+    '(("XDG_RUNTIME_DIR" . "$HOME")))
    (simple-service
     'gitolite-rebuild-hooks
     home-activation-service-type
