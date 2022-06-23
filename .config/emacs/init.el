@@ -670,8 +670,9 @@
   (interactive)
   (compile "go test -v"))
 
-(use-package go
+(use-package go-mode
   :defer t
+  :hook (go-mode . subword-mode)
   :config
   (bind-keys :map go-mode-map
              ("C-c C-v" . go-test)

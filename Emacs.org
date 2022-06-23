@@ -921,8 +921,9 @@ The first time the configuration is loaded on a new machine,  the command =all-t
     (interactive)
     (compile "go test -v"))
 
-  (use-package go
+  (use-package go-mode
     :defer t
+    :hook (go-mode . subword-mode)
     :config
     (bind-keys :map go-mode-map
                ("C-c C-v" . go-test)
