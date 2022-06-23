@@ -1,4 +1,5 @@
 (use-modules
+ (gnu home services shells)
  (gnu home services)
  (gnu home)
  (gnu packages version-control)
