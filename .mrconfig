@@ -8,6 +8,9 @@ checkout = git clone git@boring.si:personal 'personal'
 [gitjournal]
 checkout = git clone git@boring.si:gitjournal 'gitjournal'
 
+[projects/cpp-server]
+checkout = git clone git@boring.si:cpp-server 'cpp-server'
+
 [projects/programming_in_haskell]
 checkout = git clone git@boring.si:programming_in_haskell 'programming_in_haskell'
 
