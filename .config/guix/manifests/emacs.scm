@@ -75,4 +75,6 @@
    "emacs-which-key"
    "emacs-writeroom"
    "emacs-xref"
-   "emacs-yasnippet"))
+   "emacs-yasnippet"
+   "ispell"
+   "ripgrep"))
