@@ -14,6 +14,7 @@
   #:use-module (gnu services nix)
   #:use-module (gnu services sddm)
   #:use-module (gnu services ssh)
+  #:use-module (gnu services version-control)
   #:use-module (gnu services web)
   #:use-module (gnu services xorg)
   #:use-module (gnu)
@@ -55,14 +56,7 @@
    (keyboard-layout %desktop-keyboard)))
 
  (users
-  (cons* (user-account
-          (name "git")
-          (group "users")
-          (comment "Account for git acces")
-          (home-directory "/mnt/ServerStore/git")
-          ;; (shell (file-append git "/bin/git-shell"))
-          (system? #t))
-         %boring-user
+  (cons* %boring-user
          %base-user-accounts))
 
  (swap-devices (list (swap-space
@@ -110,6 +104,12 @@
                      ;; (server (transform xorg-server))
                      ;; (drivers '("nvidia"))
                      (keyboard-layout %desktop-keyboard)))))
+         (service gitolite-service-type
+                  (gitolite-configuration
+                   (admin-pubkey (plain-file
+                                  "elephant.pub"
+                                  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDObV2ZTrbMO5nk1UOPXV4IZ7j/ghfvNGPOx37yGP125/QayHxejMMmhbpB+X/une82I0HJX0cdVfMhSa+q0Cm+V+stSY82+Nc9NSNerUXEBaS/V/hdb4ADcs65iEIAWfgR87qcAKp6OxZWpNaylCq6ydEjmljcTS5rmTDcIB0GtEAU9EkzQHnFhVHcDqm68KD4UAOeU/fDelb8sL0Eg78ARQ0s5s99Ma3Z3RW/9E30wBA61aTAhbXrKtpEPU3HXI4ZoVhF9zELYUr/MHCm2icCXg4qYxjkeuR9m49lhJt+do/UPtK+eC2HJMvoUj5T16qnTwYgdpwWKRm1OrEehG3Y4dtv4hLxUB6gbLmRj4ktXnavhaZSIZOOHrtLBL4hOIwBoqm5pt95HFThZV+nDJ0FGo4PXz+gKt4YG5m2/QwcIm8m71rsgE91b+wbLXoTuRVBcyXaXqO7D8jkAXGZNVB+1jUVWD2o4YnRgXEP9I0JzZV8n2sTqYYwvtcG+5ohg2s= boring@elephant"))
+                   (home-directory "/mnt/ServerStore/git")))
          (service certbot-service-type
                   (certbot-configuration
                    (email "erik.sab@gmail.com")
