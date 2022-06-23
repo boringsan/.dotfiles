@@ -86,9 +86,9 @@
   (large-file-warning-threshold 30000000)
   :custom-face
   (default
-    ((t (:height 120))))
+    ((t (:family "Iosevka Curly Slab" :height 120))))
   (variable-pitch
-   ((t (:height 138))))
+   ((t (:family "Source Serif Pro" :height 138))))
 
   :init
   (unbind-key "C-z")          ; suspend frame
@@ -96,7 +96,6 @@
   (bind-keys ("C-S-v" . scroll-down))
 
   ;; TODOs
-  ;; smart-[begining, end]-of-line
   ;; (set-register ?z '(file . "/gd/gnu/emacs/19.0/src/ChangeLog"))
   ;; (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
