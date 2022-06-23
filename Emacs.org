@@ -953,6 +953,7 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 
   (use-package elm-mode
     :defer t
+    :hook (elm-mode . subword-mode)
     :custom
     (elm-package-json "elm.json")
     (elm-sort-imports-on-save t)

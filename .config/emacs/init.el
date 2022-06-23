@@ -690,6 +690,7 @@
 
 (use-package elm-mode
   :defer t
+  :hook (elm-mode . subword-mode)
   :custom
   (elm-package-json "elm.json")
   (elm-sort-imports-on-save t)
