@@ -18,7 +18,6 @@
 
 ** Use-package macro
 
-This macro streamlines package configuration.
 - [[https://github.com/jwiegley/use-package][github.com/jwiegley/use-package]]
 
 #+begin_src emacs-lisp
@@ -226,7 +225,7 @@ This macro streamlines package configuration.
 
 #+end_src
 
-**  Expand region
+** Expand region
 
 #+begin_src emacs-lisp
 
@@ -843,7 +842,9 @@ The first time the configuration is loaded on a new machine,  the command =all-t
 #+end_src
 
 * Programming
+
 ** Restclient
+
 #+begin_src emacs-lisp
 
   (use-package restclient
