@@ -236,7 +236,7 @@
   (dashboard-setup-startup-hook))
 
 (use-package yasnippet
-  :diminish
+  :diminish yas-minor-mode
   :init
   (yas-global-mode))
 

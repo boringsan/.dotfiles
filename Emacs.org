@@ -319,7 +319,7 @@ This macro streamlines package configuration.
 #+begin_src emacs-lisp
 
   (use-package yasnippet
-    :diminish
+    :diminish yas-minor-mode
     :init
     (yas-global-mode))
 
