@@ -3,14 +3,8 @@
 
 (define-module (elephant)
   #:use-module (base-system)
-  #:use-module (gnu packages certs)
-  #:use-module (gnu packages display-managers)
-  #:use-module (gnu packages emacs)
-  #:use-module (gnu packages file-systems)
   #:use-module (gnu packages gnome)
-  #:use-module (gnu packages gnome-xyz)
   #:use-module (gnu packages linux)
-  #:use-module (gnu packages package-management)
   #:use-module (gnu packages ssh)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages xorg)
@@ -93,23 +87,6 @@
                        (mount-point "/mnt/ServerStore")
                        (type "ext4")))
                 %base-file-systems))
- (packages
-  (append (list
-           emacs
-           exfat-utils
-           fuse-exfat
-           git
-           gitolite
-           guix-simplyblack-sddm-theme
-           gvfs          ;; for user mounts
-           myrepos
-           nss-certs     ;; for HTTPS access
-           ntfs-3g
-           numix-gtk-theme
-           openssh
-           stow
-           xf86-input-libinput)
-          %base-packages))
 
  (services
   (append
