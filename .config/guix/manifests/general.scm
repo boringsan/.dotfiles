@@ -1,9 +1,8 @@
 
 (specifications->manifest
- '("clang"
+'("clang"
    "cmake"
    "cowsay"
-   "curl"
    "fortune-mod"
    "gcc-toolchain"
    "ghostscript"
